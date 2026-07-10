@@ -622,17 +622,17 @@ func (p *PartnerDataResponse) String() string {
 }
 
 var (
-	waterfallResponseFieldID                  = big.NewInt(1 << 0)
-	waterfallResponseFieldPartnerID           = big.NewInt(1 << 1)
-	waterfallResponseFieldName                = big.NewInt(1 << 2)
-	waterfallResponseFieldDate                = big.NewInt(1 << 3)
-	waterfallResponseFieldStatus              = big.NewInt(1 << 4)
-	waterfallResponseFieldCashBalance         = big.NewInt(1 << 5)
-	waterfallResponseFieldCashBalanceCurrency = big.NewInt(1 << 6)
-	waterfallResponseFieldCashBalanceDate     = big.NewInt(1 << 7)
-	waterfallResponseFieldFileURL             = big.NewInt(1 << 8)
-	waterfallResponseFieldCreatedAt           = big.NewInt(1 << 9)
-	waterfallResponseFieldUpdatedAt           = big.NewInt(1 << 10)
+	waterfallResponseFieldID          = big.NewInt(1 << 0)
+	waterfallResponseFieldPartnerID   = big.NewInt(1 << 1)
+	waterfallResponseFieldName        = big.NewInt(1 << 2)
+	waterfallResponseFieldDate        = big.NewInt(1 << 3)
+	waterfallResponseFieldStatus      = big.NewInt(1 << 4)
+	waterfallResponseFieldAmount      = big.NewInt(1 << 5)
+	waterfallResponseFieldCurrency    = big.NewInt(1 << 6)
+	waterfallResponseFieldPaymentDate = big.NewInt(1 << 7)
+	waterfallResponseFieldFileURL     = big.NewInt(1 << 8)
+	waterfallResponseFieldCreatedAt   = big.NewInt(1 << 9)
+	waterfallResponseFieldUpdatedAt   = big.NewInt(1 << 10)
 )
 
 type WaterfallResponse struct {
@@ -646,12 +646,12 @@ type WaterfallResponse struct {
 	Date time.Time `json:"date" url:"date" format:"date"`
 	// The status of the waterfall
 	Status WaterfallStatusEnum `json:"status" url:"status"`
-	// The cash balance associated with the waterfall
-	CashBalance *string `json:"cash_balance,omitempty" url:"cash_balance,omitempty"`
-	// The currency of the cash balance
-	CashBalanceCurrency *string `json:"cash_balance_currency,omitempty" url:"cash_balance_currency,omitempty"`
-	// The date of the cash balance
-	CashBalanceDate *time.Time `json:"cash_balance_date,omitempty" url:"cash_balance_date,omitempty" format:"date"`
+	// The payment amount recorded for the waterfall
+	Amount *string `json:"amount,omitempty" url:"amount,omitempty"`
+	// The currency of the payment
+	Currency *string `json:"currency,omitempty" url:"currency,omitempty"`
+	// The date the payment was made
+	PaymentDate *time.Time `json:"payment_date,omitempty" url:"payment_date,omitempty" format:"date"`
 	// The Presigned URL of the file. This is a temporary URL that allows you to download the file.
 	FileURL *string `json:"file_url,omitempty" url:"file_url,omitempty"`
 	// The date and time when the waterfall was created
@@ -701,25 +701,25 @@ func (w *WaterfallResponse) GetStatus() WaterfallStatusEnum {
 	return w.Status
 }
 
-func (w *WaterfallResponse) GetCashBalance() *string {
+func (w *WaterfallResponse) GetAmount() *string {
 	if w == nil {
 		return nil
 	}
-	return w.CashBalance
+	return w.Amount
 }
 
-func (w *WaterfallResponse) GetCashBalanceCurrency() *string {
+func (w *WaterfallResponse) GetCurrency() *string {
 	if w == nil {
 		return nil
 	}
-	return w.CashBalanceCurrency
+	return w.Currency
 }
 
-func (w *WaterfallResponse) GetCashBalanceDate() *time.Time {
+func (w *WaterfallResponse) GetPaymentDate() *time.Time {
 	if w == nil {
 		return nil
 	}
-	return w.CashBalanceDate
+	return w.PaymentDate
 }
 
 func (w *WaterfallResponse) GetFileURL() *string {
@@ -792,25 +792,25 @@ func (w *WaterfallResponse) SetStatus(status WaterfallStatusEnum) {
 	w.require(waterfallResponseFieldStatus)
 }
 
-// SetCashBalance sets the CashBalance field and marks it as non-optional;
+// SetAmount sets the Amount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterfallResponse) SetCashBalance(cashBalance *string) {
-	w.CashBalance = cashBalance
-	w.require(waterfallResponseFieldCashBalance)
+func (w *WaterfallResponse) SetAmount(amount *string) {
+	w.Amount = amount
+	w.require(waterfallResponseFieldAmount)
 }
 
-// SetCashBalanceCurrency sets the CashBalanceCurrency field and marks it as non-optional;
+// SetCurrency sets the Currency field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterfallResponse) SetCashBalanceCurrency(cashBalanceCurrency *string) {
-	w.CashBalanceCurrency = cashBalanceCurrency
-	w.require(waterfallResponseFieldCashBalanceCurrency)
+func (w *WaterfallResponse) SetCurrency(currency *string) {
+	w.Currency = currency
+	w.require(waterfallResponseFieldCurrency)
 }
 
-// SetCashBalanceDate sets the CashBalanceDate field and marks it as non-optional;
+// SetPaymentDate sets the PaymentDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterfallResponse) SetCashBalanceDate(cashBalanceDate *time.Time) {
-	w.CashBalanceDate = cashBalanceDate
-	w.require(waterfallResponseFieldCashBalanceDate)
+func (w *WaterfallResponse) SetPaymentDate(paymentDate *time.Time) {
+	w.PaymentDate = paymentDate
+	w.require(waterfallResponseFieldPaymentDate)
 }
 
 // SetFileURL sets the FileURL field and marks it as non-optional;
@@ -838,10 +838,10 @@ func (w *WaterfallResponse) UnmarshalJSON(data []byte) error {
 	type embed WaterfallResponse
 	var unmarshaler = struct {
 		embed
-		Date            *internal.Date     `json:"date"`
-		CashBalanceDate *internal.Date     `json:"cash_balance_date,omitempty"`
-		CreatedAt       *internal.DateTime `json:"created_at"`
-		UpdatedAt       *internal.DateTime `json:"updated_at"`
+		Date        *internal.Date     `json:"date"`
+		PaymentDate *internal.Date     `json:"payment_date,omitempty"`
+		CreatedAt   *internal.DateTime `json:"created_at"`
+		UpdatedAt   *internal.DateTime `json:"updated_at"`
 	}{
 		embed: embed(*w),
 	}
@@ -850,7 +850,7 @@ func (w *WaterfallResponse) UnmarshalJSON(data []byte) error {
 	}
 	*w = WaterfallResponse(unmarshaler.embed)
 	w.Date = unmarshaler.Date.Time()
-	w.CashBalanceDate = unmarshaler.CashBalanceDate.TimePtr()
+	w.PaymentDate = unmarshaler.PaymentDate.TimePtr()
 	w.CreatedAt = unmarshaler.CreatedAt.Time()
 	w.UpdatedAt = unmarshaler.UpdatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *w)
@@ -866,16 +866,16 @@ func (w *WaterfallResponse) MarshalJSON() ([]byte, error) {
 	type embed WaterfallResponse
 	var marshaler = struct {
 		embed
-		Date            *internal.Date     `json:"date"`
-		CashBalanceDate *internal.Date     `json:"cash_balance_date,omitempty"`
-		CreatedAt       *internal.DateTime `json:"created_at"`
-		UpdatedAt       *internal.DateTime `json:"updated_at"`
+		Date        *internal.Date     `json:"date"`
+		PaymentDate *internal.Date     `json:"payment_date,omitempty"`
+		CreatedAt   *internal.DateTime `json:"created_at"`
+		UpdatedAt   *internal.DateTime `json:"updated_at"`
 	}{
-		embed:           embed(*w),
-		Date:            internal.NewDate(w.Date),
-		CashBalanceDate: internal.NewOptionalDate(w.CashBalanceDate),
-		CreatedAt:       internal.NewDateTime(w.CreatedAt),
-		UpdatedAt:       internal.NewDateTime(w.UpdatedAt),
+		embed:       embed(*w),
+		Date:        internal.NewDate(w.Date),
+		PaymentDate: internal.NewOptionalDate(w.PaymentDate),
+		CreatedAt:   internal.NewDateTime(w.CreatedAt),
+		UpdatedAt:   internal.NewDateTime(w.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
 	return json.Marshal(explicitMarshaler)

@@ -33,6 +33,57 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
+// List loan review requests for your partner account, optionally filtered by loan ID or client ID.
+func (c *Client) ListLoanReviewRequests(
+	ctx context.Context,
+	request *v2.ListLoanReviewRequestsRequest,
+	opts ...option.RequestOption,
+) (*v2.PaginatedResponseLoanReviewRequestResponse, error) {
+	response, err := c.WithRawResponse.ListLoanReviewRequests(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Ask Voltaria to review a not-yet-disbursed (pending or pre-approved) loan before disbursement.
+func (c *Client) CreateLoanReviewRequest(
+	ctx context.Context,
+	request *v2.LoanReviewRequestCreatePayload,
+	opts ...option.RequestOption,
+) (*v2.LoanReviewRequestResponse, error) {
+	response, err := c.WithRawResponse.CreateLoanReviewRequest(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Retrieve a specific loan review request by its ID.
+func (c *Client) GetLoanReviewRequest(
+	ctx context.Context,
+	request *v2.GetLoanReviewRequestRequest,
+	opts ...option.RequestOption,
+) (*v2.LoanReviewRequestResponse, error) {
+	response, err := c.WithRawResponse.GetLoanReviewRequest(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Retrieve all loans associated with your partner account. Supports optional filtering by client ID.
 func (c *Client) ListLoans(
 	ctx context.Context,

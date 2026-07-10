@@ -237,18 +237,19 @@ func (a *AvailableDocumentCategoriesResponse) String() string {
 }
 
 var (
-	documentResponseFieldID            = big.NewInt(1 << 0)
-	documentResponseFieldCategory      = big.NewInt(1 << 1)
-	documentResponseFieldFileName      = big.NewInt(1 << 2)
-	documentResponseFieldFileType      = big.NewInt(1 << 3)
-	documentResponseFieldClientID      = big.NewInt(1 << 4)
-	documentResponseFieldFileURL       = big.NewInt(1 << 5)
-	documentResponseFieldLoanID        = big.NewInt(1 << 6)
-	documentResponseFieldInstallmentID = big.NewInt(1 << 7)
-	documentResponseFieldFolderPath    = big.NewInt(1 << 8)
-	documentResponseFieldDocumentDate  = big.NewInt(1 << 9)
-	documentResponseFieldExpiryDate    = big.NewInt(1 << 10)
-	documentResponseFieldCreatedAt     = big.NewInt(1 << 11)
+	documentResponseFieldID             = big.NewInt(1 << 0)
+	documentResponseFieldCategory       = big.NewInt(1 << 1)
+	documentResponseFieldFileName       = big.NewInt(1 << 2)
+	documentResponseFieldFileType       = big.NewInt(1 << 3)
+	documentResponseFieldClientID       = big.NewInt(1 << 4)
+	documentResponseFieldFileURL        = big.NewInt(1 << 5)
+	documentResponseFieldLoanID         = big.NewInt(1 << 6)
+	documentResponseFieldInstallmentID  = big.NewInt(1 << 7)
+	documentResponseFieldFolderPath     = big.NewInt(1 << 8)
+	documentResponseFieldDocumentDate   = big.NewInt(1 << 9)
+	documentResponseFieldExpiryDate     = big.NewInt(1 << 10)
+	documentResponseFieldDistributionID = big.NewInt(1 << 11)
+	documentResponseFieldCreatedAt      = big.NewInt(1 << 12)
 )
 
 type DocumentResponse struct {
@@ -274,6 +275,8 @@ type DocumentResponse struct {
 	DocumentDate *time.Time `json:"document_date,omitempty" url:"document_date,omitempty" format:"date"`
 	// Optional expiry date of the document
 	ExpiryDate *time.Time `json:"expiry_date,omitempty" url:"expiry_date,omitempty" format:"date"`
+	// The ID of the associated distribution (coupon), if applicable
+	DistributionID *string `json:"distribution_id,omitempty" url:"distribution_id,omitempty"`
 	// The date and time when the document was created
 	CreatedAt time.Time `json:"created_at" url:"created_at"`
 
@@ -359,6 +362,13 @@ func (d *DocumentResponse) GetExpiryDate() *time.Time {
 		return nil
 	}
 	return d.ExpiryDate
+}
+
+func (d *DocumentResponse) GetDistributionID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.DistributionID
 }
 
 func (d *DocumentResponse) GetCreatedAt() time.Time {
@@ -457,6 +467,13 @@ func (d *DocumentResponse) SetDocumentDate(documentDate *time.Time) {
 func (d *DocumentResponse) SetExpiryDate(expiryDate *time.Time) {
 	d.ExpiryDate = expiryDate
 	d.require(documentResponseFieldExpiryDate)
+}
+
+// SetDistributionID sets the DistributionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DocumentResponse) SetDistributionID(distributionID *string) {
+	d.DistributionID = distributionID
+	d.require(documentResponseFieldDistributionID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;

@@ -77,6 +77,82 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
+func TestLoansListLoanReviewRequestsWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.ListLoanReviewRequestsRequest{}
+	_, invocationErr := client.Loans.ListLoanReviewRequests(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestLoansListLoanReviewRequestsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestLoansListLoanReviewRequestsWithWireMock", "GET", "/v2/loans/review-requests", nil, 1)
+}
+
+func TestLoansCreateLoanReviewRequestWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.LoanReviewRequestCreatePayload{
+		LoanID: "loan_1234567890abcdef",
+	}
+	_, invocationErr := client.Loans.CreateLoanReviewRequest(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestLoansCreateLoanReviewRequestWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestLoansCreateLoanReviewRequestWithWireMock", "POST", "/v2/loans/review-requests", nil, 1)
+}
+
+func TestLoansGetLoanReviewRequestWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.GetLoanReviewRequestRequest{
+		RequestID: "request_id",
+	}
+	_, invocationErr := client.Loans.GetLoanReviewRequest(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestLoansGetLoanReviewRequestWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestLoansGetLoanReviewRequestWithWireMock", "GET", "/v2/loans/review-requests/request_id", nil, 1)
+}
+
 func TestLoansListLoansWithWireMock(
 	t *testing.T,
 ) {

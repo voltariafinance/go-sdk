@@ -1759,6 +1759,22 @@ func TestSettersLoanInvestorResponse(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetOutstandingPrincipal", func(t *testing.T) {
+		obj := &LoanInvestorResponse{}
+		var fernTestValueOutstandingPrincipal *string
+		obj.SetOutstandingPrincipal(fernTestValueOutstandingPrincipal)
+		assert.Equal(t, fernTestValueOutstandingPrincipal, obj.OutstandingPrincipal)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetRemainingAmount", func(t *testing.T) {
+		obj := &LoanInvestorResponse{}
+		var fernTestValueRemainingAmount *string
+		obj.SetRemainingAmount(fernTestValueRemainingAmount)
+		assert.Equal(t, fernTestValueRemainingAmount, obj.RemainingAmount)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetPaymentToTheClient", func(t *testing.T) {
 		obj := &LoanInvestorResponse{}
 		var fernTestValuePaymentToTheClient *bool
@@ -2272,6 +2288,72 @@ func TestGettersLoanInvestorResponse(t *testing.T) {
 			}
 		}()
 		_ = obj.GetClient() // Should return zero value
+	})
+
+	t.Run("GetOutstandingPrincipal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInvestorResponse{}
+		var expected *string
+		obj.OutstandingPrincipal = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetOutstandingPrincipal(), "getter should return the property value")
+	})
+
+	t.Run("GetOutstandingPrincipal_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInvestorResponse{}
+		obj.OutstandingPrincipal = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetOutstandingPrincipal(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetOutstandingPrincipal_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanInvestorResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetOutstandingPrincipal() // Should return zero value
+	})
+
+	t.Run("GetRemainingAmount", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInvestorResponse{}
+		var expected *string
+		obj.RemainingAmount = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetRemainingAmount(), "getter should return the property value")
+	})
+
+	t.Run("GetRemainingAmount_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInvestorResponse{}
+		obj.RemainingAmount = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRemainingAmount(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetRemainingAmount_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanInvestorResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetRemainingAmount() // Should return zero value
 	})
 
 	t.Run("GetPaymentToTheClient", func(t *testing.T) {
@@ -2845,6 +2927,68 @@ func TestSettersMarkExplicitLoanInvestorResponse(t *testing.T) {
 
 		// Act
 		obj.SetClient(fernTestValueClient)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetOutstandingPrincipal_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInvestorResponse{}
+		var fernTestValueOutstandingPrincipal *string
+
+		// Act
+		obj.SetOutstandingPrincipal(fernTestValueOutstandingPrincipal)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetRemainingAmount_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInvestorResponse{}
+		var fernTestValueRemainingAmount *string
+
+		// Act
+		obj.SetRemainingAmount(fernTestValueRemainingAmount)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

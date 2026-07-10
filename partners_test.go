@@ -1501,27 +1501,27 @@ func TestSettersWaterfallResponse(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetCashBalance", func(t *testing.T) {
+	t.Run("SetAmount", func(t *testing.T) {
 		obj := &WaterfallResponse{}
-		var fernTestValueCashBalance *string
-		obj.SetCashBalance(fernTestValueCashBalance)
-		assert.Equal(t, fernTestValueCashBalance, obj.CashBalance)
+		var fernTestValueAmount *string
+		obj.SetAmount(fernTestValueAmount)
+		assert.Equal(t, fernTestValueAmount, obj.Amount)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetCashBalanceCurrency", func(t *testing.T) {
+	t.Run("SetCurrency", func(t *testing.T) {
 		obj := &WaterfallResponse{}
-		var fernTestValueCashBalanceCurrency *string
-		obj.SetCashBalanceCurrency(fernTestValueCashBalanceCurrency)
-		assert.Equal(t, fernTestValueCashBalanceCurrency, obj.CashBalanceCurrency)
+		var fernTestValueCurrency *string
+		obj.SetCurrency(fernTestValueCurrency)
+		assert.Equal(t, fernTestValueCurrency, obj.Currency)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetCashBalanceDate", func(t *testing.T) {
+	t.Run("SetPaymentDate", func(t *testing.T) {
 		obj := &WaterfallResponse{}
-		var fernTestValueCashBalanceDate *time.Time
-		obj.SetCashBalanceDate(fernTestValueCashBalanceDate)
-		assert.Equal(t, fernTestValueCashBalanceDate, obj.CashBalanceDate)
+		var fernTestValuePaymentDate *time.Time
+		obj.SetPaymentDate(fernTestValuePaymentDate)
+		assert.Equal(t, fernTestValuePaymentDate, obj.PaymentDate)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1667,28 +1667,28 @@ func TestGettersWaterfallResponse(t *testing.T) {
 		_ = obj.GetStatus() // Should return zero value
 	})
 
-	t.Run("GetCashBalance", func(t *testing.T) {
+	t.Run("GetAmount", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
 		var expected *string
-		obj.CashBalance = expected
+		obj.Amount = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetCashBalance(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetAmount(), "getter should return the property value")
 	})
 
-	t.Run("GetCashBalance_NilValue", func(t *testing.T) {
+	t.Run("GetAmount_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
-		obj.CashBalance = nil
+		obj.Amount = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetCashBalance(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetAmount(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetCashBalance_NilReceiver", func(t *testing.T) {
+	t.Run("GetAmount_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *WaterfallResponse
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1697,31 +1697,31 @@ func TestGettersWaterfallResponse(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetCashBalance() // Should return zero value
+		_ = obj.GetAmount() // Should return zero value
 	})
 
-	t.Run("GetCashBalanceCurrency", func(t *testing.T) {
+	t.Run("GetCurrency", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
 		var expected *string
-		obj.CashBalanceCurrency = expected
+		obj.Currency = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetCashBalanceCurrency(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetCurrency(), "getter should return the property value")
 	})
 
-	t.Run("GetCashBalanceCurrency_NilValue", func(t *testing.T) {
+	t.Run("GetCurrency_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
-		obj.CashBalanceCurrency = nil
+		obj.Currency = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetCashBalanceCurrency(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetCurrency(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetCashBalanceCurrency_NilReceiver", func(t *testing.T) {
+	t.Run("GetCurrency_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *WaterfallResponse
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1730,31 +1730,31 @@ func TestGettersWaterfallResponse(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetCashBalanceCurrency() // Should return zero value
+		_ = obj.GetCurrency() // Should return zero value
 	})
 
-	t.Run("GetCashBalanceDate", func(t *testing.T) {
+	t.Run("GetPaymentDate", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
 		var expected *time.Time
-		obj.CashBalanceDate = expected
+		obj.PaymentDate = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetCashBalanceDate(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaymentDate(), "getter should return the property value")
 	})
 
-	t.Run("GetCashBalanceDate_NilValue", func(t *testing.T) {
+	t.Run("GetPaymentDate_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
-		obj.CashBalanceDate = nil
+		obj.PaymentDate = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetCashBalanceDate(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPaymentDate(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetCashBalanceDate_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaymentDate_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *WaterfallResponse
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1763,7 +1763,7 @@ func TestGettersWaterfallResponse(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetCashBalanceDate() // Should return zero value
+		_ = obj.GetPaymentDate() // Should return zero value
 	})
 
 	t.Run("GetFileURL", func(t *testing.T) {
@@ -2003,14 +2003,14 @@ func TestSettersMarkExplicitWaterfallResponse(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetCashBalance_MarksExplicit", func(t *testing.T) {
+	t.Run("SetAmount_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
-		var fernTestValueCashBalance *string
+		var fernTestValueAmount *string
 
 		// Act
-		obj.SetCashBalance(fernTestValueCashBalance)
+		obj.SetAmount(fernTestValueAmount)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2034,14 +2034,14 @@ func TestSettersMarkExplicitWaterfallResponse(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetCashBalanceCurrency_MarksExplicit", func(t *testing.T) {
+	t.Run("SetCurrency_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
-		var fernTestValueCashBalanceCurrency *string
+		var fernTestValueCurrency *string
 
 		// Act
-		obj.SetCashBalanceCurrency(fernTestValueCashBalanceCurrency)
+		obj.SetCurrency(fernTestValueCurrency)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2065,14 +2065,14 @@ func TestSettersMarkExplicitWaterfallResponse(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetCashBalanceDate_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaymentDate_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
-		var fernTestValueCashBalanceDate *time.Time
+		var fernTestValuePaymentDate *time.Time
 
 		// Act
-		obj.SetCashBalanceDate(fernTestValueCashBalanceDate)
+		obj.SetPaymentDate(fernTestValuePaymentDate)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

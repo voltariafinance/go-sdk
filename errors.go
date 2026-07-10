@@ -31,7 +31,7 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
-// Loan with same correlation ID already exists
+// Loan is not reviewable or already has a pending review request
 type ConflictError struct {
 	*core.APIError
 	Body any

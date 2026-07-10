@@ -7,6 +7,7 @@ import (
 	fmt "fmt"
 	internal "github.com/voltariafinance/go-sdk/v2/internal"
 	big "math/big"
+	time "time"
 )
 
 var (
@@ -501,6 +502,7 @@ var (
 	clientAccountResponseFieldAccountType       = big.NewInt(1 << 10)
 	clientAccountResponseFieldAddress           = big.NewInt(1 << 11)
 	clientAccountResponseFieldStatus            = big.NewInt(1 << 12)
+	clientAccountResponseFieldCreatedAt         = big.NewInt(1 << 13)
 )
 
 type ClientAccountResponse struct {
@@ -530,6 +532,8 @@ type ClientAccountResponse struct {
 	Address *AccountAddress `json:"address,omitempty" url:"address,omitempty"`
 	// Account status. One of: `pending`, `active`, `passive`.
 	Status AccountStatusEnum `json:"status" url:"status"`
+	// Timestamp when the account was created.
+	CreatedAt time.Time `json:"created_at" url:"created_at"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -627,6 +631,13 @@ func (c *ClientAccountResponse) GetStatus() AccountStatusEnum {
 		return ""
 	}
 	return c.Status
+}
+
+func (c *ClientAccountResponse) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
 }
 
 func (c *ClientAccountResponse) GetExtraProperties() map[string]interface{} {
@@ -734,13 +745,26 @@ func (c *ClientAccountResponse) SetStatus(status AccountStatusEnum) {
 	c.require(clientAccountResponseFieldStatus)
 }
 
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientAccountResponse) SetCreatedAt(createdAt time.Time) {
+	c.CreatedAt = createdAt
+	c.require(clientAccountResponseFieldCreatedAt)
+}
+
 func (c *ClientAccountResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ClientAccountResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ClientAccountResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*c = ClientAccountResponse(value)
+	*c = ClientAccountResponse(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -754,8 +778,10 @@ func (c *ClientAccountResponse) MarshalJSON() ([]byte, error) {
 	type embed ClientAccountResponse
 	var marshaler = struct {
 		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
 	}{
-		embed: embed(*c),
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)

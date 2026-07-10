@@ -108,7 +108,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"items\": [\n    {\n      \"id\": \"lr_1234567890abcdef\",\n      \"client_id\": \"client_1234567890abcdef\",\n      \"status\": \"pending\",\n      \"requested_limit\": \"requested_limit\",\n      \"reason\": \"Need more credit for business expansion\",\n      \"response\": \"response\",\n      \"waiver_id\": \"waiver_id\",\n      \"created_at\": \"2023-10-01T12:00:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"lr_1234567890abcdef\",\n      \"client_id\": \"client_1234567890abcdef\",\n      \"status\": \"pending\",\n      \"requested_limit\": \"requested_limit\",\n      \"reason\": \"Need more credit for business expansion\",\n      \"response\": \"response\",\n      \"waiver_id\": \"waiver_id\",\n      \"source\": \"partner\",\n      \"created_at\": \"2023-10-01T12:00:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -140,7 +140,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"id\": \"lr_1234567890abcdef\",\n  \"client_id\": \"client_1234567890abcdef\",\n  \"status\": \"pending\",\n  \"requested_limit\": \"requested_limit\",\n  \"reason\": \"Need more credit for business expansion\",\n  \"response\": \"response\",\n  \"waiver_id\": \"waiver_id\",\n  \"created_at\": \"2023-10-01T12:00:00Z\"\n}",
+        "body": "{\n  \"id\": \"lr_1234567890abcdef\",\n  \"client_id\": \"client_1234567890abcdef\",\n  \"status\": \"pending\",\n  \"requested_limit\": \"requested_limit\",\n  \"reason\": \"Need more credit for business expansion\",\n  \"response\": \"response\",\n  \"waiver_id\": \"waiver_id\",\n  \"source\": \"partner\",\n  \"created_at\": \"2023-10-01T12:00:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -176,7 +176,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"lr_1234567890abcdef\",\n  \"client_id\": \"client_1234567890abcdef\",\n  \"status\": \"pending\",\n  \"requested_limit\": \"requested_limit\",\n  \"reason\": \"Need more credit for business expansion\",\n  \"response\": \"response\",\n  \"waiver_id\": \"waiver_id\",\n  \"created_at\": \"2023-10-01T12:00:00Z\"\n}",
+        "body": "{\n  \"id\": \"lr_1234567890abcdef\",\n  \"client_id\": \"client_1234567890abcdef\",\n  \"status\": \"pending\",\n  \"requested_limit\": \"requested_limit\",\n  \"reason\": \"Need more credit for business expansion\",\n  \"response\": \"response\",\n  \"waiver_id\": \"waiver_id\",\n  \"source\": \"partner\",\n  \"created_at\": \"2023-10-01T12:00:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -298,6 +298,42 @@
       }
     },
     {
+      "id": "f8ac683a-419b-488b-9c22-b13c3fdfa554",
+      "name": "List portal users for a client - default",
+      "request": {
+        "urlPathTemplate": "/v2/clients/{client_id}/users",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "client_id": {
+            "equalTo": "client_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"cu_abc123\",\n      \"partner_id\": \"partner_abc123\",\n      \"client_id\": \"client_abc123\",\n      \"email\": \"jane.doe@acme.com\",\n      \"role_id\": \"role_abc123\",\n      \"role\": {\n        \"id\": \"id\",\n        \"name\": \"name\",\n        \"type\": \"type\"\n      },\n      \"status\": \"pending\",\n      \"is_email_verified\": true,\n      \"kyc_status\": \"not_started\",\n      \"first_name\": \"first_name\",\n      \"last_name\": \"last_name\",\n      \"phone\": \"phone\",\n      \"is_2fa_enabled\": false,\n      \"is_2fa_required\": false,\n      \"created_at\": \"2024-01-15T10:30:00Z\",\n      \"updated_at\": \"2024-01-15T10:30:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f8ac683a-419b-488b-9c22-b13c3fdfa554",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "3ba0d5ff-d025-46a7-8f65-32b7d759a94c",
       "name": "Add a portal user to a client - default",
       "request": {
@@ -316,7 +352,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"id\": \"id\",\n  \"partner_id\": \"partner_id\",\n  \"client_id\": \"client_id\",\n  \"email\": \"email\",\n  \"role_id\": \"role_id\",\n  \"role\": {\n    \"id\": \"id\",\n    \"name\": \"name\",\n    \"type\": \"type\"\n  },\n  \"status\": \"pending\",\n  \"is_email_verified\": true,\n  \"kyc_status\": \"not_started\",\n  \"first_name\": \"first_name\",\n  \"last_name\": \"last_name\",\n  \"phone\": \"phone\",\n  \"is_2fa_enabled\": true,\n  \"is_2fa_required\": true,\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "body": "{\n  \"id\": \"cu_abc123\",\n  \"partner_id\": \"partner_abc123\",\n  \"client_id\": \"client_abc123\",\n  \"email\": \"jane.doe@acme.com\",\n  \"role_id\": \"role_abc123\",\n  \"role\": {\n    \"id\": \"id\",\n    \"name\": \"name\",\n    \"type\": \"type\"\n  },\n  \"status\": \"pending\",\n  \"is_email_verified\": true,\n  \"kyc_status\": \"not_started\",\n  \"first_name\": \"first_name\",\n  \"last_name\": \"last_name\",\n  \"phone\": \"phone\",\n  \"is_2fa_enabled\": false,\n  \"is_2fa_required\": false,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": \"2024-01-15T10:30:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -635,7 +671,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"items\": [\n    {\n      \"id\": \"account_abc123\",\n      \"account_holder_name\": \"Acme Ltd\",\n      \"label\": \"Main GBP account\",\n      \"account_holder_type\": \"business\",\n      \"currency\": \"gbp\",\n      \"sort_code\": \"40-47-84\",\n      \"account_number\": \"12345678\",\n      \"iban\": \"iban\",\n      \"bic\": \"bic\",\n      \"routing_number\": \"routing_number\",\n      \"account_type\": \"account_type\",\n      \"address\": {\n        \"country\": \"US\",\n        \"city\": \"New York\",\n        \"postal_code\": \"10001\",\n        \"line1\": \"123 Main St\"\n      },\n      \"status\": \"pending\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"account_abc123\",\n      \"account_holder_name\": \"Acme Ltd\",\n      \"label\": \"Main GBP account\",\n      \"account_holder_type\": \"business\",\n      \"currency\": \"gbp\",\n      \"sort_code\": \"40-47-84\",\n      \"account_number\": \"12345678\",\n      \"iban\": \"iban\",\n      \"bic\": \"bic\",\n      \"routing_number\": \"routing_number\",\n      \"account_type\": \"account_type\",\n      \"address\": {\n        \"country\": \"US\",\n        \"city\": \"New York\",\n        \"postal_code\": \"10001\",\n        \"line1\": \"123 Main St\"\n      },\n      \"status\": \"pending\",\n      \"created_at\": \"2024-01-15T10:30:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -671,7 +707,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"id\": \"account_abc123\",\n  \"account_holder_name\": \"Acme Ltd\",\n  \"label\": \"Main GBP account\",\n  \"account_holder_type\": \"business\",\n  \"currency\": \"gbp\",\n  \"sort_code\": \"40-47-84\",\n  \"account_number\": \"12345678\",\n  \"iban\": \"iban\",\n  \"bic\": \"bic\",\n  \"routing_number\": \"routing_number\",\n  \"account_type\": \"account_type\",\n  \"address\": {\n    \"country\": \"US\",\n    \"city\": \"New York\",\n    \"postal_code\": \"10001\",\n    \"state\": \"state\",\n    \"line1\": \"123 Main St\"\n  },\n  \"status\": \"pending\"\n}",
+        "body": "{\n  \"id\": \"account_abc123\",\n  \"account_holder_name\": \"Acme Ltd\",\n  \"label\": \"Main GBP account\",\n  \"account_holder_type\": \"business\",\n  \"currency\": \"gbp\",\n  \"sort_code\": \"40-47-84\",\n  \"account_number\": \"12345678\",\n  \"iban\": \"iban\",\n  \"bic\": \"bic\",\n  \"routing_number\": \"routing_number\",\n  \"account_type\": \"account_type\",\n  \"address\": {\n    \"country\": \"US\",\n    \"city\": \"New York\",\n    \"postal_code\": \"10001\",\n    \"state\": \"state\",\n    \"line1\": \"123 Main St\"\n  },\n  \"status\": \"pending\",\n  \"created_at\": \"2024-01-15T10:30:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -710,12 +746,112 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"account_abc123\",\n  \"account_holder_name\": \"Acme Ltd\",\n  \"label\": \"Main GBP account\",\n  \"account_holder_type\": \"business\",\n  \"currency\": \"gbp\",\n  \"sort_code\": \"40-47-84\",\n  \"account_number\": \"12345678\",\n  \"iban\": \"iban\",\n  \"bic\": \"bic\",\n  \"routing_number\": \"routing_number\",\n  \"account_type\": \"account_type\",\n  \"address\": {\n    \"country\": \"US\",\n    \"city\": \"New York\",\n    \"postal_code\": \"10001\",\n    \"state\": \"state\",\n    \"line1\": \"123 Main St\"\n  },\n  \"status\": \"pending\"\n}",
+        "body": "{\n  \"id\": \"account_abc123\",\n  \"account_holder_name\": \"Acme Ltd\",\n  \"label\": \"Main GBP account\",\n  \"account_holder_type\": \"business\",\n  \"currency\": \"gbp\",\n  \"sort_code\": \"40-47-84\",\n  \"account_number\": \"12345678\",\n  \"iban\": \"iban\",\n  \"bic\": \"bic\",\n  \"routing_number\": \"routing_number\",\n  \"account_type\": \"account_type\",\n  \"address\": {\n    \"country\": \"US\",\n    \"city\": \"New York\",\n    \"postal_code\": \"10001\",\n    \"state\": \"state\",\n    \"line1\": \"123 Main St\"\n  },\n  \"status\": \"pending\",\n  \"created_at\": \"2024-01-15T10:30:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
       "uuid": "3c046046-e32e-4f6c-9483-e82b68d2872d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "0cdaf3cb-f5a9-48fa-8321-6d9b9fb65f3f",
+      "name": "List collection actions - default",
+      "request": {
+        "urlPathTemplate": "/v2/collection-actions",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"collection_action_123\",\n      \"name\": \"Overdue reminder email\",\n      \"action_type\": \"email\",\n      \"is_active\": true,\n      \"description\": \"description\",\n      \"timing\": \"d-5\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0cdaf3cb-f5a9-48fa-8321-6d9b9fb65f3f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "9d98b5de-9845-40f2-b72f-88b56e385a6f",
+      "name": "List collection action logs - default",
+      "request": {
+        "urlPathTemplate": "/v2/collection-actions/logs",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"collection_action_log_123\",\n      \"collection_action_id\": \"collection_action_123\",\n      \"action_type\": \"email\",\n      \"action_name\": \"Overdue reminder call\",\n      \"status\": \"pending\",\n      \"client_id\": \"client_123\",\n      \"loan_id\": \"loan_456\",\n      \"installment_id\": \"installment_789\",\n      \"flag\": false,\n      \"notes\": \"notes\",\n      \"scheduled_for\": \"2026-07-10T09:00:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9d98b5de-9845-40f2-b72f-88b56e385a6f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "ebc1931c-8840-452f-bca2-9c41aa29faeb",
+      "name": "Update a collection action log - default",
+      "request": {
+        "urlPathTemplate": "/v2/collection-actions/logs/{log_id}",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "log_id": {
+            "equalTo": "log_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"id\": \"collection_action_log_123\",\n  \"collection_action_id\": \"collection_action_123\",\n  \"action_type\": \"email\",\n  \"action_name\": \"Overdue reminder call\",\n  \"status\": \"pending\",\n  \"client_id\": \"client_123\",\n  \"loan_id\": \"loan_456\",\n  \"installment_id\": \"installment_789\",\n  \"flag\": false,\n  \"notes\": \"notes\",\n  \"scheduled_for\": \"2026-07-10T09:00:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ebc1931c-8840-452f-bca2-9c41aa29faeb",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -741,7 +877,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"items\": [\n    {\n      \"id\": \"id\",\n      \"category\": \"category\",\n      \"file_name\": \"file_name\",\n      \"file_type\": \"file_type\",\n      \"client_id\": \"client_id\",\n      \"file_url\": \"file_url\",\n      \"loan_id\": \"loan_id\",\n      \"installment_id\": \"installment_id\",\n      \"folder_path\": \"folder_path\",\n      \"document_date\": \"2023-01-15\",\n      \"expiry_date\": \"2023-01-15\",\n      \"created_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"id\",\n      \"category\": \"category\",\n      \"file_name\": \"file_name\",\n      \"file_type\": \"file_type\",\n      \"client_id\": \"client_id\",\n      \"file_url\": \"file_url\",\n      \"loan_id\": \"loan_id\",\n      \"installment_id\": \"installment_id\",\n      \"folder_path\": \"folder_path\",\n      \"document_date\": \"2023-01-15\",\n      \"expiry_date\": \"2023-01-15\",\n      \"distribution_id\": \"distribution_id\",\n      \"created_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -773,7 +909,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"id\": \"id\",\n  \"category\": \"category\",\n  \"file_name\": \"file_name\",\n  \"file_type\": \"file_type\",\n  \"client_id\": \"client_id\",\n  \"file_url\": \"file_url\",\n  \"loan_id\": \"loan_id\",\n  \"installment_id\": \"installment_id\",\n  \"folder_path\": \"folder_path\",\n  \"document_date\": \"2023-01-15\",\n  \"expiry_date\": \"2023-01-15\",\n  \"created_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "body": "{\n  \"id\": \"id\",\n  \"category\": \"category\",\n  \"file_name\": \"file_name\",\n  \"file_type\": \"file_type\",\n  \"client_id\": \"client_id\",\n  \"file_url\": \"file_url\",\n  \"loan_id\": \"loan_id\",\n  \"installment_id\": \"installment_id\",\n  \"folder_path\": \"folder_path\",\n  \"document_date\": \"2023-01-15\",\n  \"expiry_date\": \"2023-01-15\",\n  \"distribution_id\": \"distribution_id\",\n  \"created_at\": \"2024-01-15T09:30:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -841,7 +977,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"id\",\n  \"category\": \"category\",\n  \"file_name\": \"file_name\",\n  \"file_type\": \"file_type\",\n  \"client_id\": \"client_id\",\n  \"file_url\": \"file_url\",\n  \"loan_id\": \"loan_id\",\n  \"installment_id\": \"installment_id\",\n  \"folder_path\": \"folder_path\",\n  \"document_date\": \"2023-01-15\",\n  \"expiry_date\": \"2023-01-15\",\n  \"created_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "body": "{\n  \"id\": \"id\",\n  \"category\": \"category\",\n  \"file_name\": \"file_name\",\n  \"file_type\": \"file_type\",\n  \"client_id\": \"client_id\",\n  \"file_url\": \"file_url\",\n  \"loan_id\": \"loan_id\",\n  \"installment_id\": \"installment_id\",\n  \"folder_path\": \"folder_path\",\n  \"document_date\": \"2023-01-15\",\n  \"expiry_date\": \"2023-01-15\",\n  \"distribution_id\": \"distribution_id\",\n  \"created_at\": \"2024-01-15T09:30:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -976,7 +1112,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"items\": [\n    {\n      \"id\": \"loan_12345\",\n      \"created_at\": \"2023-05-01T10:00:00Z\",\n      \"updated_at\": \"2023-05-01T10:00:00Z\",\n      \"partner_id\": \"partner_1\",\n      \"client_id\": \"client_ACME\",\n      \"currency\": \"eur\",\n      \"amount\": \"50000.00\",\n      \"status\": \"pending\",\n      \"irr\": \"irr\",\n      \"loan_date\": \"2023-01-15\",\n      \"currency_rate\": \"1.00\",\n      \"correlation_id\": \"correlation_id\",\n      \"payment_status\": \"pending\",\n      \"payment_reference\": \"payment_reference\",\n      \"early_settlement_date\": \"2023-01-15\",\n      \"early_settlement_amount\": \"early_settlement_amount\",\n      \"data\": {\n        \"key\": \"value\"\n      },\n      \"client\": {\n        \"name\": \"ACME Corp\",\n        \"type\": \"corporate\",\n        \"jurisdiction\": \"eu\",\n        \"status\": \"active\"\n      },\n      \"payment_to_the_client\": true\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"loan_12345\",\n      \"created_at\": \"2023-05-01T10:00:00Z\",\n      \"updated_at\": \"2023-05-01T10:00:00Z\",\n      \"partner_id\": \"partner_1\",\n      \"client_id\": \"client_ACME\",\n      \"currency\": \"eur\",\n      \"amount\": \"50000.00\",\n      \"status\": \"pending\",\n      \"irr\": \"irr\",\n      \"loan_date\": \"2023-01-15\",\n      \"currency_rate\": \"1.00\",\n      \"correlation_id\": \"correlation_id\",\n      \"payment_status\": \"pending\",\n      \"payment_reference\": \"payment_reference\",\n      \"early_settlement_date\": \"2023-01-15\",\n      \"early_settlement_amount\": \"early_settlement_amount\",\n      \"data\": {\n        \"key\": \"value\"\n      },\n      \"client\": {\n        \"name\": \"ACME Corp\",\n        \"type\": \"corporate\",\n        \"jurisdiction\": \"eu\",\n        \"status\": \"active\"\n      },\n      \"outstanding_principal\": \"outstanding_principal\",\n      \"remaining_amount\": \"remaining_amount\",\n      \"payment_to_the_client\": true\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1365,6 +1501,105 @@
       }
     },
     {
+      "id": "bfde7eeb-acb5-4dc9-a405-ed93cbc15324",
+      "name": "List loan review requests - default",
+      "request": {
+        "urlPathTemplate": "/v2/loans/review-requests",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"loan_review_1234567890abcdef\",\n      \"loan_id\": \"loan_1234567890abcdef\",\n      \"client_id\": \"client_1234567890abcdef\",\n      \"status\": \"pending\",\n      \"notes\": \"notes\",\n      \"response\": \"response\",\n      \"reviewed_at\": \"2024-01-15T09:30:00Z\",\n      \"created_at\": \"2026-06-29T12:00:00Z\",\n      \"updated_at\": \"2026-06-29T12:00:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "bfde7eeb-acb5-4dc9-a405-ed93cbc15324",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "f97d0bfc-b135-4f35-a29d-ee1d0f155b31",
+      "name": "Create a loan review request - default",
+      "request": {
+        "urlPathTemplate": "/v2/loans/review-requests",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"id\": \"loan_review_1234567890abcdef\",\n  \"loan_id\": \"loan_1234567890abcdef\",\n  \"client_id\": \"client_1234567890abcdef\",\n  \"status\": \"pending\",\n  \"notes\": \"notes\",\n  \"response\": \"response\",\n  \"reviewed_at\": \"2024-01-15T09:30:00Z\",\n  \"created_at\": \"2026-06-29T12:00:00Z\",\n  \"updated_at\": \"2026-06-29T12:00:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f97d0bfc-b135-4f35-a29d-ee1d0f155b31",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "aff56cc3-8c3f-4948-aa49-b7c930640e25",
+      "name": "Get a loan review request - default",
+      "request": {
+        "urlPathTemplate": "/v2/loans/review-requests/{request_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "request_id": {
+            "equalTo": "request_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"id\": \"loan_review_1234567890abcdef\",\n  \"loan_id\": \"loan_1234567890abcdef\",\n  \"client_id\": \"client_1234567890abcdef\",\n  \"status\": \"pending\",\n  \"notes\": \"notes\",\n  \"response\": \"response\",\n  \"reviewed_at\": \"2024-01-15T09:30:00Z\",\n  \"created_at\": \"2026-06-29T12:00:00Z\",\n  \"updated_at\": \"2026-06-29T12:00:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "aff56cc3-8c3f-4948-aa49-b7c930640e25",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "0c64d5f8-7f7f-4085-9874-c5f6c198bc7a",
       "name": "List loans - default",
       "request": {
@@ -1378,7 +1613,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"items\": [\n    {\n      \"id\": \"loan_12345\",\n      \"created_at\": \"2023-05-01T10:00:00Z\",\n      \"updated_at\": \"2023-05-01T10:00:00Z\",\n      \"partner_id\": \"partner_1\",\n      \"client_id\": \"client_ACME\",\n      \"currency\": \"eur\",\n      \"amount\": \"50000.00\",\n      \"status\": \"pending\",\n      \"irr\": \"irr\",\n      \"loan_date\": \"2023-01-15\",\n      \"currency_rate\": \"1.00\",\n      \"correlation_id\": \"correlation_id\",\n      \"payment_status\": \"pending\",\n      \"payment_reference\": \"payment_reference\",\n      \"early_settlement_date\": \"2023-01-15\",\n      \"early_settlement_amount\": \"early_settlement_amount\",\n      \"data\": {\n        \"key\": \"value\"\n      },\n      \"client\": {\n        \"name\": \"ACME Corp\",\n        \"type\": \"corporate\",\n        \"jurisdiction\": \"eu\",\n        \"status\": \"active\"\n      }\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"loan_12345\",\n      \"created_at\": \"2023-05-01T10:00:00Z\",\n      \"updated_at\": \"2023-05-01T10:00:00Z\",\n      \"partner_id\": \"partner_1\",\n      \"client_id\": \"client_ACME\",\n      \"currency\": \"eur\",\n      \"amount\": \"50000.00\",\n      \"status\": \"pending\",\n      \"irr\": \"irr\",\n      \"loan_date\": \"2023-01-15\",\n      \"currency_rate\": \"1.00\",\n      \"correlation_id\": \"correlation_id\",\n      \"payment_status\": \"pending\",\n      \"payment_reference\": \"payment_reference\",\n      \"early_settlement_date\": \"2023-01-15\",\n      \"early_settlement_amount\": \"early_settlement_amount\",\n      \"data\": {\n        \"key\": \"value\"\n      },\n      \"client\": {\n        \"name\": \"ACME Corp\",\n        \"type\": \"corporate\",\n        \"jurisdiction\": \"eu\",\n        \"status\": \"active\"\n      },\n      \"outstanding_principal\": \"outstanding_principal\",\n      \"remaining_amount\": \"remaining_amount\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1679,7 +1914,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"items\": [\n    {\n      \"id\": \"id\",\n      \"partner_id\": \"partner_id\",\n      \"name\": \"name\",\n      \"date\": \"2023-01-15\",\n      \"status\": \"pending\",\n      \"cash_balance\": \"cash_balance\",\n      \"cash_balance_currency\": \"cash_balance_currency\",\n      \"cash_balance_date\": \"2023-01-15\",\n      \"file_url\": \"file_url\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"id\",\n      \"partner_id\": \"partner_id\",\n      \"name\": \"name\",\n      \"date\": \"2023-01-15\",\n      \"status\": \"pending\",\n      \"amount\": \"amount\",\n      \"currency\": \"currency\",\n      \"payment_date\": \"2023-01-15\",\n      \"file_url\": \"file_url\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2131,6 +2366,6 @@
     }
   ],
   "meta": {
-    "total": 63
+    "total": 70
   }
 }

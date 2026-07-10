@@ -314,6 +314,32 @@ func TestClientsRejectOnboardingWithWireMock(
 	VerifyRequestCount(t, "TestClientsRejectOnboardingWithWireMock", "POST", "/v2/clients/onboarding/client_id/reject", nil, 1)
 }
 
+func TestClientsListClientPortalUsersWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.ListClientPortalUsersRequest{
+		ClientID: "client_id",
+	}
+	_, invocationErr := client.Clients.ListClientPortalUsers(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestClientsListClientPortalUsersWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestClientsListClientPortalUsersWithWireMock", "GET", "/v2/clients/client_id/users", nil, 1)
+}
+
 func TestClientsAddClientPortalUserWithWireMock(
 	t *testing.T,
 ) {

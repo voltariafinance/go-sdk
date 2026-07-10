@@ -167,6 +167,63 @@ func (l *LoanCreatePayload) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	loanReviewRequestCreatePayloadFieldLoanID = big.NewInt(1 << 0)
+	loanReviewRequestCreatePayloadFieldNotes  = big.NewInt(1 << 1)
+)
+
+type LoanReviewRequestCreatePayload struct {
+	// The ID of the loan to be reviewed. Must be a not-yet-disbursed (pending or pre-approved) loan belonging to the current partner
+	LoanID string `json:"loan_id" url:"-"`
+	// Optional note from the requester explaining the review request
+	Notes *string `json:"notes,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *LoanReviewRequestCreatePayload) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetLoanID sets the LoanID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestCreatePayload) SetLoanID(loanID string) {
+	l.LoanID = loanID
+	l.require(loanReviewRequestCreatePayloadFieldLoanID)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestCreatePayload) SetNotes(notes *string) {
+	l.Notes = notes
+	l.require(loanReviewRequestCreatePayloadFieldNotes)
+}
+
+func (l *LoanReviewRequestCreatePayload) UnmarshalJSON(data []byte) error {
+	type unmarshaler LoanReviewRequestCreatePayload
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*l = LoanReviewRequestCreatePayload(body)
+	return nil
+}
+
+func (l *LoanReviewRequestCreatePayload) MarshalJSON() ([]byte, error) {
+	type embed LoanReviewRequestCreatePayload
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	deleteLoanRequestFieldLoanID = big.NewInt(1 << 0)
 )
 
@@ -239,6 +296,105 @@ func (g *GetLoanByIDRequest) require(field *big.Int) {
 func (g *GetLoanByIDRequest) SetLoanID(loanID string) {
 	g.LoanID = loanID
 	g.require(getLoanByIDRequestFieldLoanID)
+}
+
+var (
+	getLoanReviewRequestRequestFieldRequestID = big.NewInt(1 << 0)
+)
+
+type GetLoanReviewRequestRequest struct {
+	RequestID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetLoanReviewRequestRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetRequestID sets the RequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetLoanReviewRequestRequest) SetRequestID(requestID string) {
+	g.RequestID = requestID
+	g.require(getLoanReviewRequestRequestFieldRequestID)
+}
+
+var (
+	listLoanReviewRequestsRequestFieldLoanID   = big.NewInt(1 << 0)
+	listLoanReviewRequestsRequestFieldClientID = big.NewInt(1 << 1)
+	listLoanReviewRequestsRequestFieldPage     = big.NewInt(1 << 2)
+	listLoanReviewRequestsRequestFieldPageSize = big.NewInt(1 << 3)
+	listLoanReviewRequestsRequestFieldOrderBy  = big.NewInt(1 << 4)
+	listLoanReviewRequestsRequestFieldQ        = big.NewInt(1 << 5)
+)
+
+type ListLoanReviewRequestsRequest struct {
+	// Filter by loan ID
+	LoanID *string `json:"-" url:"loan_id,omitempty"`
+	// Filter by client ID
+	ClientID *string `json:"-" url:"client_id,omitempty"`
+	Page     *int    `json:"-" url:"page,omitempty"`
+	PageSize *int    `json:"-" url:"page_size,omitempty"`
+	// Field to order the results by, e.g., 'created_at:desc,updated_at:asc'
+	OrderBy *string `json:"-" url:"order_by,omitempty"`
+	// Query string for filtering. Format: "field:operator:value;...". Supported fields: id, loan_id, client_id, status. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+	Q *string `json:"-" url:"q,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListLoanReviewRequestsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetLoanID sets the LoanID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLoanReviewRequestsRequest) SetLoanID(loanID *string) {
+	l.LoanID = loanID
+	l.require(listLoanReviewRequestsRequestFieldLoanID)
+}
+
+// SetClientID sets the ClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLoanReviewRequestsRequest) SetClientID(clientID *string) {
+	l.ClientID = clientID
+	l.require(listLoanReviewRequestsRequestFieldClientID)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLoanReviewRequestsRequest) SetPage(page *int) {
+	l.Page = page
+	l.require(listLoanReviewRequestsRequestFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLoanReviewRequestsRequest) SetPageSize(pageSize *int) {
+	l.PageSize = pageSize
+	l.require(listLoanReviewRequestsRequestFieldPageSize)
+}
+
+// SetOrderBy sets the OrderBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLoanReviewRequestsRequest) SetOrderBy(orderBy *string) {
+	l.OrderBy = orderBy
+	l.require(listLoanReviewRequestsRequestFieldOrderBy)
+}
+
+// SetQ sets the Q field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLoanReviewRequestsRequest) SetQ(q *string) {
+	l.Q = q
+	l.require(listLoanReviewRequestsRequestFieldQ)
 }
 
 var (
@@ -1278,6 +1434,8 @@ var (
 	loanResponseWithClientInfoFieldEarlySettlementAmount = big.NewInt(1 << 15)
 	loanResponseWithClientInfoFieldData                  = big.NewInt(1 << 16)
 	loanResponseWithClientInfoFieldClient                = big.NewInt(1 << 17)
+	loanResponseWithClientInfoFieldOutstandingPrincipal  = big.NewInt(1 << 18)
+	loanResponseWithClientInfoFieldRemainingAmount       = big.NewInt(1 << 19)
 )
 
 type LoanResponseWithClientInfo struct {
@@ -1317,6 +1475,10 @@ type LoanResponseWithClientInfo struct {
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 	// The client details associated with the loan
 	Client *ClientBaseInfo `json:"client" url:"client"`
+	// Remaining principal for installments with status active or overdue, net of any repayments already made
+	OutstandingPrincipal *string `json:"outstanding_principal,omitempty" url:"outstanding_principal,omitempty"`
+	// Remaining amount (principal and interest) for installments with status active or overdue, net of any repayments already made
+	RemainingAmount *string `json:"remaining_amount,omitempty" url:"remaining_amount,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1449,6 +1611,20 @@ func (l *LoanResponseWithClientInfo) GetClient() *ClientBaseInfo {
 		return nil
 	}
 	return l.Client
+}
+
+func (l *LoanResponseWithClientInfo) GetOutstandingPrincipal() *string {
+	if l == nil {
+		return nil
+	}
+	return l.OutstandingPrincipal
+}
+
+func (l *LoanResponseWithClientInfo) GetRemainingAmount() *string {
+	if l == nil {
+		return nil
+	}
+	return l.RemainingAmount
 }
 
 func (l *LoanResponseWithClientInfo) GetExtraProperties() map[string]interface{} {
@@ -1591,6 +1767,20 @@ func (l *LoanResponseWithClientInfo) SetClient(client *ClientBaseInfo) {
 	l.require(loanResponseWithClientInfoFieldClient)
 }
 
+// SetOutstandingPrincipal sets the OutstandingPrincipal field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanResponseWithClientInfo) SetOutstandingPrincipal(outstandingPrincipal *string) {
+	l.OutstandingPrincipal = outstandingPrincipal
+	l.require(loanResponseWithClientInfoFieldOutstandingPrincipal)
+}
+
+// SetRemainingAmount sets the RemainingAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanResponseWithClientInfo) SetRemainingAmount(remainingAmount *string) {
+	l.RemainingAmount = remainingAmount
+	l.require(loanResponseWithClientInfoFieldRemainingAmount)
+}
+
 func (l *LoanResponseWithClientInfo) UnmarshalJSON(data []byte) error {
 	type embed LoanResponseWithClientInfo
 	var unmarshaler = struct {
@@ -1651,6 +1841,268 @@ func (l *LoanResponseWithClientInfo) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	loanReviewRequestResponseFieldID         = big.NewInt(1 << 0)
+	loanReviewRequestResponseFieldLoanID     = big.NewInt(1 << 1)
+	loanReviewRequestResponseFieldClientID   = big.NewInt(1 << 2)
+	loanReviewRequestResponseFieldStatus     = big.NewInt(1 << 3)
+	loanReviewRequestResponseFieldNotes      = big.NewInt(1 << 4)
+	loanReviewRequestResponseFieldResponse   = big.NewInt(1 << 5)
+	loanReviewRequestResponseFieldReviewedAt = big.NewInt(1 << 6)
+	loanReviewRequestResponseFieldCreatedAt  = big.NewInt(1 << 7)
+	loanReviewRequestResponseFieldUpdatedAt  = big.NewInt(1 << 8)
+)
+
+type LoanReviewRequestResponse struct {
+	// The ID of the loan review request
+	ID string `json:"id" url:"id"`
+	// The ID of the loan associated with the review request
+	LoanID string `json:"loan_id" url:"loan_id"`
+	// The ID of the client associated with the review request
+	ClientID string `json:"client_id" url:"client_id"`
+	// The status of the review request. One of the following: pending, approved, rejected
+	Status LoanReviewRequestStatusEnum `json:"status" url:"status"`
+	// The requester's note for the review request
+	Notes *string `json:"notes,omitempty" url:"notes,omitempty"`
+	// The reviewer's note explaining the approval or rejection
+	Response *string `json:"response,omitempty" url:"response,omitempty"`
+	// The timestamp when the review request was approved or rejected
+	ReviewedAt *time.Time `json:"reviewed_at,omitempty" url:"reviewed_at,omitempty"`
+	// The timestamp when the review request was created
+	CreatedAt time.Time `json:"created_at" url:"created_at"`
+	// The timestamp when the review request was last updated
+	UpdatedAt time.Time `json:"updated_at" url:"updated_at"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *LoanReviewRequestResponse) GetID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ID
+}
+
+func (l *LoanReviewRequestResponse) GetLoanID() string {
+	if l == nil {
+		return ""
+	}
+	return l.LoanID
+}
+
+func (l *LoanReviewRequestResponse) GetClientID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ClientID
+}
+
+func (l *LoanReviewRequestResponse) GetStatus() LoanReviewRequestStatusEnum {
+	if l == nil {
+		return ""
+	}
+	return l.Status
+}
+
+func (l *LoanReviewRequestResponse) GetNotes() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Notes
+}
+
+func (l *LoanReviewRequestResponse) GetResponse() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Response
+}
+
+func (l *LoanReviewRequestResponse) GetReviewedAt() *time.Time {
+	if l == nil {
+		return nil
+	}
+	return l.ReviewedAt
+}
+
+func (l *LoanReviewRequestResponse) GetCreatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.CreatedAt
+}
+
+func (l *LoanReviewRequestResponse) GetUpdatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.UpdatedAt
+}
+
+func (l *LoanReviewRequestResponse) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *LoanReviewRequestResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestResponse) SetID(id string) {
+	l.ID = id
+	l.require(loanReviewRequestResponseFieldID)
+}
+
+// SetLoanID sets the LoanID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestResponse) SetLoanID(loanID string) {
+	l.LoanID = loanID
+	l.require(loanReviewRequestResponseFieldLoanID)
+}
+
+// SetClientID sets the ClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestResponse) SetClientID(clientID string) {
+	l.ClientID = clientID
+	l.require(loanReviewRequestResponseFieldClientID)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestResponse) SetStatus(status LoanReviewRequestStatusEnum) {
+	l.Status = status
+	l.require(loanReviewRequestResponseFieldStatus)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestResponse) SetNotes(notes *string) {
+	l.Notes = notes
+	l.require(loanReviewRequestResponseFieldNotes)
+}
+
+// SetResponse sets the Response field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestResponse) SetResponse(response *string) {
+	l.Response = response
+	l.require(loanReviewRequestResponseFieldResponse)
+}
+
+// SetReviewedAt sets the ReviewedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestResponse) SetReviewedAt(reviewedAt *time.Time) {
+	l.ReviewedAt = reviewedAt
+	l.require(loanReviewRequestResponseFieldReviewedAt)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestResponse) SetCreatedAt(createdAt time.Time) {
+	l.CreatedAt = createdAt
+	l.require(loanReviewRequestResponseFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanReviewRequestResponse) SetUpdatedAt(updatedAt time.Time) {
+	l.UpdatedAt = updatedAt
+	l.require(loanReviewRequestResponseFieldUpdatedAt)
+}
+
+func (l *LoanReviewRequestResponse) UnmarshalJSON(data []byte) error {
+	type embed LoanReviewRequestResponse
+	var unmarshaler = struct {
+		embed
+		ReviewedAt *internal.DateTime `json:"reviewed_at,omitempty"`
+		CreatedAt  *internal.DateTime `json:"created_at"`
+		UpdatedAt  *internal.DateTime `json:"updated_at"`
+	}{
+		embed: embed(*l),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*l = LoanReviewRequestResponse(unmarshaler.embed)
+	l.ReviewedAt = unmarshaler.ReviewedAt.TimePtr()
+	l.CreatedAt = unmarshaler.CreatedAt.Time()
+	l.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LoanReviewRequestResponse) MarshalJSON() ([]byte, error) {
+	type embed LoanReviewRequestResponse
+	var marshaler = struct {
+		embed
+		ReviewedAt *internal.DateTime `json:"reviewed_at,omitempty"`
+		CreatedAt  *internal.DateTime `json:"created_at"`
+		UpdatedAt  *internal.DateTime `json:"updated_at"`
+	}{
+		embed:      embed(*l),
+		ReviewedAt: internal.NewOptionalDateTime(l.ReviewedAt),
+		CreatedAt:  internal.NewDateTime(l.CreatedAt),
+		UpdatedAt:  internal.NewDateTime(l.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *LoanReviewRequestResponse) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type LoanReviewRequestStatusEnum string
+
+const (
+	LoanReviewRequestStatusEnumPending  LoanReviewRequestStatusEnum = "pending"
+	LoanReviewRequestStatusEnumApproved LoanReviewRequestStatusEnum = "approved"
+	LoanReviewRequestStatusEnumRejected LoanReviewRequestStatusEnum = "rejected"
+)
+
+func NewLoanReviewRequestStatusEnumFromString(s string) (LoanReviewRequestStatusEnum, error) {
+	switch s {
+	case "pending":
+		return LoanReviewRequestStatusEnumPending, nil
+	case "approved":
+		return LoanReviewRequestStatusEnumApproved, nil
+	case "rejected":
+		return LoanReviewRequestStatusEnumRejected, nil
+	}
+	var t LoanReviewRequestStatusEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LoanReviewRequestStatusEnum) Ptr() *LoanReviewRequestStatusEnum {
+	return &l
 }
 
 var (
@@ -1842,6 +2294,209 @@ func (p *PaginatedResponseLoanResponseWithClientInfo) MarshalJSON() ([]byte, err
 }
 
 func (p *PaginatedResponseLoanResponseWithClientInfo) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	paginatedResponseLoanReviewRequestResponseFieldItems       = big.NewInt(1 << 0)
+	paginatedResponseLoanReviewRequestResponseFieldPage        = big.NewInt(1 << 1)
+	paginatedResponseLoanReviewRequestResponseFieldPageSize    = big.NewInt(1 << 2)
+	paginatedResponseLoanReviewRequestResponseFieldItemsInPage = big.NewInt(1 << 3)
+	paginatedResponseLoanReviewRequestResponseFieldTotalItems  = big.NewInt(1 << 4)
+	paginatedResponseLoanReviewRequestResponseFieldTotalPages  = big.NewInt(1 << 5)
+	paginatedResponseLoanReviewRequestResponseFieldHasNext     = big.NewInt(1 << 6)
+	paginatedResponseLoanReviewRequestResponseFieldHasPrevious = big.NewInt(1 << 7)
+)
+
+type PaginatedResponseLoanReviewRequestResponse struct {
+	Items []*LoanReviewRequestResponse `json:"items" url:"items"`
+	// Current page number
+	Page *int `json:"page,omitempty" url:"page,omitempty"`
+	// Number of items per page
+	PageSize *int `json:"page_size,omitempty" url:"page_size,omitempty"`
+	// Number of items in the current page
+	ItemsInPage *int `json:"items_in_page,omitempty" url:"items_in_page,omitempty"`
+	// Total number of items across all pages
+	TotalItems *int `json:"total_items,omitempty" url:"total_items,omitempty"`
+	// Total number of pages available
+	TotalPages *int `json:"total_pages,omitempty" url:"total_pages,omitempty"`
+	// Indicates if there is a next page
+	HasNext *bool `json:"has_next,omitempty" url:"has_next,omitempty"`
+	// Indicates if there is a previous page
+	HasPrevious *bool `json:"has_previous,omitempty" url:"has_previous,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) GetItems() []*LoanReviewRequestResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Items
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) GetPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.Page
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) GetPageSize() *int {
+	if p == nil {
+		return nil
+	}
+	return p.PageSize
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) GetItemsInPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.ItemsInPage
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) GetTotalItems() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalItems
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) GetTotalPages() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalPages
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) GetHasNext() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasNext
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) GetHasPrevious() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasPrevious
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseLoanReviewRequestResponse) SetItems(items []*LoanReviewRequestResponse) {
+	p.Items = items
+	p.require(paginatedResponseLoanReviewRequestResponseFieldItems)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseLoanReviewRequestResponse) SetPage(page *int) {
+	p.Page = page
+	p.require(paginatedResponseLoanReviewRequestResponseFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseLoanReviewRequestResponse) SetPageSize(pageSize *int) {
+	p.PageSize = pageSize
+	p.require(paginatedResponseLoanReviewRequestResponseFieldPageSize)
+}
+
+// SetItemsInPage sets the ItemsInPage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseLoanReviewRequestResponse) SetItemsInPage(itemsInPage *int) {
+	p.ItemsInPage = itemsInPage
+	p.require(paginatedResponseLoanReviewRequestResponseFieldItemsInPage)
+}
+
+// SetTotalItems sets the TotalItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseLoanReviewRequestResponse) SetTotalItems(totalItems *int) {
+	p.TotalItems = totalItems
+	p.require(paginatedResponseLoanReviewRequestResponseFieldTotalItems)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseLoanReviewRequestResponse) SetTotalPages(totalPages *int) {
+	p.TotalPages = totalPages
+	p.require(paginatedResponseLoanReviewRequestResponseFieldTotalPages)
+}
+
+// SetHasNext sets the HasNext field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseLoanReviewRequestResponse) SetHasNext(hasNext *bool) {
+	p.HasNext = hasNext
+	p.require(paginatedResponseLoanReviewRequestResponseFieldHasNext)
+}
+
+// SetHasPrevious sets the HasPrevious field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseLoanReviewRequestResponse) SetHasPrevious(hasPrevious *bool) {
+	p.HasPrevious = hasPrevious
+	p.require(paginatedResponseLoanReviewRequestResponseFieldHasPrevious)
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaginatedResponseLoanReviewRequestResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaginatedResponseLoanReviewRequestResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) MarshalJSON() ([]byte, error) {
+	type embed PaginatedResponseLoanReviewRequestResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaginatedResponseLoanReviewRequestResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}

@@ -186,6 +186,23 @@ func (c *Client) RejectOnboarding(
 	return response.Body, nil
 }
 
+// Paginated list of portal users belonging to a client.
+func (c *Client) ListClientPortalUsers(
+	ctx context.Context,
+	request *v2.ListClientPortalUsersRequest,
+	opts ...option.RequestOption,
+) (*v2.PaginatedResponseClientUserResponse, error) {
+	response, err := c.WithRawResponse.ListClientPortalUsers(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Invite a new user to a client's portal account. The invited user will receive an email with a one-time link to set their password. Partner can assign any role: 'owner', 'admin', or 'viewer'.
 func (c *Client) AddClientPortalUser(
 	ctx context.Context,

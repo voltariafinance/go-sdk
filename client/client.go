@@ -5,6 +5,7 @@ package client
 import (
 	accounts "github.com/voltariafinance/go-sdk/v2/accounts"
 	clients "github.com/voltariafinance/go-sdk/v2/clients"
+	collections "github.com/voltariafinance/go-sdk/v2/collections"
 	core "github.com/voltariafinance/go-sdk/v2/core"
 	documents "github.com/voltariafinance/go-sdk/v2/documents"
 	drawdowns "github.com/voltariafinance/go-sdk/v2/drawdowns"
@@ -23,6 +24,7 @@ type Client struct {
 	Clients      *clients.Client
 	Sandbox      *sandbox.Client
 	Accounts     *accounts.Client
+	Collections  *collections.Client
 	Documents    *documents.Client
 	Investors    *investors.Client
 	Installments *installments.Client
@@ -43,6 +45,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Clients:      clients.NewClient(options),
 		Sandbox:      sandbox.NewClient(options),
 		Accounts:     accounts.NewClient(options),
+		Collections:  collections.NewClient(options),
 		Documents:    documents.NewClient(options),
 		Investors:    investors.NewClient(options),
 		Installments: installments.NewClient(options),

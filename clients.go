@@ -474,6 +474,68 @@ func (l *ListClientChecklistSummariesRequest) SetPageSize(pageSize *int) {
 }
 
 var (
+	listClientPortalUsersRequestFieldClientID = big.NewInt(1 << 0)
+	listClientPortalUsersRequestFieldPage     = big.NewInt(1 << 1)
+	listClientPortalUsersRequestFieldPageSize = big.NewInt(1 << 2)
+	listClientPortalUsersRequestFieldOrderBy  = big.NewInt(1 << 3)
+	listClientPortalUsersRequestFieldQ        = big.NewInt(1 << 4)
+)
+
+type ListClientPortalUsersRequest struct {
+	ClientID string  `json:"-" url:"-"`
+	Page     *int    `json:"-" url:"page,omitempty"`
+	PageSize *int    `json:"-" url:"page_size,omitempty"`
+	OrderBy  *string `json:"-" url:"order_by,omitempty"`
+	// Query string for filtering. Format: "field:operator:value;...". Supported fields: id, email, status, first_name, last_name. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+	Q *string `json:"-" url:"q,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListClientPortalUsersRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetClientID sets the ClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientPortalUsersRequest) SetClientID(clientID string) {
+	l.ClientID = clientID
+	l.require(listClientPortalUsersRequestFieldClientID)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientPortalUsersRequest) SetPage(page *int) {
+	l.Page = page
+	l.require(listClientPortalUsersRequestFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientPortalUsersRequest) SetPageSize(pageSize *int) {
+	l.PageSize = pageSize
+	l.require(listClientPortalUsersRequestFieldPageSize)
+}
+
+// SetOrderBy sets the OrderBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientPortalUsersRequest) SetOrderBy(orderBy *string) {
+	l.OrderBy = orderBy
+	l.require(listClientPortalUsersRequestFieldOrderBy)
+}
+
+// SetQ sets the Q field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientPortalUsersRequest) SetQ(q *string) {
+	l.Q = q
+	l.require(listClientPortalUsersRequestFieldQ)
+}
+
+var (
 	listClientWaiversRequestFieldClientID = big.NewInt(1 << 0)
 	listClientWaiversRequestFieldPage     = big.NewInt(1 << 1)
 	listClientWaiversRequestFieldPageSize = big.NewInt(1 << 2)
@@ -1077,22 +1139,38 @@ var (
 )
 
 type ClientUserResponse struct {
-	ID              string               `json:"id" url:"id"`
-	PartnerID       string               `json:"partner_id" url:"partner_id"`
-	ClientID        string               `json:"client_id" url:"client_id"`
-	Email           string               `json:"email" url:"email"`
-	RoleID          string               `json:"role_id" url:"role_id"`
-	Role            *RoleResponse        `json:"role,omitempty" url:"role,omitempty"`
-	Status          ClientUserStatusEnum `json:"status" url:"status"`
-	IsEmailVerified bool                 `json:"is_email_verified" url:"is_email_verified"`
-	KycStatus       KycStatusEnum        `json:"kyc_status" url:"kyc_status"`
-	FirstName       *string              `json:"first_name,omitempty" url:"first_name,omitempty"`
-	LastName        *string              `json:"last_name,omitempty" url:"last_name,omitempty"`
-	Phone           *string              `json:"phone,omitempty" url:"phone,omitempty"`
-	Is2FaEnabled    *bool                `json:"is_2fa_enabled,omitempty" url:"is_2fa_enabled,omitempty"`
-	Is2FaRequired   *bool                `json:"is_2fa_required,omitempty" url:"is_2fa_required,omitempty"`
-	CreatedAt       time.Time            `json:"created_at" url:"created_at"`
-	UpdatedAt       time.Time            `json:"updated_at" url:"updated_at"`
+	// Unique client user identifier.
+	ID string `json:"id" url:"id"`
+	// ID of the partner this user belongs to.
+	PartnerID string `json:"partner_id" url:"partner_id"`
+	// ID of the client this user belongs to.
+	ClientID string `json:"client_id" url:"client_id"`
+	// Email address of the portal user.
+	Email string `json:"email" url:"email"`
+	// ID of the role assigned to the user.
+	RoleID string `json:"role_id" url:"role_id"`
+	// Role assigned to the user.
+	Role *RoleResponse `json:"role,omitempty" url:"role,omitempty"`
+	// Account status. One of: `pending`, `active`, `inactive`.
+	Status ClientUserStatusEnum `json:"status" url:"status"`
+	// Whether the user has verified their email address.
+	IsEmailVerified bool `json:"is_email_verified" url:"is_email_verified"`
+	// KYC verification status of the user.
+	KycStatus KycStatusEnum `json:"kyc_status" url:"kyc_status"`
+	// First name of the user.
+	FirstName *string `json:"first_name,omitempty" url:"first_name,omitempty"`
+	// Last name of the user.
+	LastName *string `json:"last_name,omitempty" url:"last_name,omitempty"`
+	// Phone number of the user.
+	Phone *string `json:"phone,omitempty" url:"phone,omitempty"`
+	// Whether two-factor authentication is enabled for this user.
+	Is2FaEnabled *bool `json:"is_2fa_enabled,omitempty" url:"is_2fa_enabled,omitempty"`
+	// Whether two-factor authentication is required for this user.
+	Is2FaRequired *bool `json:"is_2fa_required,omitempty" url:"is_2fa_required,omitempty"`
+	// Timestamp when the user was created.
+	CreatedAt time.Time `json:"created_at" url:"created_at"`
+	// Timestamp when the user was last updated.
+	UpdatedAt time.Time `json:"updated_at" url:"updated_at"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1454,7 +1532,8 @@ var (
 	limitRequestResponseFieldReason         = big.NewInt(1 << 4)
 	limitRequestResponseFieldResponse       = big.NewInt(1 << 5)
 	limitRequestResponseFieldWaiverID       = big.NewInt(1 << 6)
-	limitRequestResponseFieldCreatedAt      = big.NewInt(1 << 7)
+	limitRequestResponseFieldSource         = big.NewInt(1 << 7)
+	limitRequestResponseFieldCreatedAt      = big.NewInt(1 << 8)
 )
 
 type LimitRequestResponse struct {
@@ -1472,6 +1551,8 @@ type LimitRequestResponse struct {
 	Response *string `json:"response,omitempty" url:"response,omitempty"`
 	// The ID of the waiver associated with this limit request
 	WaiverID *string `json:"waiver_id,omitempty" url:"waiver_id,omitempty"`
+	// The origin of the request. 'partner' indicates the request was submitted by your account; 'internal' indicates it was initiated by Winyield on your behalf.
+	Source LimitRequestSourceEnum `json:"source" url:"source"`
 	// The timestamp when the limit request was created
 	CreatedAt time.Time `json:"created_at" url:"created_at"`
 
@@ -1529,6 +1610,13 @@ func (l *LimitRequestResponse) GetWaiverID() *string {
 		return nil
 	}
 	return l.WaiverID
+}
+
+func (l *LimitRequestResponse) GetSource() LimitRequestSourceEnum {
+	if l == nil {
+		return ""
+	}
+	return l.Source
 }
 
 func (l *LimitRequestResponse) GetCreatedAt() time.Time {
@@ -1601,6 +1689,13 @@ func (l *LimitRequestResponse) SetWaiverID(waiverID *string) {
 	l.require(limitRequestResponseFieldWaiverID)
 }
 
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LimitRequestResponse) SetSource(source LimitRequestSourceEnum) {
+	l.Source = source
+	l.require(limitRequestResponseFieldSource)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *LimitRequestResponse) SetCreatedAt(createdAt time.Time) {
@@ -1656,6 +1751,28 @@ func (l *LimitRequestResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
+}
+
+type LimitRequestSourceEnum string
+
+const (
+	LimitRequestSourceEnumPartner  LimitRequestSourceEnum = "partner"
+	LimitRequestSourceEnumInternal LimitRequestSourceEnum = "internal"
+)
+
+func NewLimitRequestSourceEnumFromString(s string) (LimitRequestSourceEnum, error) {
+	switch s {
+	case "partner":
+		return LimitRequestSourceEnumPartner, nil
+	case "internal":
+		return LimitRequestSourceEnumInternal, nil
+	}
+	var t LimitRequestSourceEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LimitRequestSourceEnum) Ptr() *LimitRequestSourceEnum {
+	return &l
 }
 
 type LimitRequestStatusEnum string
@@ -2075,6 +2192,209 @@ func (p *PaginatedResponseClientResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PaginatedResponseClientResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	paginatedResponseClientUserResponseFieldItems       = big.NewInt(1 << 0)
+	paginatedResponseClientUserResponseFieldPage        = big.NewInt(1 << 1)
+	paginatedResponseClientUserResponseFieldPageSize    = big.NewInt(1 << 2)
+	paginatedResponseClientUserResponseFieldItemsInPage = big.NewInt(1 << 3)
+	paginatedResponseClientUserResponseFieldTotalItems  = big.NewInt(1 << 4)
+	paginatedResponseClientUserResponseFieldTotalPages  = big.NewInt(1 << 5)
+	paginatedResponseClientUserResponseFieldHasNext     = big.NewInt(1 << 6)
+	paginatedResponseClientUserResponseFieldHasPrevious = big.NewInt(1 << 7)
+)
+
+type PaginatedResponseClientUserResponse struct {
+	Items []*ClientUserResponse `json:"items" url:"items"`
+	// Current page number
+	Page *int `json:"page,omitempty" url:"page,omitempty"`
+	// Number of items per page
+	PageSize *int `json:"page_size,omitempty" url:"page_size,omitempty"`
+	// Number of items in the current page
+	ItemsInPage *int `json:"items_in_page,omitempty" url:"items_in_page,omitempty"`
+	// Total number of items across all pages
+	TotalItems *int `json:"total_items,omitempty" url:"total_items,omitempty"`
+	// Total number of pages available
+	TotalPages *int `json:"total_pages,omitempty" url:"total_pages,omitempty"`
+	// Indicates if there is a next page
+	HasNext *bool `json:"has_next,omitempty" url:"has_next,omitempty"`
+	// Indicates if there is a previous page
+	HasPrevious *bool `json:"has_previous,omitempty" url:"has_previous,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaginatedResponseClientUserResponse) GetItems() []*ClientUserResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Items
+}
+
+func (p *PaginatedResponseClientUserResponse) GetPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.Page
+}
+
+func (p *PaginatedResponseClientUserResponse) GetPageSize() *int {
+	if p == nil {
+		return nil
+	}
+	return p.PageSize
+}
+
+func (p *PaginatedResponseClientUserResponse) GetItemsInPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.ItemsInPage
+}
+
+func (p *PaginatedResponseClientUserResponse) GetTotalItems() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalItems
+}
+
+func (p *PaginatedResponseClientUserResponse) GetTotalPages() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalPages
+}
+
+func (p *PaginatedResponseClientUserResponse) GetHasNext() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasNext
+}
+
+func (p *PaginatedResponseClientUserResponse) GetHasPrevious() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasPrevious
+}
+
+func (p *PaginatedResponseClientUserResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaginatedResponseClientUserResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientUserResponse) SetItems(items []*ClientUserResponse) {
+	p.Items = items
+	p.require(paginatedResponseClientUserResponseFieldItems)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientUserResponse) SetPage(page *int) {
+	p.Page = page
+	p.require(paginatedResponseClientUserResponseFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientUserResponse) SetPageSize(pageSize *int) {
+	p.PageSize = pageSize
+	p.require(paginatedResponseClientUserResponseFieldPageSize)
+}
+
+// SetItemsInPage sets the ItemsInPage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientUserResponse) SetItemsInPage(itemsInPage *int) {
+	p.ItemsInPage = itemsInPage
+	p.require(paginatedResponseClientUserResponseFieldItemsInPage)
+}
+
+// SetTotalItems sets the TotalItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientUserResponse) SetTotalItems(totalItems *int) {
+	p.TotalItems = totalItems
+	p.require(paginatedResponseClientUserResponseFieldTotalItems)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientUserResponse) SetTotalPages(totalPages *int) {
+	p.TotalPages = totalPages
+	p.require(paginatedResponseClientUserResponseFieldTotalPages)
+}
+
+// SetHasNext sets the HasNext field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientUserResponse) SetHasNext(hasNext *bool) {
+	p.HasNext = hasNext
+	p.require(paginatedResponseClientUserResponseFieldHasNext)
+}
+
+// SetHasPrevious sets the HasPrevious field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientUserResponse) SetHasPrevious(hasPrevious *bool) {
+	p.HasPrevious = hasPrevious
+	p.require(paginatedResponseClientUserResponseFieldHasPrevious)
+}
+
+func (p *PaginatedResponseClientUserResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaginatedResponseClientUserResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaginatedResponseClientUserResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaginatedResponseClientUserResponse) MarshalJSON() ([]byte, error) {
+	type embed PaginatedResponseClientUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaginatedResponseClientUserResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}

@@ -603,7 +603,9 @@ var (
 	loanInvestorResponseFieldEarlySettlementAmount = big.NewInt(1 << 15)
 	loanInvestorResponseFieldData                  = big.NewInt(1 << 16)
 	loanInvestorResponseFieldClient                = big.NewInt(1 << 17)
-	loanInvestorResponseFieldPaymentToTheClient    = big.NewInt(1 << 18)
+	loanInvestorResponseFieldOutstandingPrincipal  = big.NewInt(1 << 18)
+	loanInvestorResponseFieldRemainingAmount       = big.NewInt(1 << 19)
+	loanInvestorResponseFieldPaymentToTheClient    = big.NewInt(1 << 20)
 )
 
 type LoanInvestorResponse struct {
@@ -643,6 +645,10 @@ type LoanInvestorResponse struct {
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 	// The client details associated with the loan
 	Client *ClientBaseInfo `json:"client" url:"client"`
+	// Remaining principal for installments with status active or overdue, net of any repayments already made
+	OutstandingPrincipal *string `json:"outstanding_principal,omitempty" url:"outstanding_principal,omitempty"`
+	// Remaining amount (principal and interest) for installments with status active or overdue, net of any repayments already made
+	RemainingAmount *string `json:"remaining_amount,omitempty" url:"remaining_amount,omitempty"`
 	// Whether the loan disbursement is paid directly to the client (as opposed to the partner).
 	PaymentToTheClient *bool `json:"payment_to_the_client,omitempty" url:"payment_to_the_client,omitempty"`
 
@@ -777,6 +783,20 @@ func (l *LoanInvestorResponse) GetClient() *ClientBaseInfo {
 		return nil
 	}
 	return l.Client
+}
+
+func (l *LoanInvestorResponse) GetOutstandingPrincipal() *string {
+	if l == nil {
+		return nil
+	}
+	return l.OutstandingPrincipal
+}
+
+func (l *LoanInvestorResponse) GetRemainingAmount() *string {
+	if l == nil {
+		return nil
+	}
+	return l.RemainingAmount
 }
 
 func (l *LoanInvestorResponse) GetPaymentToTheClient() *bool {
@@ -924,6 +944,20 @@ func (l *LoanInvestorResponse) SetData(data map[string]any) {
 func (l *LoanInvestorResponse) SetClient(client *ClientBaseInfo) {
 	l.Client = client
 	l.require(loanInvestorResponseFieldClient)
+}
+
+// SetOutstandingPrincipal sets the OutstandingPrincipal field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanInvestorResponse) SetOutstandingPrincipal(outstandingPrincipal *string) {
+	l.OutstandingPrincipal = outstandingPrincipal
+	l.require(loanInvestorResponseFieldOutstandingPrincipal)
+}
+
+// SetRemainingAmount sets the RemainingAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanInvestorResponse) SetRemainingAmount(remainingAmount *string) {
+	l.RemainingAmount = remainingAmount
+	l.require(loanInvestorResponseFieldRemainingAmount)
 }
 
 // SetPaymentToTheClient sets the PaymentToTheClient field and marks it as non-optional;

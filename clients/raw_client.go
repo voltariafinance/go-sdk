@@ -436,6 +436,57 @@ func (r *RawClient) RejectOnboarding(
 	}, nil
 }
 
+func (r *RawClient) ListClientPortalUsers(
+	ctx context.Context,
+	request *v2.ListClientPortalUsersRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*v2.PaginatedResponseClientUserResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api.sandbox.voltaria.io",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/v2/clients/%v/users",
+		request.ClientID,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *v2.PaginatedResponseClientUserResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(v2.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*v2.PaginatedResponseClientUserResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) AddClientPortalUser(
 	ctx context.Context,
 	request *v2.ClientUserInviteRequest,
