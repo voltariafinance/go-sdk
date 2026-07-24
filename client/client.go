@@ -15,6 +15,7 @@ import (
 	loans "github.com/voltariafinance/go-sdk/v2/loans"
 	option "github.com/voltariafinance/go-sdk/v2/option"
 	partners "github.com/voltariafinance/go-sdk/v2/partners"
+	recoveries "github.com/voltariafinance/go-sdk/v2/recoveries"
 	repayments "github.com/voltariafinance/go-sdk/v2/repayments"
 	sandbox "github.com/voltariafinance/go-sdk/v2/sandbox"
 	webhooks "github.com/voltariafinance/go-sdk/v2/webhooks"
@@ -30,6 +31,7 @@ type Client struct {
 	Installments *installments.Client
 	Loans        *loans.Client
 	Partners     *partners.Client
+	Recoveries   *recoveries.Client
 	Webhooks     *webhooks.Client
 	Repayments   *repayments.Client
 	Drawdowns    *drawdowns.Client
@@ -51,6 +53,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Installments: installments.NewClient(options),
 		Loans:        loans.NewClient(options),
 		Partners:     partners.NewClient(options),
+		Recoveries:   recoveries.NewClient(options),
 		Webhooks:     webhooks.NewClient(options),
 		Repayments:   repayments.NewClient(options),
 		Drawdowns:    drawdowns.NewClient(options),

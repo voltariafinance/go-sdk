@@ -4576,6 +4576,206 @@ client.Partners.ListPartnerWaterfalls(
 </dl>
 </details>
 
+## Recoveries
+<details><summary><code>client.Recoveries.ListRecoveries() -> *v2.PaginatedResponseRecoveryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve recoveries recorded against your loans. Supports filtering by client or loan.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.ListRecoveriesRequest{}
+client.Recoveries.ListRecoveries(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**clientID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**loanID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pageSize:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderBy:** `*string` — Field to order the results by, e.g., 'created_at:desc,updated_at:asc'
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `*string` — Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, loan_id, currency, recovery_date, created_at. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Recoveries.CreateRecovery(request) -> *v2.RecoveryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Record a new recovery against one of your loans.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.RecoveryCreatePayload{
+        LoanID: "loan_abc123",
+        Amount: &v2.RecoveryCreatePayloadAmount{
+            Double: 1.1,
+        },
+        Currency: v2.CurrencyEnumEur,
+        RecoveryDate: v2.MustParseDate(
+            "2026-07-15",
+        ),
+    }
+client.Recoveries.CreateRecovery(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**loanID:** `string` — The ID of the loan this recovery is associated with.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `*v2.RecoveryCreatePayloadAmount` — The amount recovered (must be > 0).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `*v2.CurrencyEnum` — The currency of the recovered amount, must be one of the supported currencies: eur, gbp, usd, czk, pln, isk
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recoveryDate:** `time.Time` — The date the recovery was made.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notes:** `*string` — Optional notes about the recovery.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Webhooks
 <details><summary><code>client.Webhooks.ListWebhookSubscriptions() -> *v2.PaginatedResponseWebhookSubscriptionResponse</code></summary>
 <dl>
