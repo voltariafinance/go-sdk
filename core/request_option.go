@@ -62,8 +62,8 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/voltariafinance/go-sdk/v2")
-	headers.Set("X-Fern-SDK-Version", "v2.37.0")
-	headers.Set("User-Agent", "github.com/voltariafinance/go-sdk/v2/2.37.0")
+	headers.Set("X-Fern-SDK-Version", "v2.38.0")
+	headers.Set("User-Agent", "github.com/voltariafinance/go-sdk/v2/2.38.0")
 	return headers
 }
 
