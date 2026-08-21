@@ -649,7 +649,7 @@ type WaterfallResponse struct {
 	// The payment amount recorded for the waterfall
 	Amount *string `json:"amount,omitempty" url:"amount,omitempty"`
 	// The currency of the payment
-	Currency *string `json:"currency,omitempty" url:"currency,omitempty"`
+	Currency *CurrencyEnum `json:"currency,omitempty" url:"currency,omitempty"`
 	// The date the payment was made
 	PaymentDate *time.Time `json:"payment_date,omitempty" url:"payment_date,omitempty" format:"date"`
 	// The Presigned URL of the file. This is a temporary URL that allows you to download the file.
@@ -708,7 +708,7 @@ func (w *WaterfallResponse) GetAmount() *string {
 	return w.Amount
 }
 
-func (w *WaterfallResponse) GetCurrency() *string {
+func (w *WaterfallResponse) GetCurrency() *CurrencyEnum {
 	if w == nil {
 		return nil
 	}
@@ -801,7 +801,7 @@ func (w *WaterfallResponse) SetAmount(amount *string) {
 
 // SetCurrency sets the Currency field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterfallResponse) SetCurrency(currency *string) {
+func (w *WaterfallResponse) SetCurrency(currency *CurrencyEnum) {
 	w.Currency = currency
 	w.require(waterfallResponseFieldCurrency)
 }

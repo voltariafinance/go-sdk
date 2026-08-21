@@ -1511,7 +1511,7 @@ func TestSettersWaterfallResponse(t *testing.T) {
 
 	t.Run("SetCurrency", func(t *testing.T) {
 		obj := &WaterfallResponse{}
-		var fernTestValueCurrency *string
+		var fernTestValueCurrency *CurrencyEnum
 		obj.SetCurrency(fernTestValueCurrency)
 		assert.Equal(t, fernTestValueCurrency, obj.Currency)
 		assert.NotNil(t, obj.explicitFields)
@@ -1704,7 +1704,7 @@ func TestGettersWaterfallResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
-		var expected *string
+		var expected *CurrencyEnum
 		obj.Currency = expected
 
 		// Act & Assert
@@ -2038,7 +2038,7 @@ func TestSettersMarkExplicitWaterfallResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WaterfallResponse{}
-		var fernTestValueCurrency *string
+		var fernTestValueCurrency *CurrencyEnum
 
 		// Act
 		obj.SetCurrency(fernTestValueCurrency)
