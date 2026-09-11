@@ -175,14 +175,22 @@ var (
 )
 
 type ClientLimitResponse struct {
-	Currency        CurrencyEnum `json:"currency" url:"currency"`
-	MaxMaturityDays int          `json:"max_maturity_days" url:"max_maturity_days"`
-	Limit           string       `json:"limit" url:"limit"`
-	Rate            string       `json:"rate" url:"rate"`
-	Outstanding     string       `json:"outstanding" url:"outstanding"`
-	Available       string       `json:"available" url:"available"`
-	CreatedAt       time.Time    `json:"created_at" url:"created_at"`
-	UpdatedAt       time.Time    `json:"updated_at" url:"updated_at"`
+	// The currency the limit is denominated in
+	Currency CurrencyEnum `json:"currency" url:"currency"`
+	// The longest loan maturity this limit allows, in days
+	MaxMaturityDays int `json:"max_maturity_days" url:"max_maturity_days"`
+	// The credit limit granted to the client
+	Limit string `json:"limit" url:"limit"`
+	// The rate recorded on this limit
+	Rate string `json:"rate" url:"rate"`
+	// Principal currently outstanding against this limit
+	Outstanding string `json:"outstanding" url:"outstanding"`
+	// Limit minus outstanding. Negative when the client is over limit
+	Available string `json:"available" url:"available"`
+	// When the limit was granted
+	CreatedAt time.Time `json:"created_at" url:"created_at"`
+	// When the limit was last changed
+	UpdatedAt time.Time `json:"updated_at" url:"updated_at"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`

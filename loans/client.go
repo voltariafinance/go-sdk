@@ -152,6 +152,23 @@ func (c *Client) DeleteLoan(
 	return response.Body, nil
 }
 
+// Calculate the indicative early settlement figure for a loan as of the given settlement date. The amount is indicative only, not a binding quote, and has no validity period — it changes as repayments are recorded and as the settlement date moves. Confirm the final amount with Voltaria before collecting from the borrower.
+func (c *Client) CalculateSettlement(
+	ctx context.Context,
+	request *v2.EarlySettlementPayload,
+	opts ...option.RequestOption,
+) (*v2.EarlySettlementResponse, error) {
+	response, err := c.WithRawResponse.CalculateSettlement(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Create multiple loans in a single request. Processing happens asynchronously. Returns a task ID for tracking progress.
 func (c *Client) CreateBulkLoans(
 	ctx context.Context,

@@ -14,7 +14,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"items\": [\n    {\n      \"id\": \"client_As2fD1gaX2\",\n      \"created_at\": \"2025-01-01T00:00:00Z\",\n      \"updated_at\": \"2025-01-01T00:00:00Z\",\n      \"correlation_id\": \"correlation_id\",\n      \"name\": \"ACME Corp\",\n      \"type\": \"corporate\",\n      \"jurisdiction\": \"eu\",\n      \"company_number\": \"company_number\",\n      \"status\": \"active\",\n      \"limits\": [\n        {\n          \"currency\": \"eur\",\n          \"max_maturity_days\": 1,\n          \"limit\": \"limit\",\n          \"rate\": \"rate\",\n          \"outstanding\": \"outstanding\",\n          \"available\": \"available\",\n          \"created_at\": \"2024-01-15T09:30:00Z\",\n          \"updated_at\": \"2024-01-15T09:30:00Z\"\n        }\n      ],\n      \"data\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"client_As2fD1gaX2\",\n      \"created_at\": \"2025-01-01T00:00:00Z\",\n      \"updated_at\": \"2025-01-01T00:00:00Z\",\n      \"correlation_id\": \"correlation_id\",\n      \"name\": \"ACME Corp\",\n      \"type\": \"corporate\",\n      \"jurisdiction\": \"eu\",\n      \"company_number\": \"company_number\",\n      \"status\": \"active\",\n      \"limits\": [\n        {\n          \"currency\": \"eur\",\n          \"max_maturity_days\": 90,\n          \"limit\": \"200000.00\",\n          \"rate\": \"2.50\",\n          \"outstanding\": \"100657.89\",\n          \"available\": \"99342.11\",\n          \"created_at\": \"2026-09-11T10:00:00Z\",\n          \"updated_at\": \"2026-09-11T10:00:00Z\"\n        }\n      ],\n      \"data\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -46,7 +46,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 1,\n      \"limit\": \"limit\",\n      \"rate\": \"rate\",\n      \"outstanding\": \"outstanding\",\n      \"available\": \"available\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
+        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 90,\n      \"limit\": \"200000.00\",\n      \"rate\": \"2.50\",\n      \"outstanding\": \"100657.89\",\n      \"available\": \"99342.11\",\n      \"created_at\": \"2026-09-11T10:00:00Z\",\n      \"updated_at\": \"2026-09-11T10:00:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -207,7 +207,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"items\": [\n    {\n      \"id\": \"client_As2fD1gaX2\",\n      \"created_at\": \"2025-01-01T00:00:00Z\",\n      \"updated_at\": \"2025-01-01T00:00:00Z\",\n      \"correlation_id\": \"correlation_id\",\n      \"name\": \"ACME Corp\",\n      \"type\": \"corporate\",\n      \"jurisdiction\": \"eu\",\n      \"company_number\": \"company_number\",\n      \"status\": \"active\",\n      \"limits\": [\n        {\n          \"currency\": \"eur\",\n          \"max_maturity_days\": 1,\n          \"limit\": \"limit\",\n          \"rate\": \"rate\",\n          \"outstanding\": \"outstanding\",\n          \"available\": \"available\",\n          \"created_at\": \"2024-01-15T09:30:00Z\",\n          \"updated_at\": \"2024-01-15T09:30:00Z\"\n        }\n      ],\n      \"data\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"client_As2fD1gaX2\",\n      \"created_at\": \"2025-01-01T00:00:00Z\",\n      \"updated_at\": \"2025-01-01T00:00:00Z\",\n      \"correlation_id\": \"correlation_id\",\n      \"name\": \"ACME Corp\",\n      \"type\": \"corporate\",\n      \"jurisdiction\": \"eu\",\n      \"company_number\": \"company_number\",\n      \"status\": \"active\",\n      \"limits\": [\n        {\n          \"currency\": \"eur\",\n          \"max_maturity_days\": 90,\n          \"limit\": \"200000.00\",\n          \"rate\": \"2.50\",\n          \"outstanding\": \"100657.89\",\n          \"available\": \"99342.11\",\n          \"created_at\": \"2026-09-11T10:00:00Z\",\n          \"updated_at\": \"2026-09-11T10:00:00Z\"\n        }\n      ],\n      \"data\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -244,7 +244,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 1,\n      \"limit\": \"limit\",\n      \"rate\": \"rate\",\n      \"outstanding\": \"outstanding\",\n      \"available\": \"available\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
+        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 90,\n      \"limit\": \"200000.00\",\n      \"rate\": \"2.50\",\n      \"outstanding\": \"100657.89\",\n      \"available\": \"99342.11\",\n      \"created_at\": \"2026-09-11T10:00:00Z\",\n      \"updated_at\": \"2026-09-11T10:00:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -280,7 +280,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 1,\n      \"limit\": \"limit\",\n      \"rate\": \"rate\",\n      \"outstanding\": \"outstanding\",\n      \"available\": \"available\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
+        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 90,\n      \"limit\": \"200000.00\",\n      \"rate\": \"2.50\",\n      \"outstanding\": \"100657.89\",\n      \"available\": \"99342.11\",\n      \"created_at\": \"2026-09-11T10:00:00Z\",\n      \"updated_at\": \"2026-09-11T10:00:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -424,7 +424,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 1,\n      \"limit\": \"limit\",\n      \"rate\": \"rate\",\n      \"outstanding\": \"outstanding\",\n      \"available\": \"available\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
+        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 90,\n      \"limit\": \"200000.00\",\n      \"rate\": \"2.50\",\n      \"outstanding\": \"100657.89\",\n      \"available\": \"99342.11\",\n      \"created_at\": \"2026-09-11T10:00:00Z\",\n      \"updated_at\": \"2026-09-11T10:00:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -532,7 +532,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 1,\n      \"limit\": \"limit\",\n      \"rate\": \"rate\",\n      \"outstanding\": \"outstanding\",\n      \"available\": \"available\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
+        "body": "{\n  \"id\": \"client_As2fD1gaX2\",\n  \"created_at\": \"2025-01-01T00:00:00Z\",\n  \"updated_at\": \"2025-01-01T00:00:00Z\",\n  \"correlation_id\": \"correlation_id\",\n  \"name\": \"ACME Corp\",\n  \"type\": \"corporate\",\n  \"jurisdiction\": \"eu\",\n  \"company_number\": \"company_number\",\n  \"status\": \"active\",\n  \"limits\": [\n    {\n      \"currency\": \"eur\",\n      \"max_maturity_days\": 90,\n      \"limit\": \"200000.00\",\n      \"rate\": \"2.50\",\n      \"outstanding\": \"100657.89\",\n      \"available\": \"99342.11\",\n      \"created_at\": \"2026-09-11T10:00:00Z\",\n      \"updated_at\": \"2026-09-11T10:00:00Z\"\n    }\n  ],\n  \"data\": {\n    \"key\": \"value\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1735,6 +1735,42 @@
       }
     },
     {
+      "id": "101585e3-417d-4594-a89e-6aa7d2845e4f",
+      "name": "Calculate early settlement figure - default",
+      "request": {
+        "urlPathTemplate": "/v2/loans/{loan_id}/calculate-settlement",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "loan_id": {
+            "equalTo": "loan_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"loan_id\": \"loan_12345\",\n  \"settlement_date\": \"2026-09-07\",\n  \"settlement_amount\": \"49000.00\",\n  \"settlement_irr\": \"0.05\",\n  \"original_irr\": \"original_irr\",\n  \"minimum_fee\": \"minimum_fee\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "101585e3-417d-4594-a89e-6aa7d2845e4f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "0f67a813-8b45-4a21-82c8-9d0cea88bb19",
       "name": "Create multiple loans in bulk - default",
       "request": {
@@ -2429,6 +2465,6 @@
     }
   ],
   "meta": {
-    "total": 72
+    "total": 73
   }
 }

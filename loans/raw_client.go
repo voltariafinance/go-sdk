@@ -345,6 +345,52 @@ func (r *RawClient) DeleteLoan(
 	}, nil
 }
 
+func (r *RawClient) CalculateSettlement(
+	ctx context.Context,
+	request *v2.EarlySettlementPayload,
+	opts ...option.RequestOption,
+) (*core.Response[*v2.EarlySettlementResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api.sandbox.voltaria.io",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/v2/loans/%v/calculate-settlement",
+		request.LoanID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *v2.EarlySettlementResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(v2.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*v2.EarlySettlementResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) CreateBulkLoans(
 	ctx context.Context,
 	request *v2.BulkLoanCreatePayload,

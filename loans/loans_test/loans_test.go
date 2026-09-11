@@ -269,6 +269,32 @@ func TestLoansDeleteLoanWithWireMock(
 	VerifyRequestCount(t, "TestLoansDeleteLoanWithWireMock", "DELETE", "/v2/loans/loan_id", nil, 1)
 }
 
+func TestLoansCalculateSettlementWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.EarlySettlementPayload{
+		LoanID: "loan_id",
+	}
+	_, invocationErr := client.Loans.CalculateSettlement(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestLoansCalculateSettlementWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestLoansCalculateSettlementWithWireMock", "POST", "/v2/loans/loan_id/calculate-settlement", nil, 1)
+}
+
 func TestLoansCreateBulkLoansWithWireMock(
 	t *testing.T,
 ) {

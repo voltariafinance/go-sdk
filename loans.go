@@ -11,6 +11,64 @@ import (
 )
 
 var (
+	earlySettlementPayloadFieldLoanID         = big.NewInt(1 << 0)
+	earlySettlementPayloadFieldSettlementDate = big.NewInt(1 << 1)
+)
+
+type EarlySettlementPayload struct {
+	LoanID string `json:"-" url:"-"`
+	// Date the loan would be settled. Must be today or later. Defaults to today when omitted.
+	SettlementDate *time.Time `json:"settlement_date,omitempty" url:"-" format:"date"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (e *EarlySettlementPayload) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetLoanID sets the LoanID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EarlySettlementPayload) SetLoanID(loanID string) {
+	e.LoanID = loanID
+	e.require(earlySettlementPayloadFieldLoanID)
+}
+
+// SetSettlementDate sets the SettlementDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EarlySettlementPayload) SetSettlementDate(settlementDate *time.Time) {
+	e.SettlementDate = settlementDate
+	e.require(earlySettlementPayloadFieldSettlementDate)
+}
+
+func (e *EarlySettlementPayload) UnmarshalJSON(data []byte) error {
+	type unmarshaler EarlySettlementPayload
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*e = EarlySettlementPayload(body)
+	return nil
+}
+
+func (e *EarlySettlementPayload) MarshalJSON() ([]byte, error) {
+	type embed EarlySettlementPayload
+	var marshaler = struct {
+		embed
+		SettlementDate *internal.Date `json:"settlement_date,omitempty"`
+	}{
+		embed:          embed(*e),
+		SettlementDate: internal.NewOptionalDate(e.SettlementDate),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	bulkLoanCreatePayloadFieldLoans = big.NewInt(1 << 0)
 )
 
@@ -1413,6 +1471,184 @@ func (b *BulkLoanTaskStatus) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	earlySettlementResponseFieldLoanID           = big.NewInt(1 << 0)
+	earlySettlementResponseFieldSettlementDate   = big.NewInt(1 << 1)
+	earlySettlementResponseFieldSettlementAmount = big.NewInt(1 << 2)
+	earlySettlementResponseFieldSettlementIrr    = big.NewInt(1 << 3)
+	earlySettlementResponseFieldOriginalIrr      = big.NewInt(1 << 4)
+	earlySettlementResponseFieldMinimumFee       = big.NewInt(1 << 5)
+)
+
+type EarlySettlementResponse struct {
+	// The ID of the loan
+	LoanID string `json:"loan_id" url:"loan_id"`
+	// The date of early settlement
+	SettlementDate time.Time `json:"settlement_date" url:"settlement_date" format:"date"`
+	// The settlement amount at early settlement
+	SettlementAmount string `json:"settlement_amount" url:"settlement_amount"`
+	// The internal rate of return at early settlement
+	SettlementIrr string `json:"settlement_irr" url:"settlement_irr"`
+	// The original internal rate of return before early settlement
+	OriginalIrr *string `json:"original_irr,omitempty" url:"original_irr,omitempty"`
+	// The minimum fee applicable at early settlement
+	MinimumFee *string `json:"minimum_fee,omitempty" url:"minimum_fee,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *EarlySettlementResponse) GetLoanID() string {
+	if e == nil {
+		return ""
+	}
+	return e.LoanID
+}
+
+func (e *EarlySettlementResponse) GetSettlementDate() time.Time {
+	if e == nil {
+		return time.Time{}
+	}
+	return e.SettlementDate
+}
+
+func (e *EarlySettlementResponse) GetSettlementAmount() string {
+	if e == nil {
+		return ""
+	}
+	return e.SettlementAmount
+}
+
+func (e *EarlySettlementResponse) GetSettlementIrr() string {
+	if e == nil {
+		return ""
+	}
+	return e.SettlementIrr
+}
+
+func (e *EarlySettlementResponse) GetOriginalIrr() *string {
+	if e == nil {
+		return nil
+	}
+	return e.OriginalIrr
+}
+
+func (e *EarlySettlementResponse) GetMinimumFee() *string {
+	if e == nil {
+		return nil
+	}
+	return e.MinimumFee
+}
+
+func (e *EarlySettlementResponse) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *EarlySettlementResponse) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetLoanID sets the LoanID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EarlySettlementResponse) SetLoanID(loanID string) {
+	e.LoanID = loanID
+	e.require(earlySettlementResponseFieldLoanID)
+}
+
+// SetSettlementDate sets the SettlementDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EarlySettlementResponse) SetSettlementDate(settlementDate time.Time) {
+	e.SettlementDate = settlementDate
+	e.require(earlySettlementResponseFieldSettlementDate)
+}
+
+// SetSettlementAmount sets the SettlementAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EarlySettlementResponse) SetSettlementAmount(settlementAmount string) {
+	e.SettlementAmount = settlementAmount
+	e.require(earlySettlementResponseFieldSettlementAmount)
+}
+
+// SetSettlementIrr sets the SettlementIrr field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EarlySettlementResponse) SetSettlementIrr(settlementIrr string) {
+	e.SettlementIrr = settlementIrr
+	e.require(earlySettlementResponseFieldSettlementIrr)
+}
+
+// SetOriginalIrr sets the OriginalIrr field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EarlySettlementResponse) SetOriginalIrr(originalIrr *string) {
+	e.OriginalIrr = originalIrr
+	e.require(earlySettlementResponseFieldOriginalIrr)
+}
+
+// SetMinimumFee sets the MinimumFee field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EarlySettlementResponse) SetMinimumFee(minimumFee *string) {
+	e.MinimumFee = minimumFee
+	e.require(earlySettlementResponseFieldMinimumFee)
+}
+
+func (e *EarlySettlementResponse) UnmarshalJSON(data []byte) error {
+	type embed EarlySettlementResponse
+	var unmarshaler = struct {
+		embed
+		SettlementDate *internal.Date `json:"settlement_date"`
+	}{
+		embed: embed(*e),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*e = EarlySettlementResponse(unmarshaler.embed)
+	e.SettlementDate = unmarshaler.SettlementDate.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EarlySettlementResponse) MarshalJSON() ([]byte, error) {
+	type embed EarlySettlementResponse
+	var marshaler = struct {
+		embed
+		SettlementDate *internal.Date `json:"settlement_date"`
+	}{
+		embed:          embed(*e),
+		SettlementDate: internal.NewDate(e.SettlementDate),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *EarlySettlementResponse) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
