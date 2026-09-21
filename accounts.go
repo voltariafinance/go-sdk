@@ -502,7 +502,8 @@ var (
 	clientAccountResponseFieldAccountType       = big.NewInt(1 << 10)
 	clientAccountResponseFieldAddress           = big.NewInt(1 << 11)
 	clientAccountResponseFieldStatus            = big.NewInt(1 << 12)
-	clientAccountResponseFieldCreatedAt         = big.NewInt(1 << 13)
+	clientAccountResponseFieldCopStatus         = big.NewInt(1 << 13)
+	clientAccountResponseFieldCreatedAt         = big.NewInt(1 << 14)
 )
 
 type ClientAccountResponse struct {
@@ -532,6 +533,8 @@ type ClientAccountResponse struct {
 	Address *AccountAddress `json:"address,omitempty" url:"address,omitempty"`
 	// Account status. One of: `pending`, `active`, `passive`.
 	Status AccountStatusEnum `json:"status" url:"status"`
+	// Confirmation of Payee result for this account. `null` when the account has never been checked, or when the check does not apply to it. One of: `matched`, `close_match`, `not_matched`, `account_not_found`, `unavailable`.
+	CopStatus *CopStatusEnum `json:"cop_status,omitempty" url:"cop_status,omitempty"`
 	// Timestamp when the account was created.
 	CreatedAt time.Time `json:"created_at" url:"created_at"`
 
@@ -631,6 +634,13 @@ func (c *ClientAccountResponse) GetStatus() AccountStatusEnum {
 		return ""
 	}
 	return c.Status
+}
+
+func (c *ClientAccountResponse) GetCopStatus() *CopStatusEnum {
+	if c == nil {
+		return nil
+	}
+	return c.CopStatus
 }
 
 func (c *ClientAccountResponse) GetCreatedAt() time.Time {
@@ -745,6 +755,13 @@ func (c *ClientAccountResponse) SetStatus(status AccountStatusEnum) {
 	c.require(clientAccountResponseFieldStatus)
 }
 
+// SetCopStatus sets the CopStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientAccountResponse) SetCopStatus(copStatus *CopStatusEnum) {
+	c.CopStatus = copStatus
+	c.require(clientAccountResponseFieldCopStatus)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *ClientAccountResponse) SetCreatedAt(createdAt time.Time) {
@@ -800,6 +817,38 @@ func (c *ClientAccountResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+// Our own verdict, mapped from whichever code a CoP provider returns.
+type CopStatusEnum string
+
+const (
+	CopStatusEnumMatched         CopStatusEnum = "matched"
+	CopStatusEnumCloseMatch      CopStatusEnum = "close_match"
+	CopStatusEnumNotMatched      CopStatusEnum = "not_matched"
+	CopStatusEnumAccountNotFound CopStatusEnum = "account_not_found"
+	CopStatusEnumUnavailable     CopStatusEnum = "unavailable"
+)
+
+func NewCopStatusEnumFromString(s string) (CopStatusEnum, error) {
+	switch s {
+	case "matched":
+		return CopStatusEnumMatched, nil
+	case "close_match":
+		return CopStatusEnumCloseMatch, nil
+	case "not_matched":
+		return CopStatusEnumNotMatched, nil
+	case "account_not_found":
+		return CopStatusEnumAccountNotFound, nil
+	case "unavailable":
+		return CopStatusEnumUnavailable, nil
+	}
+	var t CopStatusEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CopStatusEnum) Ptr() *CopStatusEnum {
+	return &c
 }
 
 var (

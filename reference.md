@@ -5735,6 +5735,626 @@ client.Repayments.GetBulkRepaymentStatus(
 </dl>
 </details>
 
+## Tasks
+<details><summary><code>client.Tasks.ListTasks() -> *v2.PaginatedResponseTaskPartnerResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Paginated list of the tasks shared with your partner account, optionally filtered by status or by the client, loan, installment or waterfall they relate to.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.ListTasksRequest{}
+client.Tasks.ListTasks(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**status:** `*v2.TaskStatusEnum` — Filter by task status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**clientID:** `*string` — Filter by client.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**loanID:** `*string` — Filter by loan.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**installmentID:** `*string` — Filter by installment.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**waterfallID:** `*string` — Filter by waterfall.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pageSize:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderBy:** `*string` — Field to order the results by, e.g., 'due_at:asc,created_at:desc'.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `*string` — Query string for filtering. Format: "field:operator:value;...". Supported fields: id, status, priority, due_at, created_at, client_id, loan_id, installment_id, waterfall_id. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tasks.CreateTask(request) -> *v2.TaskPartnerResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Open a task for your partner account. Any entity you link to it must belong to you.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.TaskPartnerCreatePayload{
+        Title: "Send updated bank statement",
+    }
+client.Tasks.CreateTask(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**title:** `string` — Short title of the task.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` — Optional longer description of what needs to be done.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**priority:** `*v2.TaskPriorityEnum` — Task priority. One of the following: low, medium, high, urgent
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dueAt:** `*time.Time` — Optional due date for the task.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**clientID:** `*string` — Client this task relates to. Must belong to your partner account.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**loanID:** `*string` — Loan this task relates to. Must belong to your partner account.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**installmentID:** `*string` — Installment this task relates to. Must belong to your partner account.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**waterfallID:** `*string` — Waterfall this task relates to. Must belong to your partner account.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tasks.GetTask(TaskID) -> *v2.TaskPartnerResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve one of your tasks by its ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.GetTaskRequest{
+        TaskID: "task_id",
+    }
+client.Tasks.GetTask(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tasks.UpdateTaskStatus(TaskID, request) -> *v2.TaskPartnerResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Move one of your tasks to another status. Status is the only field you can change. Requires a signed-in user — API keys cannot change a task.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.TaskPartnerStatusUpdatePayload{
+        TaskID: "task_id",
+        Status: v2.TaskPartnerStatusUpdatePayloadStatusActive,
+    }
+client.Tasks.UpdateTaskStatus(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*v2.TaskPartnerStatusUpdatePayloadStatus` — The new status of the task. One of the following: active, in_progress, blocked, done. You can move a task to any of these at any time, so one closed by mistake can be reopened. Every change is kept in the task's status history.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tasks.ListTaskStatusHistory(TaskID) -> *v2.PaginatedResponseTaskPartnerStatusHistoryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The status transitions of one of your tasks, and whether each one was made by your team or by Voltaria support.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.ListTaskStatusHistoryRequest{
+        TaskID: "task_id",
+    }
+client.Tasks.ListTaskStatusHistory(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pageSize:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderBy:** `*string` — Field to order the results by, e.g., 'created_at:asc'. Defaults to 'created_at:desc'.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tasks.ListTaskNotes(TaskID) -> *v2.PaginatedResponseNoteResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Notes exchanged with Voltaria on one of your tasks.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.ListTaskNotesRequest{
+        TaskID: "task_id",
+    }
+client.Tasks.ListTaskNotes(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pageSize:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderBy:** `*string` — Field to order the results by, e.g., 'created_at:desc'. Defaults to 'created_at:desc'.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `*string` — Query string for filtering. Format: "field:operator:value;...". Supported fields: id, loan_id, installment_id, created_at. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tasks.CreateTaskNote(TaskID, request) -> *v2.NoteResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Add a note to one of your tasks. Requires a signed-in user — API keys cannot write notes, because a note needs an author.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.TaskNoteCreatePayload{
+        TaskID: "task_id",
+        Content: "Statement uploaded, please re-check.",
+    }
+client.Tasks.CreateTaskNote(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**content:** `string` — The note content.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Drawdowns
 <details><summary><code>client.Drawdowns.ListDrawdowns() -> *v2.PaginatedResponseDrawdownResponse</code></summary>
 <dl>

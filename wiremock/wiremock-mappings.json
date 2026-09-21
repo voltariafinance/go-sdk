@@ -671,7 +671,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"items\": [\n    {\n      \"id\": \"account_abc123\",\n      \"account_holder_name\": \"Acme Ltd\",\n      \"label\": \"Main GBP account\",\n      \"account_holder_type\": \"business\",\n      \"currency\": \"gbp\",\n      \"sort_code\": \"40-47-84\",\n      \"account_number\": \"12345678\",\n      \"iban\": \"iban\",\n      \"bic\": \"bic\",\n      \"routing_number\": \"routing_number\",\n      \"account_type\": \"account_type\",\n      \"address\": {\n        \"country\": \"US\",\n        \"city\": \"New York\",\n        \"postal_code\": \"10001\",\n        \"line1\": \"123 Main St\"\n      },\n      \"status\": \"pending\",\n      \"created_at\": \"2024-01-15T10:30:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"account_abc123\",\n      \"account_holder_name\": \"Acme Ltd\",\n      \"label\": \"Main GBP account\",\n      \"account_holder_type\": \"business\",\n      \"currency\": \"gbp\",\n      \"sort_code\": \"40-47-84\",\n      \"account_number\": \"12345678\",\n      \"iban\": \"iban\",\n      \"bic\": \"bic\",\n      \"routing_number\": \"routing_number\",\n      \"account_type\": \"account_type\",\n      \"address\": {\n        \"country\": \"US\",\n        \"city\": \"New York\",\n        \"postal_code\": \"10001\",\n        \"line1\": \"123 Main St\"\n      },\n      \"status\": \"pending\",\n      \"cop_status\": \"matched\",\n      \"created_at\": \"2024-01-15T10:30:00Z\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -707,7 +707,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"id\": \"account_abc123\",\n  \"account_holder_name\": \"Acme Ltd\",\n  \"label\": \"Main GBP account\",\n  \"account_holder_type\": \"business\",\n  \"currency\": \"gbp\",\n  \"sort_code\": \"40-47-84\",\n  \"account_number\": \"12345678\",\n  \"iban\": \"iban\",\n  \"bic\": \"bic\",\n  \"routing_number\": \"routing_number\",\n  \"account_type\": \"account_type\",\n  \"address\": {\n    \"country\": \"US\",\n    \"city\": \"New York\",\n    \"postal_code\": \"10001\",\n    \"state\": \"state\",\n    \"line1\": \"123 Main St\"\n  },\n  \"status\": \"pending\",\n  \"created_at\": \"2024-01-15T10:30:00Z\"\n}",
+        "body": "{\n  \"id\": \"account_abc123\",\n  \"account_holder_name\": \"Acme Ltd\",\n  \"label\": \"Main GBP account\",\n  \"account_holder_type\": \"business\",\n  \"currency\": \"gbp\",\n  \"sort_code\": \"40-47-84\",\n  \"account_number\": \"12345678\",\n  \"iban\": \"iban\",\n  \"bic\": \"bic\",\n  \"routing_number\": \"routing_number\",\n  \"account_type\": \"account_type\",\n  \"address\": {\n    \"country\": \"US\",\n    \"city\": \"New York\",\n    \"postal_code\": \"10001\",\n    \"state\": \"state\",\n    \"line1\": \"123 Main St\"\n  },\n  \"status\": \"pending\",\n  \"cop_status\": \"matched\",\n  \"created_at\": \"2024-01-15T10:30:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -746,7 +746,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"account_abc123\",\n  \"account_holder_name\": \"Acme Ltd\",\n  \"label\": \"Main GBP account\",\n  \"account_holder_type\": \"business\",\n  \"currency\": \"gbp\",\n  \"sort_code\": \"40-47-84\",\n  \"account_number\": \"12345678\",\n  \"iban\": \"iban\",\n  \"bic\": \"bic\",\n  \"routing_number\": \"routing_number\",\n  \"account_type\": \"account_type\",\n  \"address\": {\n    \"country\": \"US\",\n    \"city\": \"New York\",\n    \"postal_code\": \"10001\",\n    \"state\": \"state\",\n    \"line1\": \"123 Main St\"\n  },\n  \"status\": \"pending\",\n  \"created_at\": \"2024-01-15T10:30:00Z\"\n}",
+        "body": "{\n  \"id\": \"account_abc123\",\n  \"account_holder_name\": \"Acme Ltd\",\n  \"label\": \"Main GBP account\",\n  \"account_holder_type\": \"business\",\n  \"currency\": \"gbp\",\n  \"sort_code\": \"40-47-84\",\n  \"account_number\": \"12345678\",\n  \"iban\": \"iban\",\n  \"bic\": \"bic\",\n  \"routing_number\": \"routing_number\",\n  \"account_type\": \"account_type\",\n  \"address\": {\n    \"country\": \"US\",\n    \"city\": \"New York\",\n    \"postal_code\": \"10001\",\n    \"state\": \"state\",\n    \"line1\": \"123 Main St\"\n  },\n  \"status\": \"pending\",\n  \"cop_status\": \"matched\",\n  \"created_at\": \"2024-01-15T10:30:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2365,6 +2365,249 @@
       }
     },
     {
+      "id": "36520541-c652-4199-9196-889e6a4c9d8a",
+      "name": "List tasks - default",
+      "request": {
+        "urlPathTemplate": "/v2/tasks",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"task_1234567890abcdef\",\n      \"title\": \"Send updated bank statement\",\n      \"description\": \"description\",\n      \"status\": \"active\",\n      \"priority\": \"low\",\n      \"assignee_id\": \"assignee_id\",\n      \"due_at\": \"2024-01-15T09:30:00Z\",\n      \"completed_at\": \"2024-01-15T09:30:00Z\",\n      \"created_at\": \"2026-09-14T12:00:00Z\",\n      \"updated_at\": \"2026-09-14T12:00:00Z\",\n      \"partner_id\": \"partner_id\",\n      \"client_id\": \"client_id\",\n      \"loan_id\": \"loan_id\",\n      \"installment_id\": \"installment_id\",\n      \"waterfall_id\": \"waterfall_id\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "36520541-c652-4199-9196-889e6a4c9d8a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "0e40c394-710b-44a3-ad40-a25eceeb5ef9",
+      "name": "Create a task - default",
+      "request": {
+        "urlPathTemplate": "/v2/tasks",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"id\": \"task_1234567890abcdef\",\n  \"title\": \"Send updated bank statement\",\n  \"description\": \"description\",\n  \"status\": \"active\",\n  \"priority\": \"low\",\n  \"assignee_id\": \"assignee_id\",\n  \"due_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"created_at\": \"2026-09-14T12:00:00Z\",\n  \"updated_at\": \"2026-09-14T12:00:00Z\",\n  \"partner_id\": \"partner_id\",\n  \"client_id\": \"client_id\",\n  \"loan_id\": \"loan_id\",\n  \"installment_id\": \"installment_id\",\n  \"waterfall_id\": \"waterfall_id\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0e40c394-710b-44a3-ad40-a25eceeb5ef9",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "fd7c8ac4-4548-4603-b0f4-0a6311a70ddd",
+      "name": "Get a task - default",
+      "request": {
+        "urlPathTemplate": "/v2/tasks/{task_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "task_id": {
+            "equalTo": "task_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"id\": \"task_1234567890abcdef\",\n  \"title\": \"Send updated bank statement\",\n  \"description\": \"description\",\n  \"status\": \"active\",\n  \"priority\": \"low\",\n  \"assignee_id\": \"assignee_id\",\n  \"due_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"created_at\": \"2026-09-14T12:00:00Z\",\n  \"updated_at\": \"2026-09-14T12:00:00Z\",\n  \"partner_id\": \"partner_id\",\n  \"client_id\": \"client_id\",\n  \"loan_id\": \"loan_id\",\n  \"installment_id\": \"installment_id\",\n  \"waterfall_id\": \"waterfall_id\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "fd7c8ac4-4548-4603-b0f4-0a6311a70ddd",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "53ac85e1-ec38-4569-8dc2-240f5ed4f845",
+      "name": "Change a task's status - default",
+      "request": {
+        "urlPathTemplate": "/v2/tasks/{task_id}/status",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "task_id": {
+            "equalTo": "task_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"id\": \"task_1234567890abcdef\",\n  \"title\": \"Send updated bank statement\",\n  \"description\": \"description\",\n  \"status\": \"active\",\n  \"priority\": \"low\",\n  \"assignee_id\": \"assignee_id\",\n  \"due_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"created_at\": \"2026-09-14T12:00:00Z\",\n  \"updated_at\": \"2026-09-14T12:00:00Z\",\n  \"partner_id\": \"partner_id\",\n  \"client_id\": \"client_id\",\n  \"loan_id\": \"loan_id\",\n  \"installment_id\": \"installment_id\",\n  \"waterfall_id\": \"waterfall_id\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "53ac85e1-ec38-4569-8dc2-240f5ed4f845",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f0887be0-371a-4c2b-9f96-73e15a92e796",
+      "name": "Get a task's status history - default",
+      "request": {
+        "urlPathTemplate": "/v2/tasks/{task_id}/status-history",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "task_id": {
+            "equalTo": "task_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"items\": [\n    {\n      \"created_at\": \"2026-09-14T12:00:00Z\",\n      \"old_status\": \"active\",\n      \"new_status\": \"active\",\n      \"actor_type\": \"partner\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f0887be0-371a-4c2b-9f96-73e15a92e796",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "5c01d736-58ae-441d-9787-47b3e63517d7",
+      "name": "List a task's notes - default",
+      "request": {
+        "urlPathTemplate": "/v2/tasks/{task_id}/notes",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "task_id": {
+            "equalTo": "task_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"note_1234567890abcdef\",\n      \"created_at\": \"2026-05-11T12:00:00Z\",\n      \"updated_at\": \"2026-05-11T12:00:00Z\",\n      \"content\": \"Spoke with client about upcoming repayment.\",\n      \"loan_id\": \"loan_id\",\n      \"installment_id\": \"installment_id\",\n      \"author_first_name\": \"author_first_name\",\n      \"author_last_name\": \"author_last_name\",\n      \"author_email\": \"author_email\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "5c01d736-58ae-441d-9787-47b3e63517d7",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "96449f3f-270f-4819-a167-663e1294bd0e",
+      "name": "Write a note on a task - default",
+      "request": {
+        "urlPathTemplate": "/v2/tasks/{task_id}/notes",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "task_id": {
+            "equalTo": "task_id"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"id\": \"note_1234567890abcdef\",\n  \"created_at\": \"2026-05-11T12:00:00Z\",\n  \"updated_at\": \"2026-05-11T12:00:00Z\",\n  \"content\": \"Spoke with client about upcoming repayment.\",\n  \"loan_id\": \"loan_id\",\n  \"installment_id\": \"installment_id\",\n  \"author_first_name\": \"author_first_name\",\n  \"author_last_name\": \"author_last_name\",\n  \"author_email\": \"author_email\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "96449f3f-270f-4819-a167-663e1294bd0e",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "7c245c4d-9149-41ff-b49c-fdb2045d6cb5",
       "name": "List drawdowns - default",
       "request": {
@@ -2465,6 +2708,6 @@
     }
   ],
   "meta": {
-    "total": 73
+    "total": 80
   }
 }

@@ -18,6 +18,7 @@ import (
 	recoveries "github.com/voltariafinance/go-sdk/v2/recoveries"
 	repayments "github.com/voltariafinance/go-sdk/v2/repayments"
 	sandbox "github.com/voltariafinance/go-sdk/v2/sandbox"
+	tasks "github.com/voltariafinance/go-sdk/v2/tasks"
 	webhooks "github.com/voltariafinance/go-sdk/v2/webhooks"
 )
 
@@ -34,6 +35,7 @@ type Client struct {
 	Recoveries   *recoveries.Client
 	Webhooks     *webhooks.Client
 	Repayments   *repayments.Client
+	Tasks        *tasks.Client
 	Drawdowns    *drawdowns.Client
 
 	options *core.RequestOptions
@@ -56,6 +58,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Recoveries:   recoveries.NewClient(options),
 		Webhooks:     webhooks.NewClient(options),
 		Repayments:   repayments.NewClient(options),
+		Tasks:        tasks.NewClient(options),
 		Drawdowns:    drawdowns.NewClient(options),
 		options:      options,
 		baseURL:      options.BaseURL,

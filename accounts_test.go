@@ -1248,6 +1248,14 @@ func TestSettersClientAccountResponse(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetCopStatus", func(t *testing.T) {
+		obj := &ClientAccountResponse{}
+		var fernTestValueCopStatus *CopStatusEnum
+		obj.SetCopStatus(fernTestValueCopStatus)
+		assert.Equal(t, fernTestValueCopStatus, obj.CopStatus)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetCreatedAt", func(t *testing.T) {
 		obj := &ClientAccountResponse{}
 		var fernTestValueCreatedAt time.Time
@@ -1636,6 +1644,39 @@ func TestGettersClientAccountResponse(t *testing.T) {
 			}
 		}()
 		_ = obj.GetStatus() // Should return zero value
+	})
+
+	t.Run("GetCopStatus", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ClientAccountResponse{}
+		var expected *CopStatusEnum
+		obj.CopStatus = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCopStatus(), "getter should return the property value")
+	})
+
+	t.Run("GetCopStatus_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ClientAccountResponse{}
+		obj.CopStatus = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCopStatus(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCopStatus_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *ClientAccountResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCopStatus() // Should return zero value
 	})
 
 	t.Run("GetCreatedAt", func(t *testing.T) {
@@ -2044,6 +2085,37 @@ func TestSettersMarkExplicitClientAccountResponse(t *testing.T) {
 
 		// Act
 		obj.SetStatus(fernTestValueStatus)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetCopStatus_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ClientAccountResponse{}
+		var fernTestValueCopStatus *CopStatusEnum
+
+		// Act
+		obj.SetCopStatus(fernTestValueCopStatus)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3092,6 +3164,56 @@ func TestEnumAccountStatusEnum(t *testing.T) {
 
 	t.Run("Ptr", func(t *testing.T) {
 		val, err := NewAccountStatusEnumFromString("active")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumCopStatusEnum(t *testing.T) {
+	t.Run("NewFromString_matched", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCopStatusEnumFromString("matched")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CopStatusEnum("matched"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_close_match", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCopStatusEnumFromString("close_match")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CopStatusEnum("close_match"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_not_matched", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCopStatusEnumFromString("not_matched")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CopStatusEnum("not_matched"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_account_not_found", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCopStatusEnumFromString("account_not_found")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CopStatusEnum("account_not_found"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_unavailable", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCopStatusEnumFromString("unavailable")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CopStatusEnum("unavailable"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewCopStatusEnumFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewCopStatusEnumFromString("matched")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)
