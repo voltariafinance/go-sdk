@@ -749,14 +749,17 @@ var (
 	documentCreatePayloadFieldLoanID        = big.NewInt(1 << 1)
 	documentCreatePayloadFieldInstallmentID = big.NewInt(1 << 2)
 	documentCreatePayloadFieldWaterfallID   = big.NewInt(1 << 3)
+	documentCreatePayloadFieldTaskID        = big.NewInt(1 << 4)
 )
 
 type DocumentCreatePayload struct {
-	ClientID      *string   `json:"-" url:"client_id,omitempty"`
-	LoanID        *string   `json:"-" url:"loan_id,omitempty"`
-	InstallmentID *string   `json:"-" url:"installment_id,omitempty"`
-	WaterfallID   *string   `json:"-" url:"waterfall_id,omitempty"`
-	File          io.Reader `json:"-" url:"-"`
+	ClientID      *string `json:"-" url:"client_id,omitempty"`
+	LoanID        *string `json:"-" url:"loan_id,omitempty"`
+	InstallmentID *string `json:"-" url:"installment_id,omitempty"`
+	WaterfallID   *string `json:"-" url:"waterfall_id,omitempty"`
+	// The task this document answers, if any.
+	TaskID *string   `json:"-" url:"task_id,omitempty"`
+	File   io.Reader `json:"-" url:"-"`
 	// The category of the document. Available options can be fetched from the available categories endpoint. '.../documents/available-categories'.
 	Category string `json:"category" url:"-"`
 	// The name of the file
@@ -799,6 +802,13 @@ func (d *DocumentCreatePayload) SetInstallmentID(installmentID *string) {
 func (d *DocumentCreatePayload) SetWaterfallID(waterfallID *string) {
 	d.WaterfallID = waterfallID
 	d.require(documentCreatePayloadFieldWaterfallID)
+}
+
+// SetTaskID sets the TaskID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DocumentCreatePayload) SetTaskID(taskID *string) {
+	d.TaskID = taskID
+	d.require(documentCreatePayloadFieldTaskID)
 }
 
 func (d *DocumentCreatePayload) UnmarshalJSON(data []byte) error {

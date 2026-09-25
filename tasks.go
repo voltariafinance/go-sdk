@@ -1299,7 +1299,7 @@ type TaskPartnerResponse struct {
 	Title string `json:"title" url:"title"`
 	// Longer description of what needs to be done.
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// The status of the task. One of the following: active, in_progress, blocked, done, cancelled
+	// The status of the task. One of the following: active, in_progress, blocked, review_needed, done, cancelled
 	Status TaskStatusEnum `json:"status" url:"status"`
 	// Task priority. One of the following: low, medium, high, urgent
 	Priority *TaskPriorityEnum `json:"priority,omitempty" url:"priority,omitempty"`
@@ -1815,16 +1815,17 @@ func (t TaskPublicActorTypeEnum) Ptr() *TaskPublicActorTypeEnum {
 	return &t
 }
 
-// The life of a task: open and unclaimed, being worked on, waiting on something,
-// then finished or called off.
+// The life of a task: open and unclaimed, being worked on, waiting on something or
+// on a reviewer, then finished or called off.
 type TaskStatusEnum string
 
 const (
-	TaskStatusEnumActive     TaskStatusEnum = "active"
-	TaskStatusEnumInProgress TaskStatusEnum = "in_progress"
-	TaskStatusEnumBlocked    TaskStatusEnum = "blocked"
-	TaskStatusEnumDone       TaskStatusEnum = "done"
-	TaskStatusEnumCancelled  TaskStatusEnum = "cancelled"
+	TaskStatusEnumActive       TaskStatusEnum = "active"
+	TaskStatusEnumInProgress   TaskStatusEnum = "in_progress"
+	TaskStatusEnumBlocked      TaskStatusEnum = "blocked"
+	TaskStatusEnumReviewNeeded TaskStatusEnum = "review_needed"
+	TaskStatusEnumDone         TaskStatusEnum = "done"
+	TaskStatusEnumCancelled    TaskStatusEnum = "cancelled"
 )
 
 func NewTaskStatusEnumFromString(s string) (TaskStatusEnum, error) {
@@ -1835,6 +1836,8 @@ func NewTaskStatusEnumFromString(s string) (TaskStatusEnum, error) {
 		return TaskStatusEnumInProgress, nil
 	case "blocked":
 		return TaskStatusEnumBlocked, nil
+	case "review_needed":
+		return TaskStatusEnumReviewNeeded, nil
 	case "done":
 		return TaskStatusEnumDone, nil
 	case "cancelled":

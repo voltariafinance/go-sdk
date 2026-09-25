@@ -5370,6 +5370,13 @@ func TestEnumTaskStatusEnum(t *testing.T) {
 		assert.Equal(t, TaskStatusEnum("blocked"), val, "enum value should match expected wire value")
 	})
 
+	t.Run("NewFromString_review_needed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewTaskStatusEnumFromString("review_needed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, TaskStatusEnum("review_needed"), val, "enum value should match expected wire value")
+	})
+
 	t.Run("NewFromString_done", func(t *testing.T) {
 		t.Parallel()
 		val, err := NewTaskStatusEnumFromString("done")
