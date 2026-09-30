@@ -406,6 +406,42 @@
       }
     },
     {
+      "id": "a6695acd-4fed-4ec4-9d85-a963f6943866",
+      "name": "List limit history for a client - default",
+      "request": {
+        "urlPathTemplate": "/v2/clients/{client_id}/limits",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "client_id": {
+            "equalTo": "client_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"items\": [\n    {\n      \"id\": \"limit_a1B2c3D4e5\",\n      \"created_at\": \"2026-09-11T10:00:00Z\",\n      \"currency\": \"eur\",\n      \"limit\": \"200000.00\"\n    }\n  ],\n  \"page\": 1,\n  \"page_size\": 1,\n  \"items_in_page\": 1,\n  \"total_items\": 1,\n  \"total_pages\": 1,\n  \"has_next\": true,\n  \"has_previous\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a6695acd-4fed-4ec4-9d85-a963f6943866",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "07be14fc-ef5f-482f-9932-4f85da6e8b5e",
       "name": "Get client details - default",
       "request": {
@@ -2708,6 +2744,6 @@
     }
   ],
   "meta": {
-    "total": 80
+    "total": 81
   }
 }

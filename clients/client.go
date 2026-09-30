@@ -237,6 +237,23 @@ func (c *Client) ListClientWaivers(
 	return response.Body, nil
 }
 
+// Retrieve every credit limit granted to a specific client.
+func (c *Client) ListClientLimits(
+	ctx context.Context,
+	request *v2.ListClientLimitsRequest,
+	opts ...option.RequestOption,
+) (*v2.PaginatedResponseClientLimitHistoryResponse, error) {
+	response, err := c.WithRawResponse.ListClientLimits(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Retrieve detailed information for a specific client using their client ID.
 func (c *Client) GetClientByID(
 	ctx context.Context,

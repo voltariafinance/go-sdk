@@ -584,6 +584,57 @@ func (r *RawClient) ListClientWaivers(
 	}, nil
 }
 
+func (r *RawClient) ListClientLimits(
+	ctx context.Context,
+	request *v2.ListClientLimitsRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*v2.PaginatedResponseClientLimitHistoryResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api.sandbox.voltaria.io",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/v2/clients/%v/limits",
+		request.ClientID,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *v2.PaginatedResponseClientLimitHistoryResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(v2.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*v2.PaginatedResponseClientLimitHistoryResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) GetClientByID(
 	ctx context.Context,
 	request *v2.GetClientByIDRequest,

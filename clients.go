@@ -474,6 +474,69 @@ func (l *ListClientChecklistSummariesRequest) SetPageSize(pageSize *int) {
 }
 
 var (
+	listClientLimitsRequestFieldClientID = big.NewInt(1 << 0)
+	listClientLimitsRequestFieldPage     = big.NewInt(1 << 1)
+	listClientLimitsRequestFieldPageSize = big.NewInt(1 << 2)
+	listClientLimitsRequestFieldOrderBy  = big.NewInt(1 << 3)
+	listClientLimitsRequestFieldQ        = big.NewInt(1 << 4)
+)
+
+type ListClientLimitsRequest struct {
+	ClientID string `json:"-" url:"-"`
+	Page     *int   `json:"-" url:"page,omitempty"`
+	PageSize *int   `json:"-" url:"page_size,omitempty"`
+	// Field to order the results by, e.g., 'created_at:desc'
+	OrderBy *string `json:"-" url:"order_by,omitempty"`
+	// Query string for filtering. Format: "field:operator:value;...". Supported fields: id, currency, created_at, limit. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+	Q *string `json:"-" url:"q,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListClientLimitsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetClientID sets the ClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientLimitsRequest) SetClientID(clientID string) {
+	l.ClientID = clientID
+	l.require(listClientLimitsRequestFieldClientID)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientLimitsRequest) SetPage(page *int) {
+	l.Page = page
+	l.require(listClientLimitsRequestFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientLimitsRequest) SetPageSize(pageSize *int) {
+	l.PageSize = pageSize
+	l.require(listClientLimitsRequestFieldPageSize)
+}
+
+// SetOrderBy sets the OrderBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientLimitsRequest) SetOrderBy(orderBy *string) {
+	l.OrderBy = orderBy
+	l.require(listClientLimitsRequestFieldOrderBy)
+}
+
+// SetQ sets the Q field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientLimitsRequest) SetQ(q *string) {
+	l.Q = q
+	l.require(listClientLimitsRequestFieldQ)
+}
+
+var (
 	listClientPortalUsersRequestFieldClientID = big.NewInt(1 << 0)
 	listClientPortalUsersRequestFieldPage     = big.NewInt(1 << 1)
 	listClientPortalUsersRequestFieldPageSize = big.NewInt(1 << 2)
@@ -1105,6 +1168,150 @@ func (c *ClientDataResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientDataResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	clientLimitHistoryResponseFieldID        = big.NewInt(1 << 0)
+	clientLimitHistoryResponseFieldCreatedAt = big.NewInt(1 << 1)
+	clientLimitHistoryResponseFieldCurrency  = big.NewInt(1 << 2)
+	clientLimitHistoryResponseFieldLimit     = big.NewInt(1 << 3)
+)
+
+type ClientLimitHistoryResponse struct {
+	// The unique identifier of the limit record
+	ID string `json:"id" url:"id"`
+	// When the limit was granted
+	CreatedAt time.Time `json:"created_at" url:"created_at"`
+	// The currency the limit is denominated in
+	Currency CurrencyEnum `json:"currency" url:"currency"`
+	// The credit limit granted to the client
+	Limit string `json:"limit" url:"limit"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientLimitHistoryResponse) GetID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ID
+}
+
+func (c *ClientLimitHistoryResponse) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *ClientLimitHistoryResponse) GetCurrency() CurrencyEnum {
+	if c == nil {
+		return ""
+	}
+	return c.Currency
+}
+
+func (c *ClientLimitHistoryResponse) GetLimit() string {
+	if c == nil {
+		return ""
+	}
+	return c.Limit
+}
+
+func (c *ClientLimitHistoryResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ClientLimitHistoryResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientLimitHistoryResponse) SetID(id string) {
+	c.ID = id
+	c.require(clientLimitHistoryResponseFieldID)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientLimitHistoryResponse) SetCreatedAt(createdAt time.Time) {
+	c.CreatedAt = createdAt
+	c.require(clientLimitHistoryResponseFieldCreatedAt)
+}
+
+// SetCurrency sets the Currency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientLimitHistoryResponse) SetCurrency(currency CurrencyEnum) {
+	c.Currency = currency
+	c.require(clientLimitHistoryResponseFieldCurrency)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientLimitHistoryResponse) SetLimit(limit string) {
+	c.Limit = limit
+	c.require(clientLimitHistoryResponseFieldLimit)
+}
+
+func (c *ClientLimitHistoryResponse) UnmarshalJSON(data []byte) error {
+	type embed ClientLimitHistoryResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientLimitHistoryResponse(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientLimitHistoryResponse) MarshalJSON() ([]byte, error) {
+	type embed ClientLimitHistoryResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClientLimitHistoryResponse) String() string {
 	if c == nil {
 		return "<nil>"
 	}
@@ -1989,6 +2196,209 @@ func (p *PaginatedResponseChecklistSummaryPartnerResponse) MarshalJSON() ([]byte
 }
 
 func (p *PaginatedResponseChecklistSummaryPartnerResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	paginatedResponseClientLimitHistoryResponseFieldItems       = big.NewInt(1 << 0)
+	paginatedResponseClientLimitHistoryResponseFieldPage        = big.NewInt(1 << 1)
+	paginatedResponseClientLimitHistoryResponseFieldPageSize    = big.NewInt(1 << 2)
+	paginatedResponseClientLimitHistoryResponseFieldItemsInPage = big.NewInt(1 << 3)
+	paginatedResponseClientLimitHistoryResponseFieldTotalItems  = big.NewInt(1 << 4)
+	paginatedResponseClientLimitHistoryResponseFieldTotalPages  = big.NewInt(1 << 5)
+	paginatedResponseClientLimitHistoryResponseFieldHasNext     = big.NewInt(1 << 6)
+	paginatedResponseClientLimitHistoryResponseFieldHasPrevious = big.NewInt(1 << 7)
+)
+
+type PaginatedResponseClientLimitHistoryResponse struct {
+	Items []*ClientLimitHistoryResponse `json:"items" url:"items"`
+	// Current page number
+	Page *int `json:"page,omitempty" url:"page,omitempty"`
+	// Number of items per page
+	PageSize *int `json:"page_size,omitempty" url:"page_size,omitempty"`
+	// Number of items in the current page
+	ItemsInPage *int `json:"items_in_page,omitempty" url:"items_in_page,omitempty"`
+	// Total number of items across all pages
+	TotalItems *int `json:"total_items,omitempty" url:"total_items,omitempty"`
+	// Total number of pages available
+	TotalPages *int `json:"total_pages,omitempty" url:"total_pages,omitempty"`
+	// Indicates if there is a next page
+	HasNext *bool `json:"has_next,omitempty" url:"has_next,omitempty"`
+	// Indicates if there is a previous page
+	HasPrevious *bool `json:"has_previous,omitempty" url:"has_previous,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) GetItems() []*ClientLimitHistoryResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Items
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) GetPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.Page
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) GetPageSize() *int {
+	if p == nil {
+		return nil
+	}
+	return p.PageSize
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) GetItemsInPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.ItemsInPage
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) GetTotalItems() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalItems
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) GetTotalPages() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalPages
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) GetHasNext() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasNext
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) GetHasPrevious() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasPrevious
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientLimitHistoryResponse) SetItems(items []*ClientLimitHistoryResponse) {
+	p.Items = items
+	p.require(paginatedResponseClientLimitHistoryResponseFieldItems)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientLimitHistoryResponse) SetPage(page *int) {
+	p.Page = page
+	p.require(paginatedResponseClientLimitHistoryResponseFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientLimitHistoryResponse) SetPageSize(pageSize *int) {
+	p.PageSize = pageSize
+	p.require(paginatedResponseClientLimitHistoryResponseFieldPageSize)
+}
+
+// SetItemsInPage sets the ItemsInPage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientLimitHistoryResponse) SetItemsInPage(itemsInPage *int) {
+	p.ItemsInPage = itemsInPage
+	p.require(paginatedResponseClientLimitHistoryResponseFieldItemsInPage)
+}
+
+// SetTotalItems sets the TotalItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientLimitHistoryResponse) SetTotalItems(totalItems *int) {
+	p.TotalItems = totalItems
+	p.require(paginatedResponseClientLimitHistoryResponseFieldTotalItems)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientLimitHistoryResponse) SetTotalPages(totalPages *int) {
+	p.TotalPages = totalPages
+	p.require(paginatedResponseClientLimitHistoryResponseFieldTotalPages)
+}
+
+// SetHasNext sets the HasNext field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientLimitHistoryResponse) SetHasNext(hasNext *bool) {
+	p.HasNext = hasNext
+	p.require(paginatedResponseClientLimitHistoryResponseFieldHasNext)
+}
+
+// SetHasPrevious sets the HasPrevious field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientLimitHistoryResponse) SetHasPrevious(hasPrevious *bool) {
+	p.HasPrevious = hasPrevious
+	p.require(paginatedResponseClientLimitHistoryResponseFieldHasPrevious)
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaginatedResponseClientLimitHistoryResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaginatedResponseClientLimitHistoryResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) MarshalJSON() ([]byte, error) {
+	type embed PaginatedResponseClientLimitHistoryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaginatedResponseClientLimitHistoryResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}

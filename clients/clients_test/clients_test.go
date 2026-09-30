@@ -396,6 +396,32 @@ func TestClientsListClientWaiversWithWireMock(
 	VerifyRequestCount(t, "TestClientsListClientWaiversWithWireMock", "GET", "/v2/clients/client_id/waivers", nil, 1)
 }
 
+func TestClientsListClientLimitsWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.ListClientLimitsRequest{
+		ClientID: "client_id",
+	}
+	_, invocationErr := client.Clients.ListClientLimits(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestClientsListClientLimitsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestClientsListClientLimitsWithWireMock", "GET", "/v2/clients/client_id/limits", nil, 1)
+}
+
 func TestClientsGetClientByIDWithWireMock(
 	t *testing.T,
 ) {
