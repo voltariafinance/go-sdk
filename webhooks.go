@@ -24,7 +24,7 @@ type WebhookCreatePayload struct {
 	URL string `json:"url" url:"-"`
 	// Optional description of this webhook endpoint
 	Description *string `json:"description,omitempty" url:"-"`
-	// Event type to subscribe toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated
+	// Event type to subscribe toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated, bank_connection_updated
 	EventType WebhookEventTypeEnum `json:"event_type" url:"-"`
 	// Secret for signing webhook payloads
 	Secret string `json:"secret" url:"-"`
@@ -1023,7 +1023,7 @@ type WebhookSubscriptionResponse struct {
 	URL string `json:"url" url:"url"`
 	// Description of this webhook endpoint
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Event type subscribed toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated
+	// Event type subscribed toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated, bank_connection_updated
 	EventType WebhookEventTypeEnum `json:"event_type" url:"event_type"`
 	// Status of the webhook subscriptionPossible values: active, paused, disabled
 	Status WebhookStatusEnum `json:"status" url:"status"`
@@ -1253,7 +1253,7 @@ type WebhookUpdatePayload struct {
 	URL *string `json:"url,omitempty" url:"-"`
 	// Description of this webhook endpoint
 	Description *string `json:"description,omitempty" url:"-"`
-	// Event type to subscribe toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated
+	// Event type to subscribe toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated, bank_connection_updated
 	EventType *WebhookEventTypeEnum `json:"event_type,omitempty" url:"-"`
 	// Status of the webhook subscriptionPossible values: active, paused, disabled
 	Status *WebhookStatusEnum `json:"status,omitempty" url:"-"`

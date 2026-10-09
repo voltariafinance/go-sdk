@@ -188,6 +188,14 @@ func TestSettersLoanCreatePayload(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetRepaymentMethod", func(t *testing.T) {
+		obj := &LoanCreatePayload{}
+		var fernTestValueRepaymentMethod *LoanRepaymentMethodEnum
+		obj.SetRepaymentMethod(fernTestValueRepaymentMethod)
+		assert.Equal(t, fernTestValueRepaymentMethod, obj.RepaymentMethod)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetData", func(t *testing.T) {
 		obj := &LoanCreatePayload{}
 		var fernTestValueData map[string]any
@@ -362,6 +370,37 @@ func TestSettersMarkExplicitLoanCreatePayload(t *testing.T) {
 
 		// Act
 		obj.SetInstallments(fernTestValueInstallments)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetRepaymentMethod_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanCreatePayload{}
+		var fernTestValueRepaymentMethod *LoanRepaymentMethodEnum
+
+		// Act
+		obj.SetRepaymentMethod(fernTestValueRepaymentMethod)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1295,6 +1334,14 @@ func TestSettersBulkLoanItemPayload(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetRepaymentMethod", func(t *testing.T) {
+		obj := &BulkLoanItemPayload{}
+		var fernTestValueRepaymentMethod *LoanRepaymentMethodEnum
+		obj.SetRepaymentMethod(fernTestValueRepaymentMethod)
+		assert.Equal(t, fernTestValueRepaymentMethod, obj.RepaymentMethod)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetData", func(t *testing.T) {
 		obj := &BulkLoanItemPayload{}
 		var fernTestValueData map[string]any
@@ -1482,6 +1529,39 @@ func TestGettersBulkLoanItemPayload(t *testing.T) {
 			}
 		}()
 		_ = obj.GetInstallments() // Should return zero value
+	})
+
+	t.Run("GetRepaymentMethod", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkLoanItemPayload{}
+		var expected *LoanRepaymentMethodEnum
+		obj.RepaymentMethod = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetRepaymentMethod(), "getter should return the property value")
+	})
+
+	t.Run("GetRepaymentMethod_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkLoanItemPayload{}
+		obj.RepaymentMethod = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRepaymentMethod(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetRepaymentMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BulkLoanItemPayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetRepaymentMethod() // Should return zero value
 	})
 
 	t.Run("GetData", func(t *testing.T) {
@@ -1683,6 +1763,37 @@ func TestSettersMarkExplicitBulkLoanItemPayload(t *testing.T) {
 
 		// Act
 		obj.SetInstallments(fernTestValueInstallments)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetRepaymentMethod_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BulkLoanItemPayload{}
+		var fernTestValueRepaymentMethod *LoanRepaymentMethodEnum
+
+		// Act
+		obj.SetRepaymentMethod(fernTestValueRepaymentMethod)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3756,6 +3867,14 @@ func TestSettersLoanResponseWithClientInfo(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetRepaymentMethod", func(t *testing.T) {
+		obj := &LoanResponseWithClientInfo{}
+		var fernTestValueRepaymentMethod LoanRepaymentMethodEnum
+		obj.SetRepaymentMethod(fernTestValueRepaymentMethod)
+		assert.Equal(t, fernTestValueRepaymentMethod, obj.RepaymentMethod)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetData", func(t *testing.T) {
 		obj := &LoanResponseWithClientInfo{}
 		var fernTestValueData map[string]any
@@ -4227,6 +4346,29 @@ func TestGettersLoanResponseWithClientInfo(t *testing.T) {
 			}
 		}()
 		_ = obj.GetEarlySettlementAmount() // Should return zero value
+	})
+
+	t.Run("GetRepaymentMethod", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanResponseWithClientInfo{}
+		var expected LoanRepaymentMethodEnum
+		obj.RepaymentMethod = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetRepaymentMethod(), "getter should return the property value")
+	})
+
+	t.Run("GetRepaymentMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanResponseWithClientInfo
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetRepaymentMethod() // Should return zero value
 	})
 
 	t.Run("GetData", func(t *testing.T) {
@@ -4837,6 +4979,37 @@ func TestSettersMarkExplicitLoanResponseWithClientInfo(t *testing.T) {
 
 		// Act
 		obj.SetEarlySettlementAmount(fernTestValueEarlySettlementAmount)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetRepaymentMethod_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanResponseWithClientInfo{}
+		var fernTestValueRepaymentMethod LoanRepaymentMethodEnum
+
+		// Act
+		obj.SetRepaymentMethod(fernTestValueRepaymentMethod)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

@@ -145,7 +145,7 @@ var (
 
 type LoanUpdateSandbox struct {
 	LoanID string `json:"-" url:"-"`
-	// The status of the client. One of the following: `pending, overdue, active, default, sold, restructured, repaid, pre_approved, rejected, deleted, inactive`
+	// The status of the loan. One of the following: `pending, overdue, active, default, sold, restructured, repaid, pre_approved, rejected, inactive`. Use the delete loan endpoint to delete a loan.
 	Status *LoanStatusEnum `json:"status,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -202,7 +202,7 @@ var (
 type WebhookTestSandbox struct {
 	// The ID of the webhook subscription. Only this webhook will be triggered if provided.
 	WebhookID *string `json:"webhook_id,omitempty" url:"-"`
-	// Event type to trigger for the test. All subscriptions for this event type will be triggered if webhook_id is not provided.Possible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated
+	// Event type to trigger for the test. All subscriptions for this event type will be triggered if webhook_id is not provided.Possible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated, bank_connection_updated
 	EventType WebhookEventTypeEnum `json:"event_type" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

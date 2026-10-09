@@ -2029,6 +2029,28 @@ func (l LoanPaymentStatusEnum) Ptr() *LoanPaymentStatusEnum {
 	return &l
 }
 
+type LoanRepaymentMethodEnum string
+
+const (
+	LoanRepaymentMethodEnumPmt               LoanRepaymentMethodEnum = "pmt"
+	LoanRepaymentMethodEnumConstantPrincipal LoanRepaymentMethodEnum = "constant_principal"
+)
+
+func NewLoanRepaymentMethodEnumFromString(s string) (LoanRepaymentMethodEnum, error) {
+	switch s {
+	case "pmt":
+		return LoanRepaymentMethodEnumPmt, nil
+	case "constant_principal":
+		return LoanRepaymentMethodEnumConstantPrincipal, nil
+	}
+	var t LoanRepaymentMethodEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LoanRepaymentMethodEnum) Ptr() *LoanRepaymentMethodEnum {
+	return &l
+}
+
 var (
 	loanResponseWithInstallmentsFieldID                    = big.NewInt(1 << 0)
 	loanResponseWithInstallmentsFieldCreatedAt             = big.NewInt(1 << 1)
@@ -2046,8 +2068,9 @@ var (
 	loanResponseWithInstallmentsFieldPaymentReference      = big.NewInt(1 << 13)
 	loanResponseWithInstallmentsFieldEarlySettlementDate   = big.NewInt(1 << 14)
 	loanResponseWithInstallmentsFieldEarlySettlementAmount = big.NewInt(1 << 15)
-	loanResponseWithInstallmentsFieldData                  = big.NewInt(1 << 16)
-	loanResponseWithInstallmentsFieldInstallments          = big.NewInt(1 << 17)
+	loanResponseWithInstallmentsFieldRepaymentMethod       = big.NewInt(1 << 16)
+	loanResponseWithInstallmentsFieldData                  = big.NewInt(1 << 17)
+	loanResponseWithInstallmentsFieldInstallments          = big.NewInt(1 << 18)
 )
 
 type LoanResponseWithInstallments struct {
@@ -2083,6 +2106,8 @@ type LoanResponseWithInstallments struct {
 	EarlySettlementDate *time.Time `json:"early_settlement_date,omitempty" url:"early_settlement_date,omitempty" format:"date"`
 	// The settlement amount at early settlement if applicable
 	EarlySettlementAmount *string `json:"early_settlement_amount,omitempty" url:"early_settlement_amount,omitempty"`
+	// How each installment is split into principal and interest
+	RepaymentMethod LoanRepaymentMethodEnum `json:"repayment_method" url:"repayment_method"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 	// List of installments for the loan
@@ -2205,6 +2230,13 @@ func (l *LoanResponseWithInstallments) GetEarlySettlementAmount() *string {
 		return nil
 	}
 	return l.EarlySettlementAmount
+}
+
+func (l *LoanResponseWithInstallments) GetRepaymentMethod() LoanRepaymentMethodEnum {
+	if l == nil {
+		return ""
+	}
+	return l.RepaymentMethod
 }
 
 func (l *LoanResponseWithInstallments) GetData() map[string]any {
@@ -2345,6 +2377,13 @@ func (l *LoanResponseWithInstallments) SetEarlySettlementDate(earlySettlementDat
 func (l *LoanResponseWithInstallments) SetEarlySettlementAmount(earlySettlementAmount *string) {
 	l.EarlySettlementAmount = earlySettlementAmount
 	l.require(loanResponseWithInstallmentsFieldEarlySettlementAmount)
+}
+
+// SetRepaymentMethod sets the RepaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanResponseWithInstallments) SetRepaymentMethod(repaymentMethod LoanRepaymentMethodEnum) {
+	l.RepaymentMethod = repaymentMethod
+	l.require(loanResponseWithInstallmentsFieldRepaymentMethod)
 }
 
 // SetData sets the Data field and marks it as non-optional;
@@ -3409,11 +3448,12 @@ func (v *ValidationErrorLocItem) Accept(visitor ValidationErrorLocItemVisitor) e
 type WebhookEventTypeEnum string
 
 const (
-	WebhookEventTypeEnumLoanUpdated         WebhookEventTypeEnum = "loan.updated"
-	WebhookEventTypeEnumInstallmentUpdated  WebhookEventTypeEnum = "installment.updated"
-	WebhookEventTypeEnumClientUpdated       WebhookEventTypeEnum = "client.updated"
-	WebhookEventTypeEnumClientLimitUpdated  WebhookEventTypeEnum = "client.limit.updated"
-	WebhookEventTypeEnumPartnerLimitUpdated WebhookEventTypeEnum = "partner.limit.updated"
+	WebhookEventTypeEnumLoanUpdated           WebhookEventTypeEnum = "loan.updated"
+	WebhookEventTypeEnumInstallmentUpdated    WebhookEventTypeEnum = "installment.updated"
+	WebhookEventTypeEnumClientUpdated         WebhookEventTypeEnum = "client.updated"
+	WebhookEventTypeEnumClientLimitUpdated    WebhookEventTypeEnum = "client.limit.updated"
+	WebhookEventTypeEnumPartnerLimitUpdated   WebhookEventTypeEnum = "partner.limit.updated"
+	WebhookEventTypeEnumBankConnectionUpdated WebhookEventTypeEnum = "bank_connection.updated"
 )
 
 func NewWebhookEventTypeEnumFromString(s string) (WebhookEventTypeEnum, error) {
@@ -3428,6 +3468,8 @@ func NewWebhookEventTypeEnumFromString(s string) (WebhookEventTypeEnum, error) {
 		return WebhookEventTypeEnumClientLimitUpdated, nil
 	case "partner.limit.updated":
 		return WebhookEventTypeEnumPartnerLimitUpdated, nil
+	case "bank_connection.updated":
+		return WebhookEventTypeEnumBankConnectionUpdated, nil
 	}
 	var t WebhookEventTypeEnum
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

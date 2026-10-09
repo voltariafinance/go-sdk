@@ -4534,6 +4534,14 @@ func TestSettersLoanResponseWithInstallments(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetRepaymentMethod", func(t *testing.T) {
+		obj := &LoanResponseWithInstallments{}
+		var fernTestValueRepaymentMethod LoanRepaymentMethodEnum
+		obj.SetRepaymentMethod(fernTestValueRepaymentMethod)
+		assert.Equal(t, fernTestValueRepaymentMethod, obj.RepaymentMethod)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetData", func(t *testing.T) {
 		obj := &LoanResponseWithInstallments{}
 		var fernTestValueData map[string]any
@@ -4989,6 +4997,29 @@ func TestGettersLoanResponseWithInstallments(t *testing.T) {
 			}
 		}()
 		_ = obj.GetEarlySettlementAmount() // Should return zero value
+	})
+
+	t.Run("GetRepaymentMethod", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanResponseWithInstallments{}
+		var expected LoanRepaymentMethodEnum
+		obj.RepaymentMethod = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetRepaymentMethod(), "getter should return the property value")
+	})
+
+	t.Run("GetRepaymentMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanResponseWithInstallments
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetRepaymentMethod() // Should return zero value
 	})
 
 	t.Run("GetData", func(t *testing.T) {
@@ -5533,6 +5564,37 @@ func TestSettersMarkExplicitLoanResponseWithInstallments(t *testing.T) {
 
 		// Act
 		obj.SetEarlySettlementAmount(fernTestValueEarlySettlementAmount)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetRepaymentMethod_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanResponseWithInstallments{}
+		var fernTestValueRepaymentMethod LoanRepaymentMethodEnum
+
+		// Act
+		obj.SetRepaymentMethod(fernTestValueRepaymentMethod)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -9072,6 +9134,35 @@ func TestEnumLoanPaymentStatusEnum(t *testing.T) {
 	})
 }
 
+func TestEnumLoanRepaymentMethodEnum(t *testing.T) {
+	t.Run("NewFromString_pmt", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewLoanRepaymentMethodEnumFromString("pmt")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, LoanRepaymentMethodEnum("pmt"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_constant_principal", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewLoanRepaymentMethodEnumFromString("constant_principal")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, LoanRepaymentMethodEnum("constant_principal"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewLoanRepaymentMethodEnumFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewLoanRepaymentMethodEnumFromString("pmt")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
 func TestEnumLoanStatusEnum(t *testing.T) {
 	t.Run("NewFromString_pending", func(t *testing.T) {
 		t.Parallel()
@@ -9198,6 +9289,13 @@ func TestEnumWebhookEventTypeEnum(t *testing.T) {
 		val, err := NewWebhookEventTypeEnumFromString("partner.limit.updated")
 		assert.NoError(t, err, "valid enum value should not return error")
 		assert.Equal(t, WebhookEventTypeEnum("partner.limit.updated"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_bank_connection_updated", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWebhookEventTypeEnumFromString("bank_connection.updated")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WebhookEventTypeEnum("bank_connection.updated"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_Invalid", func(t *testing.T) {

@@ -116,13 +116,14 @@ func (b *BulkLoanCreatePayload) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	loanCreatePayloadFieldClientID      = big.NewInt(1 << 0)
-	loanCreatePayloadFieldCurrency      = big.NewInt(1 << 1)
-	loanCreatePayloadFieldAmount        = big.NewInt(1 << 2)
-	loanCreatePayloadFieldCorrelationID = big.NewInt(1 << 3)
-	loanCreatePayloadFieldLoanDate      = big.NewInt(1 << 4)
-	loanCreatePayloadFieldInstallments  = big.NewInt(1 << 5)
-	loanCreatePayloadFieldData          = big.NewInt(1 << 6)
+	loanCreatePayloadFieldClientID        = big.NewInt(1 << 0)
+	loanCreatePayloadFieldCurrency        = big.NewInt(1 << 1)
+	loanCreatePayloadFieldAmount          = big.NewInt(1 << 2)
+	loanCreatePayloadFieldCorrelationID   = big.NewInt(1 << 3)
+	loanCreatePayloadFieldLoanDate        = big.NewInt(1 << 4)
+	loanCreatePayloadFieldInstallments    = big.NewInt(1 << 5)
+	loanCreatePayloadFieldRepaymentMethod = big.NewInt(1 << 6)
+	loanCreatePayloadFieldData            = big.NewInt(1 << 7)
 )
 
 type LoanCreatePayload struct {
@@ -138,6 +139,8 @@ type LoanCreatePayload struct {
 	LoanDate *time.Time `json:"loan_date,omitempty" url:"-" format:"date"`
 	// List of installments for the loan, each with a due date and amount
 	Installments []*LoanInstallmentCreatePayload `json:"installments" url:"-"`
+	// How each installment is split into principal and interest: pmt (amortising) or constant_principal (loan amount divided equally across installments, the rest is interest)
+	RepaymentMethod *LoanRepaymentMethodEnum `json:"repayment_method,omitempty" url:"-"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"-"`
 
@@ -192,6 +195,13 @@ func (l *LoanCreatePayload) SetLoanDate(loanDate *time.Time) {
 func (l *LoanCreatePayload) SetInstallments(installments []*LoanInstallmentCreatePayload) {
 	l.Installments = installments
 	l.require(loanCreatePayloadFieldInstallments)
+}
+
+// SetRepaymentMethod sets the RepaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanCreatePayload) SetRepaymentMethod(repaymentMethod *LoanRepaymentMethodEnum) {
+	l.RepaymentMethod = repaymentMethod
+	l.require(loanCreatePayloadFieldRepaymentMethod)
 }
 
 // SetData sets the Data field and marks it as non-optional;
@@ -587,13 +597,14 @@ func (l *LoanDefaultPayload) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	bulkLoanItemPayloadFieldClientID      = big.NewInt(1 << 0)
-	bulkLoanItemPayloadFieldCurrency      = big.NewInt(1 << 1)
-	bulkLoanItemPayloadFieldAmount        = big.NewInt(1 << 2)
-	bulkLoanItemPayloadFieldCorrelationID = big.NewInt(1 << 3)
-	bulkLoanItemPayloadFieldLoanDate      = big.NewInt(1 << 4)
-	bulkLoanItemPayloadFieldInstallments  = big.NewInt(1 << 5)
-	bulkLoanItemPayloadFieldData          = big.NewInt(1 << 6)
+	bulkLoanItemPayloadFieldClientID        = big.NewInt(1 << 0)
+	bulkLoanItemPayloadFieldCurrency        = big.NewInt(1 << 1)
+	bulkLoanItemPayloadFieldAmount          = big.NewInt(1 << 2)
+	bulkLoanItemPayloadFieldCorrelationID   = big.NewInt(1 << 3)
+	bulkLoanItemPayloadFieldLoanDate        = big.NewInt(1 << 4)
+	bulkLoanItemPayloadFieldInstallments    = big.NewInt(1 << 5)
+	bulkLoanItemPayloadFieldRepaymentMethod = big.NewInt(1 << 6)
+	bulkLoanItemPayloadFieldData            = big.NewInt(1 << 7)
 )
 
 type BulkLoanItemPayload struct {
@@ -609,6 +620,8 @@ type BulkLoanItemPayload struct {
 	LoanDate *time.Time `json:"loan_date,omitempty" url:"loan_date,omitempty" format:"date"`
 	// List of installments for the loan, each with a due date and amount
 	Installments []*LoanInstallmentCreatePayload `json:"installments" url:"installments"`
+	// How each installment is split into principal and interest: pmt (amortising) or constant_principal (loan amount divided equally across installments, the rest is interest)
+	RepaymentMethod *LoanRepaymentMethodEnum `json:"repayment_method,omitempty" url:"repayment_method,omitempty"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 
@@ -659,6 +672,13 @@ func (b *BulkLoanItemPayload) GetInstallments() []*LoanInstallmentCreatePayload 
 		return nil
 	}
 	return b.Installments
+}
+
+func (b *BulkLoanItemPayload) GetRepaymentMethod() *LoanRepaymentMethodEnum {
+	if b == nil {
+		return nil
+	}
+	return b.RepaymentMethod
 }
 
 func (b *BulkLoanItemPayload) GetData() map[string]any {
@@ -722,6 +742,13 @@ func (b *BulkLoanItemPayload) SetLoanDate(loanDate *time.Time) {
 func (b *BulkLoanItemPayload) SetInstallments(installments []*LoanInstallmentCreatePayload) {
 	b.Installments = installments
 	b.require(bulkLoanItemPayloadFieldInstallments)
+}
+
+// SetRepaymentMethod sets the RepaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkLoanItemPayload) SetRepaymentMethod(repaymentMethod *LoanRepaymentMethodEnum) {
+	b.RepaymentMethod = repaymentMethod
+	b.require(bulkLoanItemPayloadFieldRepaymentMethod)
 }
 
 // SetData sets the Data field and marks it as non-optional;
@@ -1668,10 +1695,11 @@ var (
 	loanResponseWithClientInfoFieldPaymentReference      = big.NewInt(1 << 13)
 	loanResponseWithClientInfoFieldEarlySettlementDate   = big.NewInt(1 << 14)
 	loanResponseWithClientInfoFieldEarlySettlementAmount = big.NewInt(1 << 15)
-	loanResponseWithClientInfoFieldData                  = big.NewInt(1 << 16)
-	loanResponseWithClientInfoFieldClient                = big.NewInt(1 << 17)
-	loanResponseWithClientInfoFieldOutstandingPrincipal  = big.NewInt(1 << 18)
-	loanResponseWithClientInfoFieldRemainingAmount       = big.NewInt(1 << 19)
+	loanResponseWithClientInfoFieldRepaymentMethod       = big.NewInt(1 << 16)
+	loanResponseWithClientInfoFieldData                  = big.NewInt(1 << 17)
+	loanResponseWithClientInfoFieldClient                = big.NewInt(1 << 18)
+	loanResponseWithClientInfoFieldOutstandingPrincipal  = big.NewInt(1 << 19)
+	loanResponseWithClientInfoFieldRemainingAmount       = big.NewInt(1 << 20)
 )
 
 type LoanResponseWithClientInfo struct {
@@ -1707,6 +1735,8 @@ type LoanResponseWithClientInfo struct {
 	EarlySettlementDate *time.Time `json:"early_settlement_date,omitempty" url:"early_settlement_date,omitempty" format:"date"`
 	// The settlement amount at early settlement if applicable
 	EarlySettlementAmount *string `json:"early_settlement_amount,omitempty" url:"early_settlement_amount,omitempty"`
+	// How each installment is split into principal and interest
+	RepaymentMethod LoanRepaymentMethodEnum `json:"repayment_method" url:"repayment_method"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 	// The client details associated with the loan
@@ -1833,6 +1863,13 @@ func (l *LoanResponseWithClientInfo) GetEarlySettlementAmount() *string {
 		return nil
 	}
 	return l.EarlySettlementAmount
+}
+
+func (l *LoanResponseWithClientInfo) GetRepaymentMethod() LoanRepaymentMethodEnum {
+	if l == nil {
+		return ""
+	}
+	return l.RepaymentMethod
 }
 
 func (l *LoanResponseWithClientInfo) GetData() map[string]any {
@@ -1987,6 +2024,13 @@ func (l *LoanResponseWithClientInfo) SetEarlySettlementDate(earlySettlementDate 
 func (l *LoanResponseWithClientInfo) SetEarlySettlementAmount(earlySettlementAmount *string) {
 	l.EarlySettlementAmount = earlySettlementAmount
 	l.require(loanResponseWithClientInfoFieldEarlySettlementAmount)
+}
+
+// SetRepaymentMethod sets the RepaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanResponseWithClientInfo) SetRepaymentMethod(repaymentMethod LoanRepaymentMethodEnum) {
+	l.RepaymentMethod = repaymentMethod
+	l.require(loanResponseWithClientInfoFieldRepaymentMethod)
 }
 
 // SetData sets the Data field and marks it as non-optional;

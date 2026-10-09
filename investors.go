@@ -601,11 +601,12 @@ var (
 	loanInvestorResponseFieldPaymentReference      = big.NewInt(1 << 13)
 	loanInvestorResponseFieldEarlySettlementDate   = big.NewInt(1 << 14)
 	loanInvestorResponseFieldEarlySettlementAmount = big.NewInt(1 << 15)
-	loanInvestorResponseFieldData                  = big.NewInt(1 << 16)
-	loanInvestorResponseFieldClient                = big.NewInt(1 << 17)
-	loanInvestorResponseFieldOutstandingPrincipal  = big.NewInt(1 << 18)
-	loanInvestorResponseFieldRemainingAmount       = big.NewInt(1 << 19)
-	loanInvestorResponseFieldPaymentToTheClient    = big.NewInt(1 << 20)
+	loanInvestorResponseFieldRepaymentMethod       = big.NewInt(1 << 16)
+	loanInvestorResponseFieldData                  = big.NewInt(1 << 17)
+	loanInvestorResponseFieldClient                = big.NewInt(1 << 18)
+	loanInvestorResponseFieldOutstandingPrincipal  = big.NewInt(1 << 19)
+	loanInvestorResponseFieldRemainingAmount       = big.NewInt(1 << 20)
+	loanInvestorResponseFieldPaymentToTheClient    = big.NewInt(1 << 21)
 )
 
 type LoanInvestorResponse struct {
@@ -641,6 +642,8 @@ type LoanInvestorResponse struct {
 	EarlySettlementDate *time.Time `json:"early_settlement_date,omitempty" url:"early_settlement_date,omitempty" format:"date"`
 	// The settlement amount at early settlement if applicable
 	EarlySettlementAmount *string `json:"early_settlement_amount,omitempty" url:"early_settlement_amount,omitempty"`
+	// How each installment is split into principal and interest
+	RepaymentMethod LoanRepaymentMethodEnum `json:"repayment_method" url:"repayment_method"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 	// The client details associated with the loan
@@ -769,6 +772,13 @@ func (l *LoanInvestorResponse) GetEarlySettlementAmount() *string {
 		return nil
 	}
 	return l.EarlySettlementAmount
+}
+
+func (l *LoanInvestorResponse) GetRepaymentMethod() LoanRepaymentMethodEnum {
+	if l == nil {
+		return ""
+	}
+	return l.RepaymentMethod
 }
 
 func (l *LoanInvestorResponse) GetData() map[string]any {
@@ -930,6 +940,13 @@ func (l *LoanInvestorResponse) SetEarlySettlementDate(earlySettlementDate *time.
 func (l *LoanInvestorResponse) SetEarlySettlementAmount(earlySettlementAmount *string) {
 	l.EarlySettlementAmount = earlySettlementAmount
 	l.require(loanInvestorResponseFieldEarlySettlementAmount)
+}
+
+// SetRepaymentMethod sets the RepaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanInvestorResponse) SetRepaymentMethod(repaymentMethod LoanRepaymentMethodEnum) {
+	l.RepaymentMethod = repaymentMethod
+	l.require(loanInvestorResponseFieldRepaymentMethod)
 }
 
 // SetData sets the Data field and marks it as non-optional;
