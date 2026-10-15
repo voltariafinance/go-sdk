@@ -3364,7 +3364,7 @@ func TestSettersEarlySettlementResponse(t *testing.T) {
 
 	t.Run("SetSettlementIrr", func(t *testing.T) {
 		obj := &EarlySettlementResponse{}
-		var fernTestValueSettlementIrr string
+		var fernTestValueSettlementIrr *string
 		obj.SetSettlementIrr(fernTestValueSettlementIrr)
 		assert.Equal(t, fernTestValueSettlementIrr, obj.SettlementIrr)
 		assert.NotNil(t, obj.explicitFields)
@@ -3462,11 +3462,21 @@ func TestGettersEarlySettlementResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &EarlySettlementResponse{}
-		var expected string
+		var expected *string
 		obj.SettlementIrr = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetSettlementIrr(), "getter should return the property value")
+	})
+
+	t.Run("GetSettlementIrr_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &EarlySettlementResponse{}
+		obj.SettlementIrr = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetSettlementIrr(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetSettlementIrr_NilReceiver", func(t *testing.T) {
@@ -3647,7 +3657,7 @@ func TestSettersMarkExplicitEarlySettlementResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &EarlySettlementResponse{}
-		var fernTestValueSettlementIrr string
+		var fernTestValueSettlementIrr *string
 
 		// Act
 		obj.SetSettlementIrr(fernTestValueSettlementIrr)

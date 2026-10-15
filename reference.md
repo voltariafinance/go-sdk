@@ -1072,6 +1072,295 @@ client.Clients.ListClientLimits(
 </dl>
 </details>
 
+<details><summary><code>client.Clients.ListClientCounterparties(ClientID) -> *v2.PaginatedResponseClientCounterpartyResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the counterparties of a specific client, e.g. its debtors or installers.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.ListClientCounterpartiesRequest{
+        ClientID: "client_id",
+    }
+client.Clients.ListClientCounterparties(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**clientID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pageSize:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderBy:** `*string` — Field to order the results by, e.g., 'created_at:desc'
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `*string` — Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, name, country, company_number, status, created_at. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Clients.CreateClientCounterparty(ClientID, request) -> *v2.ClientCounterpartyResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Add a counterparty to a specific client. It starts with your default counterparty status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.ClientCounterpartyCreatePayload{
+        ClientID: "client_id",
+        Name: "Acme Installations Ltd",
+    }
+client.Clients.CreateClientCounterparty(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**clientID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` — The counterparty's legal or trading name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `*string` — ISO 3166-1 alpha-2 code of the country the counterparty is registered in
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**companyNumber:** `*string` — The counterparty's company registration number
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notes:** `*string` — Free-text notes about the counterparty
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Clients.UpdateClientCounterparty(ClientID, CounterpartyID, request) -> *v2.ClientCounterpartyResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update the details of a counterparty of a specific client.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.ClientCounterpartyUpdatePayload{
+        ClientID: "client_id",
+        CounterpartyID: "counterparty_id",
+    }
+client.Clients.UpdateClientCounterparty(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**clientID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpartyID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` — The counterparty's legal or trading name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `*string` — ISO 3166-1 alpha-2 code of the country the counterparty is registered in
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**companyNumber:** `*string` — The counterparty's company registration number
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notes:** `*string` — Free-text notes about the counterparty
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Clients.GetClientByID(ClientID) -> *v2.ClientResponse</code></summary>
 <dl>
 <dd>
@@ -1260,6 +1549,89 @@ client.Clients.ListClientChecklistSummaries(
 <dd>
 
 **pageSize:** `*int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Clients.ListAllClientCounterparties() -> *v2.PaginatedResponseClientCounterpartyWithClientResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the counterparties of all your clients, e.g. their debtors or installers, with each client's name.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &v2.ListAllClientCounterpartiesRequest{}
+client.Clients.ListAllClientCounterparties(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pageSize:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderBy:** `*string` — Field to order the results by, e.g., 'created_at:desc'
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `*string` — Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, name, country, company_number, status, created_at. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
     
 </dd>
 </dl>
@@ -2259,7 +2631,7 @@ client.Documents.ListDocuments(
 <dl>
 <dd>
 
-**q:** `*string` — Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, loan_id, installment_id, waterfall_id, category, file_name, document_date, folder_path. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+**q:** `*string` — Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, loan_id, installment_id, waterfall_id, client_counterparty_id, category, file_name, document_date, folder_path. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
     
 </dd>
 </dl>
@@ -2325,6 +2697,14 @@ client.Documents.UploadDocument(
 <dd>
 
 **clientID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**clientCounterpartyID:** `*string` — The ID of the client counterparty this document belongs to, if any. Requires `client_id`; the counterparty must belong to that client.
     
 </dd>
 </dl>

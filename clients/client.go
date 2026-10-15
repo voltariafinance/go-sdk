@@ -254,6 +254,57 @@ func (c *Client) ListClientLimits(
 	return response.Body, nil
 }
 
+// Retrieve the counterparties of a specific client, e.g. its debtors or installers.
+func (c *Client) ListClientCounterparties(
+	ctx context.Context,
+	request *v2.ListClientCounterpartiesRequest,
+	opts ...option.RequestOption,
+) (*v2.PaginatedResponseClientCounterpartyResponse, error) {
+	response, err := c.WithRawResponse.ListClientCounterparties(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Add a counterparty to a specific client. It starts with your default counterparty status.
+func (c *Client) CreateClientCounterparty(
+	ctx context.Context,
+	request *v2.ClientCounterpartyCreatePayload,
+	opts ...option.RequestOption,
+) (*v2.ClientCounterpartyResponse, error) {
+	response, err := c.WithRawResponse.CreateClientCounterparty(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Update the details of a counterparty of a specific client.
+func (c *Client) UpdateClientCounterparty(
+	ctx context.Context,
+	request *v2.ClientCounterpartyUpdatePayload,
+	opts ...option.RequestOption,
+) (*v2.ClientCounterpartyResponse, error) {
+	response, err := c.WithRawResponse.UpdateClientCounterparty(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Retrieve detailed information for a specific client using their client ID.
 func (c *Client) GetClientByID(
 	ctx context.Context,
@@ -295,6 +346,23 @@ func (c *Client) ListClientChecklistSummaries(
 	opts ...option.RequestOption,
 ) (*v2.PaginatedResponseChecklistSummaryPartnerResponse, error) {
 	response, err := c.WithRawResponse.ListClientChecklistSummaries(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Retrieve the counterparties of all your clients, e.g. their debtors or installers, with each client's name.
+func (c *Client) ListAllClientCounterparties(
+	ctx context.Context,
+	request *v2.ListAllClientCounterpartiesRequest,
+	opts ...option.RequestOption,
+) (*v2.PaginatedResponseClientCounterpartyWithClientResponse, error) {
+	response, err := c.WithRawResponse.ListAllClientCounterparties(
 		ctx,
 		request,
 		opts...,

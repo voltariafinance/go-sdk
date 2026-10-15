@@ -81,7 +81,7 @@ type ListDocumentsRequest struct {
 	PageSize      *int    `json:"-" url:"page_size,omitempty"`
 	// Field to order the results by, e.g., 'created_at:desc,updated_at:asc'
 	OrderBy *string `json:"-" url:"order_by,omitempty"`
-	// Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, loan_id, installment_id, waterfall_id, category, file_name, document_date, folder_path. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+	// Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, loan_id, installment_id, waterfall_id, client_counterparty_id, category, file_name, document_date, folder_path. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
 	Q *string `json:"-" url:"q,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -237,19 +237,20 @@ func (a *AvailableDocumentCategoriesResponse) String() string {
 }
 
 var (
-	documentResponseFieldID             = big.NewInt(1 << 0)
-	documentResponseFieldCategory       = big.NewInt(1 << 1)
-	documentResponseFieldFileName       = big.NewInt(1 << 2)
-	documentResponseFieldFileType       = big.NewInt(1 << 3)
-	documentResponseFieldClientID       = big.NewInt(1 << 4)
-	documentResponseFieldFileURL        = big.NewInt(1 << 5)
-	documentResponseFieldLoanID         = big.NewInt(1 << 6)
-	documentResponseFieldInstallmentID  = big.NewInt(1 << 7)
-	documentResponseFieldFolderPath     = big.NewInt(1 << 8)
-	documentResponseFieldDocumentDate   = big.NewInt(1 << 9)
-	documentResponseFieldExpiryDate     = big.NewInt(1 << 10)
-	documentResponseFieldDistributionID = big.NewInt(1 << 11)
-	documentResponseFieldCreatedAt      = big.NewInt(1 << 12)
+	documentResponseFieldID                   = big.NewInt(1 << 0)
+	documentResponseFieldCategory             = big.NewInt(1 << 1)
+	documentResponseFieldFileName             = big.NewInt(1 << 2)
+	documentResponseFieldFileType             = big.NewInt(1 << 3)
+	documentResponseFieldClientID             = big.NewInt(1 << 4)
+	documentResponseFieldClientCounterpartyID = big.NewInt(1 << 5)
+	documentResponseFieldFileURL              = big.NewInt(1 << 6)
+	documentResponseFieldLoanID               = big.NewInt(1 << 7)
+	documentResponseFieldInstallmentID        = big.NewInt(1 << 8)
+	documentResponseFieldFolderPath           = big.NewInt(1 << 9)
+	documentResponseFieldDocumentDate         = big.NewInt(1 << 10)
+	documentResponseFieldExpiryDate           = big.NewInt(1 << 11)
+	documentResponseFieldDistributionID       = big.NewInt(1 << 12)
+	documentResponseFieldCreatedAt            = big.NewInt(1 << 13)
 )
 
 type DocumentResponse struct {
@@ -263,6 +264,8 @@ type DocumentResponse struct {
 	FileType string `json:"file_type" url:"file_type"`
 	// The associated client ID
 	ClientID *string `json:"client_id,omitempty" url:"client_id,omitempty"`
+	// The ID of the client counterparty the document belongs to, if applicable
+	ClientCounterpartyID *string `json:"client_counterparty_id,omitempty" url:"client_counterparty_id,omitempty"`
 	// The Presigned URL of the file. This is a temporary URL that allows you to download the file.
 	FileURL *string `json:"file_url,omitempty" url:"file_url,omitempty"`
 	// The ID of the associated loan, if applicable
@@ -320,6 +323,13 @@ func (d *DocumentResponse) GetClientID() *string {
 		return nil
 	}
 	return d.ClientID
+}
+
+func (d *DocumentResponse) GetClientCounterpartyID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ClientCounterpartyID
 }
 
 func (d *DocumentResponse) GetFileURL() *string {
@@ -425,6 +435,13 @@ func (d *DocumentResponse) SetFileType(fileType string) {
 func (d *DocumentResponse) SetClientID(clientID *string) {
 	d.ClientID = clientID
 	d.require(documentResponseFieldClientID)
+}
+
+// SetClientCounterpartyID sets the ClientCounterpartyID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DocumentResponse) SetClientCounterpartyID(clientCounterpartyID *string) {
+	d.ClientCounterpartyID = clientCounterpartyID
+	d.require(documentResponseFieldClientCounterpartyID)
 }
 
 // SetFileURL sets the FileURL field and marks it as non-optional;
@@ -745,18 +762,21 @@ func (p *PaginatedResponseDocumentResponse) String() string {
 }
 
 var (
-	documentCreatePayloadFieldClientID      = big.NewInt(1 << 0)
-	documentCreatePayloadFieldLoanID        = big.NewInt(1 << 1)
-	documentCreatePayloadFieldInstallmentID = big.NewInt(1 << 2)
-	documentCreatePayloadFieldWaterfallID   = big.NewInt(1 << 3)
-	documentCreatePayloadFieldTaskID        = big.NewInt(1 << 4)
+	documentCreatePayloadFieldClientID             = big.NewInt(1 << 0)
+	documentCreatePayloadFieldClientCounterpartyID = big.NewInt(1 << 1)
+	documentCreatePayloadFieldLoanID               = big.NewInt(1 << 2)
+	documentCreatePayloadFieldInstallmentID        = big.NewInt(1 << 3)
+	documentCreatePayloadFieldWaterfallID          = big.NewInt(1 << 4)
+	documentCreatePayloadFieldTaskID               = big.NewInt(1 << 5)
 )
 
 type DocumentCreatePayload struct {
-	ClientID      *string `json:"-" url:"client_id,omitempty"`
-	LoanID        *string `json:"-" url:"loan_id,omitempty"`
-	InstallmentID *string `json:"-" url:"installment_id,omitempty"`
-	WaterfallID   *string `json:"-" url:"waterfall_id,omitempty"`
+	ClientID *string `json:"-" url:"client_id,omitempty"`
+	// The ID of the client counterparty this document belongs to, if any. Requires `client_id`; the counterparty must belong to that client.
+	ClientCounterpartyID *string `json:"-" url:"client_counterparty_id,omitempty"`
+	LoanID               *string `json:"-" url:"loan_id,omitempty"`
+	InstallmentID        *string `json:"-" url:"installment_id,omitempty"`
+	WaterfallID          *string `json:"-" url:"waterfall_id,omitempty"`
 	// The task this document answers, if any.
 	TaskID *string   `json:"-" url:"task_id,omitempty"`
 	File   io.Reader `json:"-" url:"-"`
@@ -781,6 +801,13 @@ func (d *DocumentCreatePayload) require(field *big.Int) {
 func (d *DocumentCreatePayload) SetClientID(clientID *string) {
 	d.ClientID = clientID
 	d.require(documentCreatePayloadFieldClientID)
+}
+
+// SetClientCounterpartyID sets the ClientCounterpartyID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DocumentCreatePayload) SetClientCounterpartyID(clientCounterpartyID *string) {
+	d.ClientCounterpartyID = clientCounterpartyID
+	d.require(documentCreatePayloadFieldClientCounterpartyID)
 }
 
 // SetLoanID sets the LoanID field and marks it as non-optional;

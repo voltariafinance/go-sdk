@@ -422,6 +422,86 @@ func TestClientsListClientLimitsWithWireMock(
 	VerifyRequestCount(t, "TestClientsListClientLimitsWithWireMock", "GET", "/v2/clients/client_id/limits", nil, 1)
 }
 
+func TestClientsListClientCounterpartiesWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.ListClientCounterpartiesRequest{
+		ClientID: "client_id",
+	}
+	_, invocationErr := client.Clients.ListClientCounterparties(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestClientsListClientCounterpartiesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestClientsListClientCounterpartiesWithWireMock", "GET", "/v2/clients/client_id/counterparties", nil, 1)
+}
+
+func TestClientsCreateClientCounterpartyWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.ClientCounterpartyCreatePayload{
+		ClientID: "client_id",
+		Name:     "Acme Installations Ltd",
+	}
+	_, invocationErr := client.Clients.CreateClientCounterparty(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestClientsCreateClientCounterpartyWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestClientsCreateClientCounterpartyWithWireMock", "POST", "/v2/clients/client_id/counterparties", nil, 1)
+}
+
+func TestClientsUpdateClientCounterpartyWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.ClientCounterpartyUpdatePayload{
+		ClientID:       "client_id",
+		CounterpartyID: "counterparty_id",
+	}
+	_, invocationErr := client.Clients.UpdateClientCounterparty(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestClientsUpdateClientCounterpartyWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestClientsUpdateClientCounterpartyWithWireMock", "PATCH", "/v2/clients/client_id/counterparties/counterparty_id", nil, 1)
+}
+
 func TestClientsGetClientByIDWithWireMock(
 	t *testing.T,
 ) {
@@ -498,4 +578,28 @@ func TestClientsListClientChecklistSummariesWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestClientsListClientChecklistSummariesWithWireMock", "GET", "/v2/clients/client_id/checklist-summaries", nil, 1)
+}
+
+func TestClientsListAllClientCounterpartiesWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithToken("test-token"),
+	)
+	request := &v2.ListAllClientCounterpartiesRequest{}
+	_, invocationErr := client.Clients.ListAllClientCounterparties(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestClientsListAllClientCounterpartiesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestClientsListAllClientCounterpartiesWithWireMock", "GET", "/v2/client-counterparties", nil, 1)
 }

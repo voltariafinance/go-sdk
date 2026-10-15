@@ -1516,8 +1516,8 @@ type EarlySettlementResponse struct {
 	SettlementDate time.Time `json:"settlement_date" url:"settlement_date" format:"date"`
 	// The settlement amount at early settlement
 	SettlementAmount string `json:"settlement_amount" url:"settlement_amount"`
-	// The internal rate of return at early settlement
-	SettlementIrr string `json:"settlement_irr" url:"settlement_irr"`
+	// The internal rate of return at early settlement; null when it is more than 3 times the loan's IRR, e.g. a minimum fee paid within days
+	SettlementIrr *string `json:"settlement_irr,omitempty" url:"settlement_irr,omitempty"`
 	// The original internal rate of return before early settlement
 	OriginalIrr *string `json:"original_irr,omitempty" url:"original_irr,omitempty"`
 	// The minimum fee applicable at early settlement
@@ -1551,9 +1551,9 @@ func (e *EarlySettlementResponse) GetSettlementAmount() string {
 	return e.SettlementAmount
 }
 
-func (e *EarlySettlementResponse) GetSettlementIrr() string {
+func (e *EarlySettlementResponse) GetSettlementIrr() *string {
 	if e == nil {
-		return ""
+		return nil
 	}
 	return e.SettlementIrr
 }
@@ -1609,7 +1609,7 @@ func (e *EarlySettlementResponse) SetSettlementAmount(settlementAmount string) {
 
 // SetSettlementIrr sets the SettlementIrr field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EarlySettlementResponse) SetSettlementIrr(settlementIrr string) {
+func (e *EarlySettlementResponse) SetSettlementIrr(settlementIrr *string) {
 	e.SettlementIrr = settlementIrr
 	e.require(earlySettlementResponseFieldSettlementIrr)
 }

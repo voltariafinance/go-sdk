@@ -224,6 +224,92 @@ func (c *ClientCreatePayload) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	clientCounterpartyCreatePayloadFieldClientID      = big.NewInt(1 << 0)
+	clientCounterpartyCreatePayloadFieldName          = big.NewInt(1 << 1)
+	clientCounterpartyCreatePayloadFieldCountry       = big.NewInt(1 << 2)
+	clientCounterpartyCreatePayloadFieldCompanyNumber = big.NewInt(1 << 3)
+	clientCounterpartyCreatePayloadFieldNotes         = big.NewInt(1 << 4)
+)
+
+type ClientCounterpartyCreatePayload struct {
+	ClientID string `json:"-" url:"-"`
+	// The counterparty's legal or trading name
+	Name string `json:"name" url:"-"`
+	// ISO 3166-1 alpha-2 code of the country the counterparty is registered in
+	Country *string `json:"country,omitempty" url:"-"`
+	// The counterparty's company registration number
+	CompanyNumber *string `json:"company_number,omitempty" url:"-"`
+	// Free-text notes about the counterparty
+	Notes *string `json:"notes,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *ClientCounterpartyCreatePayload) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetClientID sets the ClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyCreatePayload) SetClientID(clientID string) {
+	c.ClientID = clientID
+	c.require(clientCounterpartyCreatePayloadFieldClientID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyCreatePayload) SetName(name string) {
+	c.Name = name
+	c.require(clientCounterpartyCreatePayloadFieldName)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyCreatePayload) SetCountry(country *string) {
+	c.Country = country
+	c.require(clientCounterpartyCreatePayloadFieldCountry)
+}
+
+// SetCompanyNumber sets the CompanyNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyCreatePayload) SetCompanyNumber(companyNumber *string) {
+	c.CompanyNumber = companyNumber
+	c.require(clientCounterpartyCreatePayloadFieldCompanyNumber)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyCreatePayload) SetNotes(notes *string) {
+	c.Notes = notes
+	c.require(clientCounterpartyCreatePayloadFieldNotes)
+}
+
+func (c *ClientCounterpartyCreatePayload) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientCounterpartyCreatePayload
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = ClientCounterpartyCreatePayload(body)
+	return nil
+}
+
+func (c *ClientCounterpartyCreatePayload) MarshalJSON() ([]byte, error) {
+	type embed ClientCounterpartyCreatePayload
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	clientDataCreatePayloadFieldClientID = big.NewInt(1 << 0)
 	clientDataCreatePayloadFieldData     = big.NewInt(1 << 1)
 )
@@ -431,6 +517,60 @@ func (g *GetLimitRequestRequest) SetRequestID(requestID string) {
 }
 
 var (
+	listAllClientCounterpartiesRequestFieldPage     = big.NewInt(1 << 0)
+	listAllClientCounterpartiesRequestFieldPageSize = big.NewInt(1 << 1)
+	listAllClientCounterpartiesRequestFieldOrderBy  = big.NewInt(1 << 2)
+	listAllClientCounterpartiesRequestFieldQ        = big.NewInt(1 << 3)
+)
+
+type ListAllClientCounterpartiesRequest struct {
+	Page     *int `json:"-" url:"page,omitempty"`
+	PageSize *int `json:"-" url:"page_size,omitempty"`
+	// Field to order the results by, e.g., 'created_at:desc'
+	OrderBy *string `json:"-" url:"order_by,omitempty"`
+	// Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, name, country, company_number, status, created_at. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+	Q *string `json:"-" url:"q,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListAllClientCounterpartiesRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListAllClientCounterpartiesRequest) SetPage(page *int) {
+	l.Page = page
+	l.require(listAllClientCounterpartiesRequestFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListAllClientCounterpartiesRequest) SetPageSize(pageSize *int) {
+	l.PageSize = pageSize
+	l.require(listAllClientCounterpartiesRequestFieldPageSize)
+}
+
+// SetOrderBy sets the OrderBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListAllClientCounterpartiesRequest) SetOrderBy(orderBy *string) {
+	l.OrderBy = orderBy
+	l.require(listAllClientCounterpartiesRequestFieldOrderBy)
+}
+
+// SetQ sets the Q field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListAllClientCounterpartiesRequest) SetQ(q *string) {
+	l.Q = q
+	l.require(listAllClientCounterpartiesRequestFieldQ)
+}
+
+var (
 	listClientChecklistSummariesRequestFieldClientID = big.NewInt(1 << 0)
 	listClientChecklistSummariesRequestFieldPage     = big.NewInt(1 << 1)
 	listClientChecklistSummariesRequestFieldPageSize = big.NewInt(1 << 2)
@@ -471,6 +611,69 @@ func (l *ListClientChecklistSummariesRequest) SetPage(page *int) {
 func (l *ListClientChecklistSummariesRequest) SetPageSize(pageSize *int) {
 	l.PageSize = pageSize
 	l.require(listClientChecklistSummariesRequestFieldPageSize)
+}
+
+var (
+	listClientCounterpartiesRequestFieldClientID = big.NewInt(1 << 0)
+	listClientCounterpartiesRequestFieldPage     = big.NewInt(1 << 1)
+	listClientCounterpartiesRequestFieldPageSize = big.NewInt(1 << 2)
+	listClientCounterpartiesRequestFieldOrderBy  = big.NewInt(1 << 3)
+	listClientCounterpartiesRequestFieldQ        = big.NewInt(1 << 4)
+)
+
+type ListClientCounterpartiesRequest struct {
+	ClientID string `json:"-" url:"-"`
+	Page     *int   `json:"-" url:"page,omitempty"`
+	PageSize *int   `json:"-" url:"page_size,omitempty"`
+	// Field to order the results by, e.g., 'created_at:desc'
+	OrderBy *string `json:"-" url:"order_by,omitempty"`
+	// Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, name, country, company_number, status, created_at. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null.
+	Q *string `json:"-" url:"q,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListClientCounterpartiesRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetClientID sets the ClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientCounterpartiesRequest) SetClientID(clientID string) {
+	l.ClientID = clientID
+	l.require(listClientCounterpartiesRequestFieldClientID)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientCounterpartiesRequest) SetPage(page *int) {
+	l.Page = page
+	l.require(listClientCounterpartiesRequestFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientCounterpartiesRequest) SetPageSize(pageSize *int) {
+	l.PageSize = pageSize
+	l.require(listClientCounterpartiesRequestFieldPageSize)
+}
+
+// SetOrderBy sets the OrderBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientCounterpartiesRequest) SetOrderBy(orderBy *string) {
+	l.OrderBy = orderBy
+	l.require(listClientCounterpartiesRequestFieldOrderBy)
+}
+
+// SetQ sets the Q field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListClientCounterpartiesRequest) SetQ(q *string) {
+	l.Q = q
+	l.require(listClientCounterpartiesRequestFieldQ)
 }
 
 var (
@@ -1036,6 +1239,514 @@ func NewChecklistTypeEnumFromString(s string) (ChecklistTypeEnum, error) {
 
 func (c ChecklistTypeEnum) Ptr() *ChecklistTypeEnum {
 	return &c
+}
+
+var (
+	clientCounterpartyResponseFieldID            = big.NewInt(1 << 0)
+	clientCounterpartyResponseFieldName          = big.NewInt(1 << 1)
+	clientCounterpartyResponseFieldCountry       = big.NewInt(1 << 2)
+	clientCounterpartyResponseFieldCompanyNumber = big.NewInt(1 << 3)
+	clientCounterpartyResponseFieldStatus        = big.NewInt(1 << 4)
+	clientCounterpartyResponseFieldCreatedAt     = big.NewInt(1 << 5)
+	clientCounterpartyResponseFieldUpdatedAt     = big.NewInt(1 << 6)
+	clientCounterpartyResponseFieldClientID      = big.NewInt(1 << 7)
+	clientCounterpartyResponseFieldNotes         = big.NewInt(1 << 8)
+)
+
+type ClientCounterpartyResponse struct {
+	// The ID of the counterparty
+	ID string `json:"id" url:"id"`
+	// The counterparty's legal or trading name
+	Name string `json:"name" url:"name"`
+	// ISO 3166-1 alpha-2 code of the country the counterparty is registered in
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
+	// The counterparty's company registration number
+	CompanyNumber *string `json:"company_number,omitempty" url:"company_number,omitempty"`
+	// The review status of the counterparty. One of: pending, active, inactive
+	Status ClientCounterpartyStatusEnum `json:"status" url:"status"`
+	// The date and time the counterparty was created
+	CreatedAt time.Time `json:"created_at" url:"created_at"`
+	// The date and time the counterparty was last updated
+	UpdatedAt time.Time `json:"updated_at" url:"updated_at"`
+	// The ID of the client the counterparty belongs to
+	ClientID string `json:"client_id" url:"client_id"`
+	// Free-text notes about the counterparty
+	Notes *string `json:"notes,omitempty" url:"notes,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientCounterpartyResponse) GetID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ID
+}
+
+func (c *ClientCounterpartyResponse) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+func (c *ClientCounterpartyResponse) GetCountry() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Country
+}
+
+func (c *ClientCounterpartyResponse) GetCompanyNumber() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CompanyNumber
+}
+
+func (c *ClientCounterpartyResponse) GetStatus() ClientCounterpartyStatusEnum {
+	if c == nil {
+		return ""
+	}
+	return c.Status
+}
+
+func (c *ClientCounterpartyResponse) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *ClientCounterpartyResponse) GetUpdatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.UpdatedAt
+}
+
+func (c *ClientCounterpartyResponse) GetClientID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ClientID
+}
+
+func (c *ClientCounterpartyResponse) GetNotes() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Notes
+}
+
+func (c *ClientCounterpartyResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ClientCounterpartyResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyResponse) SetID(id string) {
+	c.ID = id
+	c.require(clientCounterpartyResponseFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyResponse) SetName(name string) {
+	c.Name = name
+	c.require(clientCounterpartyResponseFieldName)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyResponse) SetCountry(country *string) {
+	c.Country = country
+	c.require(clientCounterpartyResponseFieldCountry)
+}
+
+// SetCompanyNumber sets the CompanyNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyResponse) SetCompanyNumber(companyNumber *string) {
+	c.CompanyNumber = companyNumber
+	c.require(clientCounterpartyResponseFieldCompanyNumber)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyResponse) SetStatus(status ClientCounterpartyStatusEnum) {
+	c.Status = status
+	c.require(clientCounterpartyResponseFieldStatus)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyResponse) SetCreatedAt(createdAt time.Time) {
+	c.CreatedAt = createdAt
+	c.require(clientCounterpartyResponseFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyResponse) SetUpdatedAt(updatedAt time.Time) {
+	c.UpdatedAt = updatedAt
+	c.require(clientCounterpartyResponseFieldUpdatedAt)
+}
+
+// SetClientID sets the ClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyResponse) SetClientID(clientID string) {
+	c.ClientID = clientID
+	c.require(clientCounterpartyResponseFieldClientID)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyResponse) SetNotes(notes *string) {
+	c.Notes = notes
+	c.require(clientCounterpartyResponseFieldNotes)
+}
+
+func (c *ClientCounterpartyResponse) UnmarshalJSON(data []byte) error {
+	type embed ClientCounterpartyResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientCounterpartyResponse(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientCounterpartyResponse) MarshalJSON() ([]byte, error) {
+	type embed ClientCounterpartyResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClientCounterpartyResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientCounterpartyStatusEnum string
+
+const (
+	ClientCounterpartyStatusEnumPending  ClientCounterpartyStatusEnum = "pending"
+	ClientCounterpartyStatusEnumActive   ClientCounterpartyStatusEnum = "active"
+	ClientCounterpartyStatusEnumInactive ClientCounterpartyStatusEnum = "inactive"
+)
+
+func NewClientCounterpartyStatusEnumFromString(s string) (ClientCounterpartyStatusEnum, error) {
+	switch s {
+	case "pending":
+		return ClientCounterpartyStatusEnumPending, nil
+	case "active":
+		return ClientCounterpartyStatusEnumActive, nil
+	case "inactive":
+		return ClientCounterpartyStatusEnumInactive, nil
+	}
+	var t ClientCounterpartyStatusEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientCounterpartyStatusEnum) Ptr() *ClientCounterpartyStatusEnum {
+	return &c
+}
+
+var (
+	clientCounterpartyWithClientResponseFieldID            = big.NewInt(1 << 0)
+	clientCounterpartyWithClientResponseFieldName          = big.NewInt(1 << 1)
+	clientCounterpartyWithClientResponseFieldCountry       = big.NewInt(1 << 2)
+	clientCounterpartyWithClientResponseFieldCompanyNumber = big.NewInt(1 << 3)
+	clientCounterpartyWithClientResponseFieldStatus        = big.NewInt(1 << 4)
+	clientCounterpartyWithClientResponseFieldCreatedAt     = big.NewInt(1 << 5)
+	clientCounterpartyWithClientResponseFieldUpdatedAt     = big.NewInt(1 << 6)
+	clientCounterpartyWithClientResponseFieldClientID      = big.NewInt(1 << 7)
+	clientCounterpartyWithClientResponseFieldNotes         = big.NewInt(1 << 8)
+	clientCounterpartyWithClientResponseFieldClientName    = big.NewInt(1 << 9)
+)
+
+type ClientCounterpartyWithClientResponse struct {
+	// The ID of the counterparty
+	ID string `json:"id" url:"id"`
+	// The counterparty's legal or trading name
+	Name string `json:"name" url:"name"`
+	// ISO 3166-1 alpha-2 code of the country the counterparty is registered in
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
+	// The counterparty's company registration number
+	CompanyNumber *string `json:"company_number,omitempty" url:"company_number,omitempty"`
+	// The review status of the counterparty. One of: pending, active, inactive
+	Status ClientCounterpartyStatusEnum `json:"status" url:"status"`
+	// The date and time the counterparty was created
+	CreatedAt time.Time `json:"created_at" url:"created_at"`
+	// The date and time the counterparty was last updated
+	UpdatedAt time.Time `json:"updated_at" url:"updated_at"`
+	// The ID of the client the counterparty belongs to
+	ClientID string `json:"client_id" url:"client_id"`
+	// Free-text notes about the counterparty
+	Notes *string `json:"notes,omitempty" url:"notes,omitempty"`
+	// The name of the client the counterparty belongs to
+	ClientName string `json:"client_name" url:"client_name"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ID
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetCountry() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Country
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetCompanyNumber() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CompanyNumber
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetStatus() ClientCounterpartyStatusEnum {
+	if c == nil {
+		return ""
+	}
+	return c.Status
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetUpdatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.UpdatedAt
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetClientID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ClientID
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetNotes() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Notes
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetClientName() string {
+	if c == nil {
+		return ""
+	}
+	return c.ClientName
+}
+
+func (c *ClientCounterpartyWithClientResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ClientCounterpartyWithClientResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetID(id string) {
+	c.ID = id
+	c.require(clientCounterpartyWithClientResponseFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetName(name string) {
+	c.Name = name
+	c.require(clientCounterpartyWithClientResponseFieldName)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetCountry(country *string) {
+	c.Country = country
+	c.require(clientCounterpartyWithClientResponseFieldCountry)
+}
+
+// SetCompanyNumber sets the CompanyNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetCompanyNumber(companyNumber *string) {
+	c.CompanyNumber = companyNumber
+	c.require(clientCounterpartyWithClientResponseFieldCompanyNumber)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetStatus(status ClientCounterpartyStatusEnum) {
+	c.Status = status
+	c.require(clientCounterpartyWithClientResponseFieldStatus)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetCreatedAt(createdAt time.Time) {
+	c.CreatedAt = createdAt
+	c.require(clientCounterpartyWithClientResponseFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetUpdatedAt(updatedAt time.Time) {
+	c.UpdatedAt = updatedAt
+	c.require(clientCounterpartyWithClientResponseFieldUpdatedAt)
+}
+
+// SetClientID sets the ClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetClientID(clientID string) {
+	c.ClientID = clientID
+	c.require(clientCounterpartyWithClientResponseFieldClientID)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetNotes(notes *string) {
+	c.Notes = notes
+	c.require(clientCounterpartyWithClientResponseFieldNotes)
+}
+
+// SetClientName sets the ClientName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyWithClientResponse) SetClientName(clientName string) {
+	c.ClientName = clientName
+	c.require(clientCounterpartyWithClientResponseFieldClientName)
+}
+
+func (c *ClientCounterpartyWithClientResponse) UnmarshalJSON(data []byte) error {
+	type embed ClientCounterpartyWithClientResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientCounterpartyWithClientResponse(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientCounterpartyWithClientResponse) MarshalJSON() ([]byte, error) {
+	type embed ClientCounterpartyWithClientResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClientCounterpartyWithClientResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 var (
@@ -2196,6 +2907,412 @@ func (p *PaginatedResponseChecklistSummaryPartnerResponse) MarshalJSON() ([]byte
 }
 
 func (p *PaginatedResponseChecklistSummaryPartnerResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	paginatedResponseClientCounterpartyResponseFieldItems       = big.NewInt(1 << 0)
+	paginatedResponseClientCounterpartyResponseFieldPage        = big.NewInt(1 << 1)
+	paginatedResponseClientCounterpartyResponseFieldPageSize    = big.NewInt(1 << 2)
+	paginatedResponseClientCounterpartyResponseFieldItemsInPage = big.NewInt(1 << 3)
+	paginatedResponseClientCounterpartyResponseFieldTotalItems  = big.NewInt(1 << 4)
+	paginatedResponseClientCounterpartyResponseFieldTotalPages  = big.NewInt(1 << 5)
+	paginatedResponseClientCounterpartyResponseFieldHasNext     = big.NewInt(1 << 6)
+	paginatedResponseClientCounterpartyResponseFieldHasPrevious = big.NewInt(1 << 7)
+)
+
+type PaginatedResponseClientCounterpartyResponse struct {
+	Items []*ClientCounterpartyResponse `json:"items" url:"items"`
+	// Current page number
+	Page *int `json:"page,omitempty" url:"page,omitempty"`
+	// Number of items per page
+	PageSize *int `json:"page_size,omitempty" url:"page_size,omitempty"`
+	// Number of items in the current page
+	ItemsInPage *int `json:"items_in_page,omitempty" url:"items_in_page,omitempty"`
+	// Total number of items across all pages
+	TotalItems *int `json:"total_items,omitempty" url:"total_items,omitempty"`
+	// Total number of pages available
+	TotalPages *int `json:"total_pages,omitempty" url:"total_pages,omitempty"`
+	// Indicates if there is a next page
+	HasNext *bool `json:"has_next,omitempty" url:"has_next,omitempty"`
+	// Indicates if there is a previous page
+	HasPrevious *bool `json:"has_previous,omitempty" url:"has_previous,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) GetItems() []*ClientCounterpartyResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Items
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) GetPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.Page
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) GetPageSize() *int {
+	if p == nil {
+		return nil
+	}
+	return p.PageSize
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) GetItemsInPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.ItemsInPage
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) GetTotalItems() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalItems
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) GetTotalPages() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalPages
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) GetHasNext() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasNext
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) GetHasPrevious() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasPrevious
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyResponse) SetItems(items []*ClientCounterpartyResponse) {
+	p.Items = items
+	p.require(paginatedResponseClientCounterpartyResponseFieldItems)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyResponse) SetPage(page *int) {
+	p.Page = page
+	p.require(paginatedResponseClientCounterpartyResponseFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyResponse) SetPageSize(pageSize *int) {
+	p.PageSize = pageSize
+	p.require(paginatedResponseClientCounterpartyResponseFieldPageSize)
+}
+
+// SetItemsInPage sets the ItemsInPage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyResponse) SetItemsInPage(itemsInPage *int) {
+	p.ItemsInPage = itemsInPage
+	p.require(paginatedResponseClientCounterpartyResponseFieldItemsInPage)
+}
+
+// SetTotalItems sets the TotalItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyResponse) SetTotalItems(totalItems *int) {
+	p.TotalItems = totalItems
+	p.require(paginatedResponseClientCounterpartyResponseFieldTotalItems)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyResponse) SetTotalPages(totalPages *int) {
+	p.TotalPages = totalPages
+	p.require(paginatedResponseClientCounterpartyResponseFieldTotalPages)
+}
+
+// SetHasNext sets the HasNext field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyResponse) SetHasNext(hasNext *bool) {
+	p.HasNext = hasNext
+	p.require(paginatedResponseClientCounterpartyResponseFieldHasNext)
+}
+
+// SetHasPrevious sets the HasPrevious field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyResponse) SetHasPrevious(hasPrevious *bool) {
+	p.HasPrevious = hasPrevious
+	p.require(paginatedResponseClientCounterpartyResponseFieldHasPrevious)
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaginatedResponseClientCounterpartyResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaginatedResponseClientCounterpartyResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) MarshalJSON() ([]byte, error) {
+	type embed PaginatedResponseClientCounterpartyResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaginatedResponseClientCounterpartyResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	paginatedResponseClientCounterpartyWithClientResponseFieldItems       = big.NewInt(1 << 0)
+	paginatedResponseClientCounterpartyWithClientResponseFieldPage        = big.NewInt(1 << 1)
+	paginatedResponseClientCounterpartyWithClientResponseFieldPageSize    = big.NewInt(1 << 2)
+	paginatedResponseClientCounterpartyWithClientResponseFieldItemsInPage = big.NewInt(1 << 3)
+	paginatedResponseClientCounterpartyWithClientResponseFieldTotalItems  = big.NewInt(1 << 4)
+	paginatedResponseClientCounterpartyWithClientResponseFieldTotalPages  = big.NewInt(1 << 5)
+	paginatedResponseClientCounterpartyWithClientResponseFieldHasNext     = big.NewInt(1 << 6)
+	paginatedResponseClientCounterpartyWithClientResponseFieldHasPrevious = big.NewInt(1 << 7)
+)
+
+type PaginatedResponseClientCounterpartyWithClientResponse struct {
+	Items []*ClientCounterpartyWithClientResponse `json:"items" url:"items"`
+	// Current page number
+	Page *int `json:"page,omitempty" url:"page,omitempty"`
+	// Number of items per page
+	PageSize *int `json:"page_size,omitempty" url:"page_size,omitempty"`
+	// Number of items in the current page
+	ItemsInPage *int `json:"items_in_page,omitempty" url:"items_in_page,omitempty"`
+	// Total number of items across all pages
+	TotalItems *int `json:"total_items,omitempty" url:"total_items,omitempty"`
+	// Total number of pages available
+	TotalPages *int `json:"total_pages,omitempty" url:"total_pages,omitempty"`
+	// Indicates if there is a next page
+	HasNext *bool `json:"has_next,omitempty" url:"has_next,omitempty"`
+	// Indicates if there is a previous page
+	HasPrevious *bool `json:"has_previous,omitempty" url:"has_previous,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) GetItems() []*ClientCounterpartyWithClientResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Items
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) GetPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.Page
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) GetPageSize() *int {
+	if p == nil {
+		return nil
+	}
+	return p.PageSize
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) GetItemsInPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.ItemsInPage
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) GetTotalItems() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalItems
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) GetTotalPages() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalPages
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) GetHasNext() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasNext
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) GetHasPrevious() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasPrevious
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) SetItems(items []*ClientCounterpartyWithClientResponse) {
+	p.Items = items
+	p.require(paginatedResponseClientCounterpartyWithClientResponseFieldItems)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) SetPage(page *int) {
+	p.Page = page
+	p.require(paginatedResponseClientCounterpartyWithClientResponseFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) SetPageSize(pageSize *int) {
+	p.PageSize = pageSize
+	p.require(paginatedResponseClientCounterpartyWithClientResponseFieldPageSize)
+}
+
+// SetItemsInPage sets the ItemsInPage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) SetItemsInPage(itemsInPage *int) {
+	p.ItemsInPage = itemsInPage
+	p.require(paginatedResponseClientCounterpartyWithClientResponseFieldItemsInPage)
+}
+
+// SetTotalItems sets the TotalItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) SetTotalItems(totalItems *int) {
+	p.TotalItems = totalItems
+	p.require(paginatedResponseClientCounterpartyWithClientResponseFieldTotalItems)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) SetTotalPages(totalPages *int) {
+	p.TotalPages = totalPages
+	p.require(paginatedResponseClientCounterpartyWithClientResponseFieldTotalPages)
+}
+
+// SetHasNext sets the HasNext field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) SetHasNext(hasNext *bool) {
+	p.HasNext = hasNext
+	p.require(paginatedResponseClientCounterpartyWithClientResponseFieldHasNext)
+}
+
+// SetHasPrevious sets the HasPrevious field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) SetHasPrevious(hasPrevious *bool) {
+	p.HasPrevious = hasPrevious
+	p.require(paginatedResponseClientCounterpartyWithClientResponseFieldHasPrevious)
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaginatedResponseClientCounterpartyWithClientResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaginatedResponseClientCounterpartyWithClientResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) MarshalJSON() ([]byte, error) {
+	type embed PaginatedResponseClientCounterpartyWithClientResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaginatedResponseClientCounterpartyWithClientResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -3680,4 +4797,99 @@ func (l *LimitRequestCreatePayloadRequestedLimit) Accept(visitor LimitRequestCre
 		return visitor.VisitString(l.String)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+var (
+	clientCounterpartyUpdatePayloadFieldClientID       = big.NewInt(1 << 0)
+	clientCounterpartyUpdatePayloadFieldCounterpartyID = big.NewInt(1 << 1)
+	clientCounterpartyUpdatePayloadFieldName           = big.NewInt(1 << 2)
+	clientCounterpartyUpdatePayloadFieldCountry        = big.NewInt(1 << 3)
+	clientCounterpartyUpdatePayloadFieldCompanyNumber  = big.NewInt(1 << 4)
+	clientCounterpartyUpdatePayloadFieldNotes          = big.NewInt(1 << 5)
+)
+
+type ClientCounterpartyUpdatePayload struct {
+	ClientID       string `json:"-" url:"-"`
+	CounterpartyID string `json:"-" url:"-"`
+	// The counterparty's legal or trading name
+	Name *string `json:"name,omitempty" url:"-"`
+	// ISO 3166-1 alpha-2 code of the country the counterparty is registered in
+	Country *string `json:"country,omitempty" url:"-"`
+	// The counterparty's company registration number
+	CompanyNumber *string `json:"company_number,omitempty" url:"-"`
+	// Free-text notes about the counterparty
+	Notes *string `json:"notes,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *ClientCounterpartyUpdatePayload) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetClientID sets the ClientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyUpdatePayload) SetClientID(clientID string) {
+	c.ClientID = clientID
+	c.require(clientCounterpartyUpdatePayloadFieldClientID)
+}
+
+// SetCounterpartyID sets the CounterpartyID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyUpdatePayload) SetCounterpartyID(counterpartyID string) {
+	c.CounterpartyID = counterpartyID
+	c.require(clientCounterpartyUpdatePayloadFieldCounterpartyID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyUpdatePayload) SetName(name *string) {
+	c.Name = name
+	c.require(clientCounterpartyUpdatePayloadFieldName)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyUpdatePayload) SetCountry(country *string) {
+	c.Country = country
+	c.require(clientCounterpartyUpdatePayloadFieldCountry)
+}
+
+// SetCompanyNumber sets the CompanyNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyUpdatePayload) SetCompanyNumber(companyNumber *string) {
+	c.CompanyNumber = companyNumber
+	c.require(clientCounterpartyUpdatePayloadFieldCompanyNumber)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientCounterpartyUpdatePayload) SetNotes(notes *string) {
+	c.Notes = notes
+	c.require(clientCounterpartyUpdatePayloadFieldNotes)
+}
+
+func (c *ClientCounterpartyUpdatePayload) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientCounterpartyUpdatePayload
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = ClientCounterpartyUpdatePayload(body)
+	return nil
+}
+
+func (c *ClientCounterpartyUpdatePayload) MarshalJSON() ([]byte, error) {
+	type embed ClientCounterpartyUpdatePayload
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
