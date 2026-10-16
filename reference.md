@@ -4498,6 +4498,14 @@ client.Loans.CreateLoan(
 <dl>
 <dd>
 
+**clientCounterpartyID:** `*string` — The ID of the client counterparty this loan relates to. It must belong to the loan's client.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **data:** `map[string]any` — Additional data related to the loan
     
 </dd>

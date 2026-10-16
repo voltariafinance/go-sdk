@@ -116,14 +116,15 @@ func (b *BulkLoanCreatePayload) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	loanCreatePayloadFieldClientID        = big.NewInt(1 << 0)
-	loanCreatePayloadFieldCurrency        = big.NewInt(1 << 1)
-	loanCreatePayloadFieldAmount          = big.NewInt(1 << 2)
-	loanCreatePayloadFieldCorrelationID   = big.NewInt(1 << 3)
-	loanCreatePayloadFieldLoanDate        = big.NewInt(1 << 4)
-	loanCreatePayloadFieldInstallments    = big.NewInt(1 << 5)
-	loanCreatePayloadFieldRepaymentMethod = big.NewInt(1 << 6)
-	loanCreatePayloadFieldData            = big.NewInt(1 << 7)
+	loanCreatePayloadFieldClientID             = big.NewInt(1 << 0)
+	loanCreatePayloadFieldCurrency             = big.NewInt(1 << 1)
+	loanCreatePayloadFieldAmount               = big.NewInt(1 << 2)
+	loanCreatePayloadFieldCorrelationID        = big.NewInt(1 << 3)
+	loanCreatePayloadFieldLoanDate             = big.NewInt(1 << 4)
+	loanCreatePayloadFieldInstallments         = big.NewInt(1 << 5)
+	loanCreatePayloadFieldRepaymentMethod      = big.NewInt(1 << 6)
+	loanCreatePayloadFieldClientCounterpartyID = big.NewInt(1 << 7)
+	loanCreatePayloadFieldData                 = big.NewInt(1 << 8)
 )
 
 type LoanCreatePayload struct {
@@ -141,6 +142,8 @@ type LoanCreatePayload struct {
 	Installments []*LoanInstallmentCreatePayload `json:"installments" url:"-"`
 	// How each installment is split into principal and interest: pmt (amortising) or constant_principal (loan amount divided equally across installments, the rest is interest)
 	RepaymentMethod *LoanRepaymentMethodEnum `json:"repayment_method,omitempty" url:"-"`
+	// The ID of the client counterparty this loan relates to. It must belong to the loan's client.
+	ClientCounterpartyID *string `json:"client_counterparty_id,omitempty" url:"-"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"-"`
 
@@ -202,6 +205,13 @@ func (l *LoanCreatePayload) SetInstallments(installments []*LoanInstallmentCreat
 func (l *LoanCreatePayload) SetRepaymentMethod(repaymentMethod *LoanRepaymentMethodEnum) {
 	l.RepaymentMethod = repaymentMethod
 	l.require(loanCreatePayloadFieldRepaymentMethod)
+}
+
+// SetClientCounterpartyID sets the ClientCounterpartyID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanCreatePayload) SetClientCounterpartyID(clientCounterpartyID *string) {
+	l.ClientCounterpartyID = clientCounterpartyID
+	l.require(loanCreatePayloadFieldClientCounterpartyID)
 }
 
 // SetData sets the Data field and marks it as non-optional;
@@ -597,14 +607,15 @@ func (l *LoanDefaultPayload) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	bulkLoanItemPayloadFieldClientID        = big.NewInt(1 << 0)
-	bulkLoanItemPayloadFieldCurrency        = big.NewInt(1 << 1)
-	bulkLoanItemPayloadFieldAmount          = big.NewInt(1 << 2)
-	bulkLoanItemPayloadFieldCorrelationID   = big.NewInt(1 << 3)
-	bulkLoanItemPayloadFieldLoanDate        = big.NewInt(1 << 4)
-	bulkLoanItemPayloadFieldInstallments    = big.NewInt(1 << 5)
-	bulkLoanItemPayloadFieldRepaymentMethod = big.NewInt(1 << 6)
-	bulkLoanItemPayloadFieldData            = big.NewInt(1 << 7)
+	bulkLoanItemPayloadFieldClientID             = big.NewInt(1 << 0)
+	bulkLoanItemPayloadFieldCurrency             = big.NewInt(1 << 1)
+	bulkLoanItemPayloadFieldAmount               = big.NewInt(1 << 2)
+	bulkLoanItemPayloadFieldCorrelationID        = big.NewInt(1 << 3)
+	bulkLoanItemPayloadFieldLoanDate             = big.NewInt(1 << 4)
+	bulkLoanItemPayloadFieldInstallments         = big.NewInt(1 << 5)
+	bulkLoanItemPayloadFieldRepaymentMethod      = big.NewInt(1 << 6)
+	bulkLoanItemPayloadFieldClientCounterpartyID = big.NewInt(1 << 7)
+	bulkLoanItemPayloadFieldData                 = big.NewInt(1 << 8)
 )
 
 type BulkLoanItemPayload struct {
@@ -622,6 +633,8 @@ type BulkLoanItemPayload struct {
 	Installments []*LoanInstallmentCreatePayload `json:"installments" url:"installments"`
 	// How each installment is split into principal and interest: pmt (amortising) or constant_principal (loan amount divided equally across installments, the rest is interest)
 	RepaymentMethod *LoanRepaymentMethodEnum `json:"repayment_method,omitempty" url:"repayment_method,omitempty"`
+	// The ID of the client counterparty this loan relates to. It must belong to the loan's client.
+	ClientCounterpartyID *string `json:"client_counterparty_id,omitempty" url:"client_counterparty_id,omitempty"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 
@@ -679,6 +692,13 @@ func (b *BulkLoanItemPayload) GetRepaymentMethod() *LoanRepaymentMethodEnum {
 		return nil
 	}
 	return b.RepaymentMethod
+}
+
+func (b *BulkLoanItemPayload) GetClientCounterpartyID() *string {
+	if b == nil {
+		return nil
+	}
+	return b.ClientCounterpartyID
 }
 
 func (b *BulkLoanItemPayload) GetData() map[string]any {
@@ -749,6 +769,13 @@ func (b *BulkLoanItemPayload) SetInstallments(installments []*LoanInstallmentCre
 func (b *BulkLoanItemPayload) SetRepaymentMethod(repaymentMethod *LoanRepaymentMethodEnum) {
 	b.RepaymentMethod = repaymentMethod
 	b.require(bulkLoanItemPayloadFieldRepaymentMethod)
+}
+
+// SetClientCounterpartyID sets the ClientCounterpartyID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BulkLoanItemPayload) SetClientCounterpartyID(clientCounterpartyID *string) {
+	b.ClientCounterpartyID = clientCounterpartyID
+	b.require(bulkLoanItemPayloadFieldClientCounterpartyID)
 }
 
 // SetData sets the Data field and marks it as non-optional;
@@ -1696,10 +1723,11 @@ var (
 	loanResponseWithClientInfoFieldEarlySettlementDate   = big.NewInt(1 << 14)
 	loanResponseWithClientInfoFieldEarlySettlementAmount = big.NewInt(1 << 15)
 	loanResponseWithClientInfoFieldRepaymentMethod       = big.NewInt(1 << 16)
-	loanResponseWithClientInfoFieldData                  = big.NewInt(1 << 17)
-	loanResponseWithClientInfoFieldClient                = big.NewInt(1 << 18)
-	loanResponseWithClientInfoFieldOutstandingPrincipal  = big.NewInt(1 << 19)
-	loanResponseWithClientInfoFieldRemainingAmount       = big.NewInt(1 << 20)
+	loanResponseWithClientInfoFieldClientCounterpartyID  = big.NewInt(1 << 17)
+	loanResponseWithClientInfoFieldData                  = big.NewInt(1 << 18)
+	loanResponseWithClientInfoFieldClient                = big.NewInt(1 << 19)
+	loanResponseWithClientInfoFieldOutstandingPrincipal  = big.NewInt(1 << 20)
+	loanResponseWithClientInfoFieldRemainingAmount       = big.NewInt(1 << 21)
 )
 
 type LoanResponseWithClientInfo struct {
@@ -1737,6 +1765,8 @@ type LoanResponseWithClientInfo struct {
 	EarlySettlementAmount *string `json:"early_settlement_amount,omitempty" url:"early_settlement_amount,omitempty"`
 	// How each installment is split into principal and interest
 	RepaymentMethod LoanRepaymentMethodEnum `json:"repayment_method" url:"repayment_method"`
+	// The ID of the client counterparty the loan relates to, if applicable
+	ClientCounterpartyID *string `json:"client_counterparty_id,omitempty" url:"client_counterparty_id,omitempty"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 	// The client details associated with the loan
@@ -1870,6 +1900,13 @@ func (l *LoanResponseWithClientInfo) GetRepaymentMethod() LoanRepaymentMethodEnu
 		return ""
 	}
 	return l.RepaymentMethod
+}
+
+func (l *LoanResponseWithClientInfo) GetClientCounterpartyID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.ClientCounterpartyID
 }
 
 func (l *LoanResponseWithClientInfo) GetData() map[string]any {
@@ -2031,6 +2068,13 @@ func (l *LoanResponseWithClientInfo) SetEarlySettlementAmount(earlySettlementAmo
 func (l *LoanResponseWithClientInfo) SetRepaymentMethod(repaymentMethod LoanRepaymentMethodEnum) {
 	l.RepaymentMethod = repaymentMethod
 	l.require(loanResponseWithClientInfoFieldRepaymentMethod)
+}
+
+// SetClientCounterpartyID sets the ClientCounterpartyID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanResponseWithClientInfo) SetClientCounterpartyID(clientCounterpartyID *string) {
+	l.ClientCounterpartyID = clientCounterpartyID
+	l.require(loanResponseWithClientInfoFieldClientCounterpartyID)
 }
 
 // SetData sets the Data field and marks it as non-optional;

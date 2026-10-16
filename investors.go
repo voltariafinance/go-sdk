@@ -602,11 +602,12 @@ var (
 	loanInvestorResponseFieldEarlySettlementDate   = big.NewInt(1 << 14)
 	loanInvestorResponseFieldEarlySettlementAmount = big.NewInt(1 << 15)
 	loanInvestorResponseFieldRepaymentMethod       = big.NewInt(1 << 16)
-	loanInvestorResponseFieldData                  = big.NewInt(1 << 17)
-	loanInvestorResponseFieldClient                = big.NewInt(1 << 18)
-	loanInvestorResponseFieldOutstandingPrincipal  = big.NewInt(1 << 19)
-	loanInvestorResponseFieldRemainingAmount       = big.NewInt(1 << 20)
-	loanInvestorResponseFieldPaymentToTheClient    = big.NewInt(1 << 21)
+	loanInvestorResponseFieldClientCounterpartyID  = big.NewInt(1 << 17)
+	loanInvestorResponseFieldData                  = big.NewInt(1 << 18)
+	loanInvestorResponseFieldClient                = big.NewInt(1 << 19)
+	loanInvestorResponseFieldOutstandingPrincipal  = big.NewInt(1 << 20)
+	loanInvestorResponseFieldRemainingAmount       = big.NewInt(1 << 21)
+	loanInvestorResponseFieldPaymentToTheClient    = big.NewInt(1 << 22)
 )
 
 type LoanInvestorResponse struct {
@@ -644,6 +645,8 @@ type LoanInvestorResponse struct {
 	EarlySettlementAmount *string `json:"early_settlement_amount,omitempty" url:"early_settlement_amount,omitempty"`
 	// How each installment is split into principal and interest
 	RepaymentMethod LoanRepaymentMethodEnum `json:"repayment_method" url:"repayment_method"`
+	// The ID of the client counterparty the loan relates to, if applicable
+	ClientCounterpartyID *string `json:"client_counterparty_id,omitempty" url:"client_counterparty_id,omitempty"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 	// The client details associated with the loan
@@ -779,6 +782,13 @@ func (l *LoanInvestorResponse) GetRepaymentMethod() LoanRepaymentMethodEnum {
 		return ""
 	}
 	return l.RepaymentMethod
+}
+
+func (l *LoanInvestorResponse) GetClientCounterpartyID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.ClientCounterpartyID
 }
 
 func (l *LoanInvestorResponse) GetData() map[string]any {
@@ -947,6 +957,13 @@ func (l *LoanInvestorResponse) SetEarlySettlementAmount(earlySettlementAmount *s
 func (l *LoanInvestorResponse) SetRepaymentMethod(repaymentMethod LoanRepaymentMethodEnum) {
 	l.RepaymentMethod = repaymentMethod
 	l.require(loanInvestorResponseFieldRepaymentMethod)
+}
+
+// SetClientCounterpartyID sets the ClientCounterpartyID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanInvestorResponse) SetClientCounterpartyID(clientCounterpartyID *string) {
+	l.ClientCounterpartyID = clientCounterpartyID
+	l.require(loanInvestorResponseFieldClientCounterpartyID)
 }
 
 // SetData sets the Data field and marks it as non-optional;

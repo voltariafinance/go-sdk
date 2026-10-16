@@ -2069,8 +2069,9 @@ var (
 	loanResponseWithInstallmentsFieldEarlySettlementDate   = big.NewInt(1 << 14)
 	loanResponseWithInstallmentsFieldEarlySettlementAmount = big.NewInt(1 << 15)
 	loanResponseWithInstallmentsFieldRepaymentMethod       = big.NewInt(1 << 16)
-	loanResponseWithInstallmentsFieldData                  = big.NewInt(1 << 17)
-	loanResponseWithInstallmentsFieldInstallments          = big.NewInt(1 << 18)
+	loanResponseWithInstallmentsFieldClientCounterpartyID  = big.NewInt(1 << 17)
+	loanResponseWithInstallmentsFieldData                  = big.NewInt(1 << 18)
+	loanResponseWithInstallmentsFieldInstallments          = big.NewInt(1 << 19)
 )
 
 type LoanResponseWithInstallments struct {
@@ -2108,6 +2109,8 @@ type LoanResponseWithInstallments struct {
 	EarlySettlementAmount *string `json:"early_settlement_amount,omitempty" url:"early_settlement_amount,omitempty"`
 	// How each installment is split into principal and interest
 	RepaymentMethod LoanRepaymentMethodEnum `json:"repayment_method" url:"repayment_method"`
+	// The ID of the client counterparty the loan relates to, if applicable
+	ClientCounterpartyID *string `json:"client_counterparty_id,omitempty" url:"client_counterparty_id,omitempty"`
 	// Additional data related to the loan
 	Data map[string]any `json:"data,omitempty" url:"data,omitempty"`
 	// List of installments for the loan
@@ -2237,6 +2240,13 @@ func (l *LoanResponseWithInstallments) GetRepaymentMethod() LoanRepaymentMethodE
 		return ""
 	}
 	return l.RepaymentMethod
+}
+
+func (l *LoanResponseWithInstallments) GetClientCounterpartyID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.ClientCounterpartyID
 }
 
 func (l *LoanResponseWithInstallments) GetData() map[string]any {
@@ -2384,6 +2394,13 @@ func (l *LoanResponseWithInstallments) SetEarlySettlementAmount(earlySettlementA
 func (l *LoanResponseWithInstallments) SetRepaymentMethod(repaymentMethod LoanRepaymentMethodEnum) {
 	l.RepaymentMethod = repaymentMethod
 	l.require(loanResponseWithInstallmentsFieldRepaymentMethod)
+}
+
+// SetClientCounterpartyID sets the ClientCounterpartyID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanResponseWithInstallments) SetClientCounterpartyID(clientCounterpartyID *string) {
+	l.ClientCounterpartyID = clientCounterpartyID
+	l.require(loanResponseWithInstallmentsFieldClientCounterpartyID)
 }
 
 // SetData sets the Data field and marks it as non-optional;
