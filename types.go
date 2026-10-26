@@ -1634,6 +1634,8 @@ func (j JurisdictionEnum) Ptr() *JurisdictionEnum {
 var (
 	loanInstallmentCreatePayloadFieldExpectedRepaymentAt = big.NewInt(1 << 0)
 	loanInstallmentCreatePayloadFieldAmount              = big.NewInt(1 << 1)
+	loanInstallmentCreatePayloadFieldPrincipal           = big.NewInt(1 << 2)
+	loanInstallmentCreatePayloadFieldInterest            = big.NewInt(1 << 3)
 )
 
 type LoanInstallmentCreatePayload struct {
@@ -1641,6 +1643,10 @@ type LoanInstallmentCreatePayload struct {
 	ExpectedRepaymentAt time.Time `json:"expected_repayment_at" url:"expected_repayment_at" format:"date"`
 	// The amount due for this installment
 	Amount *LoanInstallmentCreatePayloadAmount `json:"amount" url:"amount"`
+	// The principal part of the installment amount. Only when creating a loan with repayment_method custom, together with interest
+	Principal *LoanInstallmentCreatePayloadPrincipal `json:"principal,omitempty" url:"principal,omitempty"`
+	// The interest part of the installment amount. Only when creating a loan with repayment_method custom, together with principal
+	Interest *LoanInstallmentCreatePayloadInterest `json:"interest,omitempty" url:"interest,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1661,6 +1667,20 @@ func (l *LoanInstallmentCreatePayload) GetAmount() *LoanInstallmentCreatePayload
 		return nil
 	}
 	return l.Amount
+}
+
+func (l *LoanInstallmentCreatePayload) GetPrincipal() *LoanInstallmentCreatePayloadPrincipal {
+	if l == nil {
+		return nil
+	}
+	return l.Principal
+}
+
+func (l *LoanInstallmentCreatePayload) GetInterest() *LoanInstallmentCreatePayloadInterest {
+	if l == nil {
+		return nil
+	}
+	return l.Interest
 }
 
 func (l *LoanInstallmentCreatePayload) GetExtraProperties() map[string]interface{} {
@@ -1689,6 +1709,20 @@ func (l *LoanInstallmentCreatePayload) SetExpectedRepaymentAt(expectedRepaymentA
 func (l *LoanInstallmentCreatePayload) SetAmount(amount *LoanInstallmentCreatePayloadAmount) {
 	l.Amount = amount
 	l.require(loanInstallmentCreatePayloadFieldAmount)
+}
+
+// SetPrincipal sets the Principal field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanInstallmentCreatePayload) SetPrincipal(principal *LoanInstallmentCreatePayloadPrincipal) {
+	l.Principal = principal
+	l.require(loanInstallmentCreatePayloadFieldPrincipal)
+}
+
+// SetInterest sets the Interest field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanInstallmentCreatePayload) SetInterest(interest *LoanInstallmentCreatePayloadInterest) {
+	l.Interest = interest
+	l.require(loanInstallmentCreatePayloadFieldInterest)
 }
 
 func (l *LoanInstallmentCreatePayload) UnmarshalJSON(data []byte) error {
@@ -1795,6 +1829,132 @@ type LoanInstallmentCreatePayloadAmountVisitor interface {
 }
 
 func (l *LoanInstallmentCreatePayloadAmount) Accept(visitor LoanInstallmentCreatePayloadAmountVisitor) error {
+	if l.typ == "Double" || l.Double != 0 {
+		return visitor.VisitDouble(l.Double)
+	}
+	if l.typ == "String" || l.String != "" {
+		return visitor.VisitString(l.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+// The interest part of the installment amount. Only when creating a loan with repayment_method custom, together with principal
+type LoanInstallmentCreatePayloadInterest struct {
+	Double float64
+	String string
+
+	typ string
+}
+
+func (l *LoanInstallmentCreatePayloadInterest) GetDouble() float64 {
+	if l == nil {
+		return 0
+	}
+	return l.Double
+}
+
+func (l *LoanInstallmentCreatePayloadInterest) GetString() string {
+	if l == nil {
+		return ""
+	}
+	return l.String
+}
+
+func (l *LoanInstallmentCreatePayloadInterest) UnmarshalJSON(data []byte) error {
+	var valueDouble float64
+	if err := json.Unmarshal(data, &valueDouble); err == nil {
+		l.typ = "Double"
+		l.Double = valueDouble
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		l.typ = "String"
+		l.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, l)
+}
+
+func (l LoanInstallmentCreatePayloadInterest) MarshalJSON() ([]byte, error) {
+	if l.typ == "Double" || l.Double != 0 {
+		return json.Marshal(l.Double)
+	}
+	if l.typ == "String" || l.String != "" {
+		return json.Marshal(l.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+type LoanInstallmentCreatePayloadInterestVisitor interface {
+	VisitDouble(float64) error
+	VisitString(string) error
+}
+
+func (l *LoanInstallmentCreatePayloadInterest) Accept(visitor LoanInstallmentCreatePayloadInterestVisitor) error {
+	if l.typ == "Double" || l.Double != 0 {
+		return visitor.VisitDouble(l.Double)
+	}
+	if l.typ == "String" || l.String != "" {
+		return visitor.VisitString(l.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+// The principal part of the installment amount. Only when creating a loan with repayment_method custom, together with interest
+type LoanInstallmentCreatePayloadPrincipal struct {
+	Double float64
+	String string
+
+	typ string
+}
+
+func (l *LoanInstallmentCreatePayloadPrincipal) GetDouble() float64 {
+	if l == nil {
+		return 0
+	}
+	return l.Double
+}
+
+func (l *LoanInstallmentCreatePayloadPrincipal) GetString() string {
+	if l == nil {
+		return ""
+	}
+	return l.String
+}
+
+func (l *LoanInstallmentCreatePayloadPrincipal) UnmarshalJSON(data []byte) error {
+	var valueDouble float64
+	if err := json.Unmarshal(data, &valueDouble); err == nil {
+		l.typ = "Double"
+		l.Double = valueDouble
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		l.typ = "String"
+		l.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, l)
+}
+
+func (l LoanInstallmentCreatePayloadPrincipal) MarshalJSON() ([]byte, error) {
+	if l.typ == "Double" || l.Double != 0 {
+		return json.Marshal(l.Double)
+	}
+	if l.typ == "String" || l.String != "" {
+		return json.Marshal(l.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+type LoanInstallmentCreatePayloadPrincipalVisitor interface {
+	VisitDouble(float64) error
+	VisitString(string) error
+}
+
+func (l *LoanInstallmentCreatePayloadPrincipal) Accept(visitor LoanInstallmentCreatePayloadPrincipalVisitor) error {
 	if l.typ == "Double" || l.Double != 0 {
 		return visitor.VisitDouble(l.Double)
 	}
@@ -2034,6 +2194,7 @@ type LoanRepaymentMethodEnum string
 const (
 	LoanRepaymentMethodEnumPmt               LoanRepaymentMethodEnum = "pmt"
 	LoanRepaymentMethodEnumConstantPrincipal LoanRepaymentMethodEnum = "constant_principal"
+	LoanRepaymentMethodEnumCustom            LoanRepaymentMethodEnum = "custom"
 )
 
 func NewLoanRepaymentMethodEnumFromString(s string) (LoanRepaymentMethodEnum, error) {
@@ -2042,6 +2203,8 @@ func NewLoanRepaymentMethodEnumFromString(s string) (LoanRepaymentMethodEnum, er
 		return LoanRepaymentMethodEnumPmt, nil
 	case "constant_principal":
 		return LoanRepaymentMethodEnumConstantPrincipal, nil
+	case "custom":
+		return LoanRepaymentMethodEnumCustom, nil
 	}
 	var t LoanRepaymentMethodEnum
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

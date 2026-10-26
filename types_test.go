@@ -3787,6 +3787,22 @@ func TestSettersLoanInstallmentCreatePayload(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetPrincipal", func(t *testing.T) {
+		obj := &LoanInstallmentCreatePayload{}
+		var fernTestValuePrincipal *LoanInstallmentCreatePayloadPrincipal
+		obj.SetPrincipal(fernTestValuePrincipal)
+		assert.Equal(t, fernTestValuePrincipal, obj.Principal)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetInterest", func(t *testing.T) {
+		obj := &LoanInstallmentCreatePayload{}
+		var fernTestValueInterest *LoanInstallmentCreatePayloadInterest
+		obj.SetInterest(fernTestValueInterest)
+		assert.Equal(t, fernTestValueInterest, obj.Interest)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersLoanInstallmentCreatePayload(t *testing.T) {
@@ -3844,6 +3860,72 @@ func TestGettersLoanInstallmentCreatePayload(t *testing.T) {
 			}
 		}()
 		_ = obj.GetAmount() // Should return zero value
+	})
+
+	t.Run("GetPrincipal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayload{}
+		var expected *LoanInstallmentCreatePayloadPrincipal
+		obj.Principal = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetPrincipal(), "getter should return the property value")
+	})
+
+	t.Run("GetPrincipal_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayload{}
+		obj.Principal = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPrincipal(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetPrincipal_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanInstallmentCreatePayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetPrincipal() // Should return zero value
+	})
+
+	t.Run("GetInterest", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayload{}
+		var expected *LoanInstallmentCreatePayloadInterest
+		obj.Interest = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetInterest(), "getter should return the property value")
+	})
+
+	t.Run("GetInterest_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayload{}
+		obj.Interest = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetInterest(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetInterest_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanInstallmentCreatePayload
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetInterest() // Should return zero value
 	})
 
 }
@@ -3911,6 +3993,68 @@ func TestSettersMarkExplicitLoanInstallmentCreatePayload(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetPrincipal_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayload{}
+		var fernTestValuePrincipal *LoanInstallmentCreatePayloadPrincipal
+
+		// Act
+		obj.SetPrincipal(fernTestValuePrincipal)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetInterest_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayload{}
+		var fernTestValueInterest *LoanInstallmentCreatePayloadInterest
+
+		// Act
+		obj.SetInterest(fernTestValueInterest)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 }
 
 func TestGettersLoanInstallmentCreatePayloadAmount(t *testing.T) {
@@ -3951,6 +4095,104 @@ func TestGettersLoanInstallmentCreatePayloadAmount(t *testing.T) {
 	t.Run("GetString_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *LoanInstallmentCreatePayloadAmount
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetString() // Should return zero value
+	})
+
+}
+
+func TestGettersLoanInstallmentCreatePayloadInterest(t *testing.T) {
+	t.Run("GetDouble", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayloadInterest{}
+		var expected float64
+		obj.Double = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDouble(), "getter should return the property value")
+	})
+
+	t.Run("GetDouble_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanInstallmentCreatePayloadInterest
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDouble() // Should return zero value
+	})
+
+	t.Run("GetString", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayloadInterest{}
+		var expected string
+		obj.String = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetString(), "getter should return the property value")
+	})
+
+	t.Run("GetString_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanInstallmentCreatePayloadInterest
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetString() // Should return zero value
+	})
+
+}
+
+func TestGettersLoanInstallmentCreatePayloadPrincipal(t *testing.T) {
+	t.Run("GetDouble", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayloadPrincipal{}
+		var expected float64
+		obj.Double = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDouble(), "getter should return the property value")
+	})
+
+	t.Run("GetDouble_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanInstallmentCreatePayloadPrincipal
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDouble() // Should return zero value
+	})
+
+	t.Run("GetString", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LoanInstallmentCreatePayloadPrincipal{}
+		var expected string
+		obj.String = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetString(), "getter should return the property value")
+	})
+
+	t.Run("GetString_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LoanInstallmentCreatePayloadPrincipal
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -9219,6 +9461,13 @@ func TestEnumLoanRepaymentMethodEnum(t *testing.T) {
 		val, err := NewLoanRepaymentMethodEnumFromString("constant_principal")
 		assert.NoError(t, err, "valid enum value should not return error")
 		assert.Equal(t, LoanRepaymentMethodEnum("constant_principal"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_custom", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewLoanRepaymentMethodEnumFromString("custom")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, LoanRepaymentMethodEnum("custom"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_Invalid", func(t *testing.T) {

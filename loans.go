@@ -140,7 +140,7 @@ type LoanCreatePayload struct {
 	LoanDate *time.Time `json:"loan_date,omitempty" url:"-" format:"date"`
 	// List of installments for the loan, each with a due date and amount
 	Installments []*LoanInstallmentCreatePayload `json:"installments" url:"-"`
-	// How each installment is split into principal and interest: pmt (amortising) or constant_principal (loan amount divided equally across installments, the rest is interest)
+	// How each installment is split into principal and interest: pmt (amortising), constant_principal (loan amount divided equally across installments, the rest is interest) or custom (you send each installment's principal and interest; total principal must equal the loan amount, and the loan amount and installments cannot be changed later)
 	RepaymentMethod *LoanRepaymentMethodEnum `json:"repayment_method,omitempty" url:"-"`
 	// The ID of the client counterparty this loan relates to. It must belong to the loan's client.
 	ClientCounterpartyID *string `json:"client_counterparty_id,omitempty" url:"-"`
@@ -631,7 +631,7 @@ type BulkLoanItemPayload struct {
 	LoanDate *time.Time `json:"loan_date,omitempty" url:"loan_date,omitempty" format:"date"`
 	// List of installments for the loan, each with a due date and amount
 	Installments []*LoanInstallmentCreatePayload `json:"installments" url:"installments"`
-	// How each installment is split into principal and interest: pmt (amortising) or constant_principal (loan amount divided equally across installments, the rest is interest)
+	// How each installment is split into principal and interest: pmt (amortising), constant_principal (loan amount divided equally across installments, the rest is interest) or custom (you send each installment's principal and interest; total principal must equal the loan amount, and the loan amount and installments cannot be changed later)
 	RepaymentMethod *LoanRepaymentMethodEnum `json:"repayment_method,omitempty" url:"repayment_method,omitempty"`
 	// The ID of the client counterparty this loan relates to. It must belong to the loan's client.
 	ClientCounterpartyID *string `json:"client_counterparty_id,omitempty" url:"client_counterparty_id,omitempty"`
