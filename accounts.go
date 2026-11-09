@@ -503,7 +503,8 @@ var (
 	clientAccountResponseFieldAddress           = big.NewInt(1 << 11)
 	clientAccountResponseFieldStatus            = big.NewInt(1 << 12)
 	clientAccountResponseFieldCopStatus         = big.NewInt(1 << 13)
-	clientAccountResponseFieldCreatedAt         = big.NewInt(1 << 14)
+	clientAccountResponseFieldBankName          = big.NewInt(1 << 14)
+	clientAccountResponseFieldCreatedAt         = big.NewInt(1 << 15)
 )
 
 type ClientAccountResponse struct {
@@ -535,6 +536,8 @@ type ClientAccountResponse struct {
 	Status AccountStatusEnum `json:"status" url:"status"`
 	// Confirmation of Payee result for this account. `null` when the account has never been checked, or when the check does not apply to it. One of: `matched`, `close_match`, `not_matched`, `account_not_found`, `unavailable`.
 	CopStatus *CopStatusEnum `json:"cop_status,omitempty" url:"cop_status,omitempty"`
+	// Bank the sort code belongs to, from the account's Confirmation of Payee check. `null` when no check has named the bank: the account has never been checked, the check does not apply to it, or the provider returned no bank.
+	BankName *string `json:"bank_name,omitempty" url:"bank_name,omitempty"`
 	// Timestamp when the account was created.
 	CreatedAt time.Time `json:"created_at" url:"created_at"`
 
@@ -641,6 +644,13 @@ func (c *ClientAccountResponse) GetCopStatus() *CopStatusEnum {
 		return nil
 	}
 	return c.CopStatus
+}
+
+func (c *ClientAccountResponse) GetBankName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.BankName
 }
 
 func (c *ClientAccountResponse) GetCreatedAt() time.Time {
@@ -760,6 +770,13 @@ func (c *ClientAccountResponse) SetStatus(status AccountStatusEnum) {
 func (c *ClientAccountResponse) SetCopStatus(copStatus *CopStatusEnum) {
 	c.CopStatus = copStatus
 	c.require(clientAccountResponseFieldCopStatus)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientAccountResponse) SetBankName(bankName *string) {
+	c.BankName = bankName
+	c.require(clientAccountResponseFieldBankName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
