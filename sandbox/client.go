@@ -50,7 +50,7 @@ func (c *Client) UpdateClient(
 	return response.Body, nil
 }
 
-// Update the status of a specific loan using its unique loan ID.
+// Update the status of a specific loan using its unique loan ID. Moving a loan to sold, restructured or default needs its sale, restructure or default date in the same request.
 func (c *Client) UpdateLoan(
 	ctx context.Context,
 	request *v2.LoanUpdateSandbox,

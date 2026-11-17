@@ -7,6 +7,7 @@ import (
 	fmt "fmt"
 	internal "github.com/voltariafinance/go-sdk/v2/internal"
 	big "math/big"
+	time "time"
 )
 
 // The limit to set for the client. This will override the existing limit.
@@ -139,14 +140,23 @@ func (c *ClientUpdateSandbox) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	loanUpdateSandboxFieldLoanID = big.NewInt(1 << 0)
-	loanUpdateSandboxFieldStatus = big.NewInt(1 << 1)
+	loanUpdateSandboxFieldLoanID         = big.NewInt(1 << 0)
+	loanUpdateSandboxFieldStatus         = big.NewInt(1 << 1)
+	loanUpdateSandboxFieldSoldAt         = big.NewInt(1 << 2)
+	loanUpdateSandboxFieldRestructuredAt = big.NewInt(1 << 3)
+	loanUpdateSandboxFieldDefaultedAt    = big.NewInt(1 << 4)
 )
 
 type LoanUpdateSandbox struct {
 	LoanID string `json:"-" url:"-"`
 	// The status of the loan. One of the following: `pending, overdue, active, default, sold, restructured, repaid, pre_approved, rejected, inactive`. Use the delete loan endpoint to delete a loan.
 	Status *LoanStatusEnum `json:"status,omitempty" url:"-"`
+	// The date the loan was sold. Required when the status changes to `sold`; can't be later than today or earlier than the loan date
+	SoldAt *time.Time `json:"sold_at,omitempty" url:"-"`
+	// The date the loan was restructured. Required when the status changes to `restructured`; can't be later than today or earlier than the loan date
+	RestructuredAt *time.Time `json:"restructured_at,omitempty" url:"-"`
+	// The date the loan defaulted. Required when the status changes to `default`; can't be later than today or earlier than the loan date
+	DefaultedAt *time.Time `json:"defaulted_at,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -173,6 +183,27 @@ func (l *LoanUpdateSandbox) SetStatus(status *LoanStatusEnum) {
 	l.require(loanUpdateSandboxFieldStatus)
 }
 
+// SetSoldAt sets the SoldAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanUpdateSandbox) SetSoldAt(soldAt *time.Time) {
+	l.SoldAt = soldAt
+	l.require(loanUpdateSandboxFieldSoldAt)
+}
+
+// SetRestructuredAt sets the RestructuredAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanUpdateSandbox) SetRestructuredAt(restructuredAt *time.Time) {
+	l.RestructuredAt = restructuredAt
+	l.require(loanUpdateSandboxFieldRestructuredAt)
+}
+
+// SetDefaultedAt sets the DefaultedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanUpdateSandbox) SetDefaultedAt(defaultedAt *time.Time) {
+	l.DefaultedAt = defaultedAt
+	l.require(loanUpdateSandboxFieldDefaultedAt)
+}
+
 func (l *LoanUpdateSandbox) UnmarshalJSON(data []byte) error {
 	type unmarshaler LoanUpdateSandbox
 	var body unmarshaler
@@ -187,8 +218,14 @@ func (l *LoanUpdateSandbox) MarshalJSON() ([]byte, error) {
 	type embed LoanUpdateSandbox
 	var marshaler = struct {
 		embed
+		SoldAt         *internal.DateTime `json:"sold_at,omitempty"`
+		RestructuredAt *internal.DateTime `json:"restructured_at,omitempty"`
+		DefaultedAt    *internal.DateTime `json:"defaulted_at,omitempty"`
 	}{
-		embed: embed(*l),
+		embed:          embed(*l),
+		SoldAt:         internal.NewOptionalDateTime(l.SoldAt),
+		RestructuredAt: internal.NewOptionalDateTime(l.RestructuredAt),
+		DefaultedAt:    internal.NewOptionalDateTime(l.DefaultedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
 	return json.Marshal(explicitMarshaler)
